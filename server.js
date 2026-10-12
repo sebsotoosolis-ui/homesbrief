@@ -4,6 +4,7 @@ import multer from 'multer';
 import { clerkMiddleware, getAuth } from '@clerk/express';
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
+import { createCheckoutSession, createPortalSession, getAccess, getStripe } from './billing.js';
 import { runListingJob } from './engine.js';
 
 const jobs = new Map();
@@ -26,6 +27,20 @@ const upload = multer({
 const clerkEnabled = Boolean(process.env.CLERK_SECRET_KEY && process.env.CLERK_PUBLISHABLE_KEY);
 
 app.disable('x-powered-by');
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  const stripe = getStripe();
+  const secret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
+  if (!stripe || !secret) {
+    res.status(400).end();
+    return;
+  }
+  try {
+    stripe.webhooks.constructEvent(req.body, req.headers['stripe-signature'], secret);
+    res.json({ received: true });
+  } catch (error) {
+    res.status(400).send(`Webhook error: ${error.message}`);
+  }
+});
 app.use(express.urlencoded({ extended: true }));
 if (clerkEnabled) {
   app.use(clerkMiddleware());
@@ -43,7 +58,7 @@ function requireUser(req, res, next) {
       res.status(401).json({ error: 'Inicia sesión para generar fichas.' });
       return;
     }
-    res.redirect('/login');
+    res.redirect('/login?next=' + encodeURIComponent(req.originalUrl));
     return;
   }
   next();
@@ -96,6 +111,36 @@ app.get('/health', (_req, res) => {
   res.json({ ok: true, service: 'homesbrief' });
 });
 
+app.get('/checkout/:plan', requireUser, async (req, res) => {
+  try {
+    const session = await createCheckoutSession({
+      req,
+      planId: req.params.plan,
+      userId: getAuth(req).userId,
+    });
+    res.redirect(303, session.url);
+  } catch (error) {
+    res.status(400).send(error.message || 'No se pudo abrir Stripe.');
+  }
+});
+
+app.post('/api/billing/portal', requireUser, async (req, res) => {
+  try {
+    const session = await createPortalSession(req, getAuth(req).userId);
+    res.json({ url: session.url });
+  } catch (error) {
+    res.status(400).json({ error: error.message || 'No se pudo abrir el portal.' });
+  }
+});
+
+app.get('/api/billing/access', requireUser, async (req, res) => {
+  try {
+    res.json(await getAccess(getAuth(req).userId));
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/api/jobs/:id', requireUser, (req, res) => {
   const job = jobs.get(req.params.id);
   if (!job) {
@@ -130,6 +175,12 @@ app.post(
     try {
       const airbnbUrl = String(req.body.airbnbUrl || '').trim();
       const photos = req.files || [];
+      const access = await getAccess(getAuth(req).userId);
+      if (!access.ok) {
+        res.status(402).json({ error: access.error });
+        return;
+      }
+
       if (!airbnbUrl && photos.length === 0) {
         res.status(400).json({ error: 'Pega un link de Airbnb o sube fotos.' });
         return;

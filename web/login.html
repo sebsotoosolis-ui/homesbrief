@@ -30,15 +30,16 @@
   </main>
   <script src="/clerk-client.js"></script>
   <script>
+    const next = new URLSearchParams(location.search).get('next') || '/app';
     bootClerk().then((clerk) => {
       if (clerk.isSignedIn) {
-        window.location.href = '/app';
+        window.location.href = next;
         return;
       }
       clerk.mountSignIn(document.getElementById('sign-in'), {
         appearance: clerkAppearance,
-        afterSignInUrl: '/app',
-        signUpUrl: '/registro',
+        afterSignInUrl: next,
+        signUpUrl: '/registro?next=' + encodeURIComponent(next),
       });
     }).catch((error) => {
       document.getElementById('err').textContent = error.message;
