@@ -76,6 +76,11 @@ app.get('/favicon-32.png', (_req, res) => {
 app.get('/logo-512.png', (_req, res) => {
   res.type('image/png').sendFile(resolve('web', 'logo-512.png'));
 });
+app.get('/og.png', (_req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.type('image/png');
+  res.sendFile(resolve('web', 'og.png'));
+});
 app.get('/apple-touch-icon.png', (_req, res) => {
   res.type('image/png').sendFile(resolve('web', 'apple-touch-icon.png'));
 });
