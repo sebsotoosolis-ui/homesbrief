@@ -103,7 +103,7 @@ export function renderHtml(listing, { mediaPrefix = '/media', chrome = false } =
   </style>
 </head>
 <body>
-  ${chrome ? `<div class="chrome"><a class="logo" href="/"><img src="/logo.svg" alt="" />HomesBrief</a><nav><a href="/fichas">Mis propiedades</a><a class="gold" href="/app">Nueva ficha</a></nav></div>` : ''}
+  ${chrome ? `<div class="chrome"><a class="logo" href="/"><img src="/logo.svg" alt="" />HomesBrief</a><nav><a href="/fichas">Mis propiedades</a><a class="gold" href="/app">Nueva ficha</a><a href="https://wa.me/524422198327?text=${encodeURIComponent('Hola Seb, ya usé HomesBrief. Feedback: 1) qué sirvió 2) qué está mal 3) qué me faltó.')}">Feedback</a></nav></div>` : ''}
   <header class="hero">
     <div class="kicker">HomesBrief · listing brief</div>
     <h1 class="es">${esc(listing.titles?.es)}</h1>
