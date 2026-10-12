@@ -8,8 +8,9 @@ export function writeListingPage(listing, { photoDir } = {}) {
   writeFileSync(join(process.cwd(), 'web', 'ficha.json'), JSON.stringify(listing, null, 2), 'utf8');
 }
 
-function renderHtml(listing) {
+export function renderHtml(listing, { mediaPrefix = '/media' } = {}) {
   const photos = listing.meta?.photos ?? [];
+  const media = (name) => `${mediaPrefix}/${encodeURIComponent(name)}`;
   const rent = listing.rent_estimate;
   const money = (value) =>
     rent ? `${rent.currency} ${Number(value).toLocaleString('en-US')}` : '';
@@ -48,7 +49,7 @@ function renderHtml(listing) {
       min-height: 72vh;
       background:
         linear-gradient(180deg, rgba(16,32,43,.15), rgba(16,32,43,.72)),
-        url("${photos[0] ? `/media/${encodeURIComponent(photos[0])}` : ''}") center/cover;
+        url("${photos[0] ? media(photos[0]) : ''}") center/cover;
       color: white;
       display: flex;
       flex-direction: column;
@@ -102,7 +103,7 @@ function renderHtml(listing) {
   <section>
     <div class="toolbar"><h2>Galería</h2><span class="muted">${photos.length} fotos listas para publicar</span></div>
     <div class="gallery">
-      ${photos.map((name) => `<img src="/media/${encodeURIComponent(name)}" alt="${esc(name)}" />`).join('')}
+      ${photos.map((name) => `<img src="${media(name)}" alt="${esc(name)}" />`).join('')}
     </div>
   </section>
 

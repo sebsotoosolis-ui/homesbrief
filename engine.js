@@ -107,6 +107,7 @@ export async function runListingJob({
   airbnbUrl,
   photoDir,
   preferences = {},
+  persist = true,
   log = false,
 } = {}) {
   if (!API_KEY) {
@@ -184,8 +185,10 @@ export async function runListingJob({
     preferences,
   };
 
-  writeFileSync(OUTPUT_PATH, JSON.stringify(listing, null, 2), 'utf8');
-  writeListingPage(listing, { photoDir: inputPath });
+  if (persist) {
+    writeFileSync(OUTPUT_PATH, JSON.stringify(listing, null, 2), 'utf8');
+    writeListingPage(listing, { photoDir: inputPath });
+  }
   return listing;
 }
 

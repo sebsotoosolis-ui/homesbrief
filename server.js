@@ -3,9 +3,11 @@ import express from 'express';
 import multer from 'multer';
 import { clerkMiddleware, getAuth } from '@clerk/express';
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
-import { basename, join, resolve } from 'node:path';
-import { createCheckoutSession, createPortalSession, getAccess, getStripe } from './billing.js';
+import { join, resolve } from 'node:path';
+import { createCheckoutSession, createPortalSession, getAccess, getStripe, planLimit } from './billing.js';
 import { runListingJob } from './engine.js';
+import { renderHtml } from './render-page.js';
+import { countUserListings, latestUserListing, loadUserListing, saveUserListing, userPhotoPath } from './store.js';
 
 const jobs = new Map();
 
@@ -50,6 +52,11 @@ app.get('/clerk-client.js', (_req, res) => {
   res.sendFile(resolve('web', 'clerk-client.js'));
 });
 
+function currentUserId(req) {
+  if (!clerkEnabled) return 'local';
+  return getAuth(req).userId;
+}
+
 function requireUser(req, res, next) {
   if (!clerkEnabled) return next();
   const auth = getAuth(req);
@@ -80,13 +87,33 @@ app.get('/login', (_req, res) => {
   res.sendFile(resolve('web', 'login.html'));
 });
 
-app.get('/ficha', (_req, res) => {
-  const page = resolve('web', 'index.html');
-  if (!existsSync(page)) {
+app.get('/ejemplo', (_req, res) => {
+  const demo = resolve('web', 'ficha.json');
+  if (!existsSync(demo)) {
     res.redirect('/');
     return;
   }
-  res.sendFile(page);
+  const listing = JSON.parse(readFileSync(demo, 'utf8'));
+  res.type('html').send(renderHtml(listing, { mediaPrefix: '/demo' }));
+});
+
+app.get('/ficha', requireUser, (req, res) => {
+  const listing = latestUserListing(currentUserId(req));
+  if (!listing) {
+    res.type('html').send(emptyFichaPage());
+    return;
+  }
+  res.redirect('/ficha/' + listing.meta.listingId);
+});
+
+app.get('/ficha/:id', requireUser, (req, res) => {
+  const userId = currentUserId(req);
+  const listing = loadUserListing(userId, req.params.id);
+  if (!listing) {
+    res.status(404).type('html').send(emptyFichaPage());
+    return;
+  }
+  res.type('html').send(renderHtml(listing, { mediaPrefix: `/media/${userId}/${listing.meta.listingId}` }));
 });
 
 app.get('/robots.txt', (_req, res) => {
@@ -97,6 +124,7 @@ app.get('/sitemap.xml', (_req, res) => {
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://homesbrief.com/</loc></url>
+  <url><loc>https://homesbrief.com/ejemplo</loc></url>
   <url><loc>https://homesbrief.com/registro</loc></url>
   <url><loc>https://homesbrief.com/login</loc></url>
 </urlset>
@@ -150,11 +178,12 @@ app.get('/api/jobs/:id', requireUser, (req, res) => {
   res.json(job);
 });
 
-app.get('/media/:name', (req, res) => {
-  const name = basename(req.params.name);
-  const listing = readListing();
-  const dir = resolvePhotoDir(listing);
-  const filePath = join(dir, name);
+app.get('/media/:userId/:listingId/:name', requireUser, (req, res) => {
+  if (currentUserId(req) !== req.params.userId) {
+    res.status(403).end();
+    return;
+  }
+  const filePath = userPhotoPath(req.params.userId, req.params.listingId, req.params.name);
   if (!existsSync(filePath) || !statSync(filePath).isFile()) {
     res.status(404).end();
     return;
@@ -175,9 +204,21 @@ app.post(
     try {
       const airbnbUrl = String(req.body.airbnbUrl || '').trim();
       const photos = req.files || [];
-      const access = await getAccess(getAuth(req).userId);
+      const userId = currentUserId(req);
+      const access = await getAccess(userId);
       if (!access.ok) {
         res.status(402).json({ error: access.error });
+        return;
+      }
+      const quota = planLimit(access.plan);
+      const since = quota.period === 'month' ? Date.now() - 30 * 24 * 60 * 60 * 1000 : undefined;
+      const used = countUserListings(userId, { since });
+      if (used >= quota.max) {
+        res.status(402).json({
+          error: access.plan === 'trial'
+            ? 'Ya usaste las 3 fichas del trial. Pasa a Agente para seguir.'
+            : 'Llegaste al límite de fichas de este mes.',
+        });
         return;
       }
 
@@ -190,6 +231,7 @@ app.post(
       const options = {
         airbnbUrl: airbnbUrl || undefined,
         photoDir: photos.length ? req.uploadDir : undefined,
+        persist: false,
         preferences: {
           zone: req.body.zone,
           goal: req.body.goal,
@@ -204,7 +246,8 @@ app.post(
 
       runListingJob(options)
         .then((listing) => {
-          jobs.set(jobId, { status: 'done', title: listing.titles?.es });
+          const saved = saveUserListing(userId, listing, listing.meta?.photo_dir);
+          jobs.set(jobId, { status: 'done', title: saved.listing.titles?.es, listingId: saved.listingId });
         })
         .catch((error) => {
           console.error(error);
@@ -222,24 +265,6 @@ app.listen(PORT, HOST, () => {
   if (!clerkEnabled) console.log('Clerk desactivado: faltan CLERK_PUBLISHABLE_KEY y CLERK_SECRET_KEY');
 });
 
-function readListing() {
-  for (const file of [resolve('ficha.json'), resolve('web', 'ficha.json')]) {
-    if (!existsSync(file)) continue;
-    try {
-      return JSON.parse(readFileSync(file, 'utf8'));
-    } catch {
-      return null;
-    }
-  }
-  return null;
-}
-
-function resolvePhotoDir(listing) {
-  const raw = listing?.meta?.photo_dir;
-  if (raw) {
-    const candidate = resolve(raw);
-    if (existsSync(candidate)) return candidate;
-  }
-  if (existsSync(DEMO_DIR)) return DEMO_DIR;
-  return resolve('fotos');
+function emptyFichaPage() {
+  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Sin fichas · HomesBrief</title></head><body style="font-family:sans-serif;background:#f3eee5;color:#14242e;padding:48px 8vw"><p><a href="/app">← Nueva ficha</a></p><h1>Aún no tienes fichas</h1><p>Genera la primera desde fotos o un link de Airbnb. Cada cuenta guarda las suyas.</p></body></html>`;
 }

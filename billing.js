@@ -75,13 +75,21 @@ export async function createPortalSession(req, userId) {
   });
 }
 
+export function planLimit(plan) {
+  if (plan === 'agencia') return { max: Infinity, period: 'none' };
+  if (plan === 'agente' || plan === 'paid') return { max: 40, period: 'month' };
+  if (plan === 'trial') return { max: 3, period: 'total' };
+  if (plan === 'open') return { max: Infinity, period: 'none' };
+  return { max: 0, period: 'none' };
+}
+
 export async function getAccess(userId) {
   const stripe = getStripe();
   if (!stripe) return { ok: true, plan: 'open' };
 
   const subscription = await findActiveSubscription(stripe, userId);
   if (subscription) {
-    return { ok: true, plan: subscription.metadata?.plan || 'paid' };
+    return { ok: true, plan: subscription.metadata?.plan || 'agente' };
   }
 
   if (await isInTrial(userId)) {

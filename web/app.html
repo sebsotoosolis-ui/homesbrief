@@ -166,8 +166,8 @@
           window.location.href = '/ficha';
           return;
         }
-        await waitForJob(data.jobId);
-        window.location.href = '/ficha';
+        const job = await waitForJob(data.jobId);
+        window.location.href = job.listingId ? '/ficha/' + job.listingId : '/ficha';
       } catch (error) {
         err.textContent = error.message;
         err.classList.add('on');
