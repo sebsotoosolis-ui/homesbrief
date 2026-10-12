@@ -51,6 +51,29 @@ async function clerkAuthHeader() {
   return token ? { Authorization: 'Bearer ' + token } : {};
 }
 
+function clerkDisplayName(clerk) {
+  const user = clerk?.user;
+  if (!user) return '';
+  const first = String(user.firstName || '').trim();
+  if (first) return first;
+  const full = String(user.fullName || '').trim();
+  if (full) return full.split(/\s+/)[0];
+  const email = user.primaryEmailAddress?.emailAddress || user.emailAddresses?.[0]?.emailAddress || '';
+  const local = email.split('@')[0].replace(/[._-]+/g, ' ').trim();
+  if (!local) return '';
+  return local.charAt(0).toUpperCase() + local.slice(1);
+}
+
+function greetSignedIn(clerk, { hello, lead, namedLead }) {
+  const name = clerkDisplayName(clerk);
+  if (hello) {
+    hello.textContent = name ? `Hola, ${name}.` : 'Hola.';
+  }
+  if (lead) {
+    lead.textContent = name ? (namedLead || lead.textContent) : lead.textContent;
+  }
+}
+
 function mountSignedInNav(clerk) {
   const guest = document.getElementById('nav-guest');
   const user = document.getElementById('nav-user');

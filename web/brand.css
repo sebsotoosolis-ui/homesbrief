@@ -26,6 +26,14 @@ a { color: inherit; }
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--line);
 }
+.nav-dark {
+  background: rgba(11, 23, 31, 0.82);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.nav-dark .logo { color: var(--sand); }
+.nav-dark .nav-links a { color: rgba(243, 238, 229, 0.72); }
+.nav-dark .nav-links a:hover, .nav-dark .nav-links a.on { color: var(--sand); }
+.nav-dark .btn-ghost { border-color: rgba(243, 238, 229, 0.28); color: var(--sand); }
 .logo {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: "Cormorant Garamond", serif;
