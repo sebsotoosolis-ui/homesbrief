@@ -6,53 +6,46 @@
   <title>Nueva ficha · HomesBrief</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/brand.css" />
   <style>
-    :root { --navy:#10202b; --gold:#b08d57; --sand:#f4efe6; --paper:#fffdf8; --line:rgba(16,32,43,.12); }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: Manrope, sans-serif; background: var(--sand); color: var(--navy); }
-    header { padding: 28px 8vw 8px; display:flex; justify-content:space-between; align-items:center; }
-    header strong { font-family: "Cormorant Garamond", serif; font-size: 28px; }
-    .sub { color:#66747c; font-size:14px; }
-    main { width: min(760px, calc(100% - 40px)); margin: 12px auto 80px; background: var(--paper); border-radius: 28px; padding: 32px; box-shadow: 0 16px 50px rgba(16,32,43,.06); }
-    h1 { font-family: "Cormorant Garamond", serif; font-size: 42px; line-height: .95; margin: 0 0 10px; }
-    p.lead { color:#4b5b64; }
-    .tabs { display:flex; gap:8px; margin: 22px 0 18px; }
-    .tab { border:1px solid var(--line); background:white; border-radius:999px; padding:10px 16px; cursor:pointer; font:inherit; }
-    .tab.on { background: var(--navy); color:white; border-color: var(--navy); }
-    label { display:block; font-size:13px; font-weight:600; margin: 14px 0 6px; }
-    input, select, textarea { width:100%; border:1px solid var(--line); border-radius:14px; padding:12px 14px; font:inherit; background:white; }
-    textarea { min-height: 90px; resize: vertical; }
-    .row { display:grid; gap:12px; }
-    @media (min-width:720px) { .row-2 { grid-template-columns: 1fr 1fr; } }
-    .drop { border:1.5px dashed #cbbba0; border-radius:18px; padding:22px; text-align:center; background:#faf7f1; color:#66747c; }
-    button.submit { margin-top: 22px; width:100%; border:0; background: var(--navy); color:white; border-radius:999px; padding:16px; font:inherit; font-weight:600; cursor:pointer; }
-    button.submit:disabled { opacity:.55; cursor:wait; }
-    .status { display:none; margin-top:16px; padding:14px 16px; border-radius:14px; background:#10202b; color:#f4efe6; }
-    .status.on { display:block; }
-    .err { display:none; margin-top:12px; color:#9b2c2c; }
-    .err.on { display:block; }
-    a.ghost { color: var(--gold); }
-    .pane { display:none; }
-    .pane.on { display:block; }
+    h1 { font-size: clamp(36px, 5vw, 48px); line-height: .95; margin: 0 0 10px; }
+    .tabs { display: flex; gap: 8px; margin: 22px 0 18px; }
+    .tab { border: 1px solid var(--line); background: white; border-radius: 999px; padding: 10px 16px; cursor: pointer; font: inherit; }
+    .tab.on { background: var(--navy); color: white; border-color: var(--navy); }
+    .row { display: grid; gap: 12px; }
+    @media (min-width: 720px) { .row-2 { grid-template-columns: 1fr 1fr; } }
+    .drop { border: 1.5px dashed #cbbba0; border-radius: 18px; padding: 22px; text-align: center; background: #faf7f1; color: var(--muted); }
+    button.submit { margin-top: 22px; width: 100%; }
+    .status { display: none; margin-top: 16px; padding: 14px 16px; border-radius: 14px; background: var(--navy); color: var(--sand); }
+    .status.on { display: block; }
+    .pane { display: none; }
+    .pane.on { display: block; }
+    .promo {
+      margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line);
+    }
+    .promo-row { display: flex; gap: 8px; }
+    .promo-row input { flex: 1; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
   </style>
 </head>
 <body>
-  <header>
-    <div>
-      <strong><a href="/" style="color:inherit;text-decoration:none">HomesBrief</a></strong>
-      <div class="sub">AI listing briefs</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:14px">
-      <a class="ghost" href="/checkout/agente">Upgrade</a>
-      <a class="ghost" href="/ficha">Última ficha</a>
-      <a class="ghost" href="/">Inicio</a>
+  <nav class="nav">
+    <a class="logo" href="/">Homes<span>Brief</span></a>
+    <div class="nav-links">
+      <a href="/fichas">Mis propiedades</a>
+      <a class="on" href="/app">Nueva ficha</a>
+      <span class="plan-pill" id="plan-pill">…</span>
       <div id="user-button"></div>
     </div>
-  </header>
-  <main>
+  </nav>
+  <main class="sheet">
+    <div class="toolbar">
+      <div class="kicker">Generar</div>
+      <a href="/fichas">Ver guardadas →</a>
+    </div>
     <h1>Crea la ficha. El agente solo publica.</h1>
-    <p class="lead">El cliente sube fotos o pega su Airbnb, indica zona, precio y notas. El software arma títulos, copy bilingüe, redes y estimado de renta.</p>
+    <p class="lead">Fotos o Airbnb, zona y notas. El software arma títulos, copy bilingüe, redes y renta. Queda en Mis propiedades.</p>
 
     <div class="tabs">
       <button class="tab on" type="button" data-tab="airbnb">Link de Airbnb</button>
@@ -104,10 +97,20 @@
       <label>Notas del agente / dueño</label>
       <textarea name="notes" placeholder="4 recámaras, HOA, mascotas, lo que quieras que salga en el copy..."></textarea>
 
-      <button class="submit" type="submit">Generar ficha</button>
+      <button class="btn btn-navy submit" type="submit">Generar ficha</button>
       <div class="status" id="status">Despertando el servidor y escribiendo el listing. En celular puede tardar 1–2 minutos...</div>
       <div class="err" id="err"></div>
     </form>
+
+    <div class="promo">
+      <label>Código de promoción (beta Agencia)</label>
+      <div class="promo-row">
+        <input id="promo-code" placeholder="Pega el código que te dimos" autocomplete="off" />
+        <button class="btn btn-gold" type="button" id="promo-btn">Canjear</button>
+      </div>
+      <div class="ok" id="promo-ok">Listo. Tu cuenta quedó en plan Agencia.</div>
+      <div class="err" id="promo-err"></div>
+    </div>
   </main>
   <script src="/clerk-client.js"></script>
   <script>
@@ -125,6 +128,7 @@
     const status = document.getElementById('status');
     const err = document.getElementById('err');
     const submit = form.querySelector('button.submit');
+    const planNames = { trial: 'Trial', agente: 'Agente', agencia: 'Agencia', open: 'Beta', none: 'Sin plan' };
 
     async function waitForJob(jobId) {
       const deadline = Date.now() + 180000;
@@ -139,14 +143,42 @@
       throw new Error('La ficha tardó más de 3 minutos. Recarga e inténtalo otra vez.');
     }
 
-    bootClerk().then((clerk) => {
+    async function refreshPlan() {
+      const response = await fetch('/api/billing/access', { headers: await clerkAuthHeader() });
+      const access = await response.json();
+      document.getElementById('plan-pill').textContent = planNames[access.plan] || access.plan;
+    }
+
+    bootClerk().then(async (clerk) => {
       if (!clerk.isSignedIn) {
-        window.location.href = '/login';
+        window.location.href = '/login?next=/app';
         return;
       }
-      clerk.mountUserButton(document.getElementById('user-button'), { appearance: clerkAppearance });
+      mountSignedInNav(clerk);
+      refreshPlan().catch(() => {});
     }).catch(() => {
-      window.location.href = '/login';
+      window.location.href = '/login?next=/app';
+    });
+
+    document.getElementById('promo-btn').addEventListener('click', async () => {
+      const promoErr = document.getElementById('promo-err');
+      const promoOk = document.getElementById('promo-ok');
+      promoErr.classList.remove('on');
+      promoOk.classList.remove('on');
+      try {
+        const response = await fetch('/api/promo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(await clerkAuthHeader()) },
+          body: JSON.stringify({ code: document.getElementById('promo-code').value }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'No se pudo canjear');
+        promoOk.classList.add('on');
+        refreshPlan();
+      } catch (error) {
+        promoErr.textContent = error.message;
+        promoErr.classList.add('on');
+      }
     });
 
     form.addEventListener('submit', async (event) => {
@@ -163,11 +195,11 @@
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'No se pudo generar');
         if (!data.jobId) {
-          window.location.href = '/ficha';
+          window.location.href = '/fichas';
           return;
         }
         const job = await waitForJob(data.jobId);
-        window.location.href = job.listingId ? '/ficha/' + job.listingId : '/ficha';
+        window.location.href = job.listingId ? '/ficha/' + job.listingId : '/fichas';
       } catch (error) {
         err.textContent = error.message;
         err.classList.add('on');

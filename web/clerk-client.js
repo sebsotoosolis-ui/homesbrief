@@ -26,7 +26,7 @@ function loadScript(src, attrs = {}) {
   });
 }
 
-async function bootClerk() {
+async function bootClerk(redirectTo = '/app') {
   const config = await fetch('/api/clerk-config').then((response) => response.json());
   if (!config.publishableKey) {
     throw new Error('Falta configurar Clerk. Añade CLERK_PUBLISHABLE_KEY en Render.');
@@ -38,6 +38,9 @@ async function bootClerk() {
   });
   await window.Clerk.load({
     ui: { ClerkUI: window.__internal_ClerkUICtor },
+    touchSession: true,
+    signInForceRedirectUrl: redirectTo,
+    signUpForceRedirectUrl: redirectTo,
   });
   return window.Clerk;
 }
@@ -45,4 +48,23 @@ async function bootClerk() {
 async function clerkAuthHeader() {
   const token = await window.Clerk?.session?.getToken();
   return token ? { Authorization: 'Bearer ' + token } : {};
+}
+
+function mountSignedInNav(clerk) {
+  const guest = document.getElementById('nav-guest');
+  const user = document.getElementById('nav-user');
+  if (!clerk.isSignedIn) {
+    guest?.classList.remove('off');
+    user?.classList.add('off');
+    return;
+  }
+  guest?.classList.add('off');
+  user?.classList.remove('off');
+  const button = document.getElementById('user-button');
+  if (button) {
+    clerk.mountUserButton(button, {
+      appearance: clerkAppearance,
+      afterSignOutUrl: '/',
+    });
+  }
 }

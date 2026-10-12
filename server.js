@@ -4,10 +4,10 @@ import multer from 'multer';
 import { clerkMiddleware, getAuth } from '@clerk/express';
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { createCheckoutSession, createPortalSession, getAccess, getStripe, planLimit } from './billing.js';
+import { createCheckoutSession, createPortalSession, getAccess, getStripe, planLimit, redeemPromo } from './billing.js';
 import { runListingJob } from './engine.js';
 import { renderHtml } from './render-page.js';
-import { countUserListings, latestUserListing, loadUserListing, saveUserListing, userPhotoPath } from './store.js';
+import { countUserListings, latestUserListing, listUserListings, loadUserListing, saveUserListing, userPhotoPath } from './store.js';
 
 const jobs = new Map();
 
@@ -44,12 +44,16 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), (req,
   }
 });
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 if (clerkEnabled) {
   app.use(clerkMiddleware());
 }
 app.use('/demo', express.static(DEMO_DIR, { fallthrough: false, maxAge: '7d' }));
 app.get('/clerk-client.js', (_req, res) => {
   res.sendFile(resolve('web', 'clerk-client.js'));
+});
+app.get('/brand.css', (_req, res) => {
+  res.sendFile(resolve('web', 'brand.css'));
 });
 
 function currentUserId(req) {
@@ -79,6 +83,10 @@ app.get('/app', requireUser, (_req, res) => {
   res.sendFile(resolve('web', 'app.html'));
 });
 
+app.get('/fichas', requireUser, (_req, res) => {
+  res.sendFile(resolve('web', 'fichas.html'));
+});
+
 app.get('/registro', (_req, res) => {
   res.sendFile(resolve('web', 'registro.html'));
 });
@@ -100,7 +108,7 @@ app.get('/ejemplo', (_req, res) => {
 app.get('/ficha', requireUser, (req, res) => {
   const listing = latestUserListing(currentUserId(req));
   if (!listing) {
-    res.type('html').send(emptyFichaPage());
+    res.redirect('/fichas');
     return;
   }
   res.redirect('/ficha/' + listing.meta.listingId);
@@ -113,7 +121,7 @@ app.get('/ficha/:id', requireUser, (req, res) => {
     res.status(404).type('html').send(emptyFichaPage());
     return;
   }
-  res.type('html').send(renderHtml(listing, { mediaPrefix: `/media/${userId}/${listing.meta.listingId}` }));
+  res.type('html').send(renderHtml(listing, { mediaPrefix: `/media/${userId}/${listing.meta.listingId}`, chrome: true }));
 });
 
 app.get('/robots.txt', (_req, res) => {
@@ -163,10 +171,22 @@ app.post('/api/billing/portal', requireUser, async (req, res) => {
 
 app.get('/api/billing/access', requireUser, async (req, res) => {
   try {
-    res.json(await getAccess(getAuth(req).userId));
+    res.json(await getAccess(currentUserId(req)));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+app.post('/api/promo', requireUser, async (req, res) => {
+  try {
+    res.json(await redeemPromo(currentUserId(req), req.body?.code));
+  } catch (error) {
+    res.status(400).json({ error: error.message || 'No se pudo canjear el código.' });
+  }
+});
+
+app.get('/api/listings', requireUser, (req, res) => {
+  res.json({ listings: listUserListings(currentUserId(req)) });
 });
 
 app.get('/api/jobs/:id', requireUser, (req, res) => {
@@ -266,5 +286,5 @@ app.listen(PORT, HOST, () => {
 });
 
 function emptyFichaPage() {
-  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Sin fichas · HomesBrief</title></head><body style="font-family:sans-serif;background:#f3eee5;color:#14242e;padding:48px 8vw"><p><a href="/app">← Nueva ficha</a></p><h1>Aún no tienes fichas</h1><p>Genera la primera desde fotos o un link de Airbnb. Cada cuenta guarda las suyas.</p></body></html>`;
+  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Sin fichas · HomesBrief</title><link rel="stylesheet" href="/brand.css" /></head><body><div class="nav"><a class="logo" href="/">Homes<span>Brief</span></a><a class="btn btn-gold" href="/app">Nueva ficha</a></div><main class="sheet" style="margin-top:40px"><h1>Esa ficha ya no está</h1><p class="lead">Vuelve a tus propiedades o genera una nueva.</p><p><a class="btn btn-navy" href="/fichas">Mis propiedades</a></p></main></body></html>`;
 }

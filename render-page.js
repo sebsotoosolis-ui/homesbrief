@@ -8,7 +8,7 @@ export function writeListingPage(listing, { photoDir } = {}) {
   writeFileSync(join(process.cwd(), 'web', 'ficha.json'), JSON.stringify(listing, null, 2), 'utf8');
 }
 
-export function renderHtml(listing, { mediaPrefix = '/media' } = {}) {
+export function renderHtml(listing, { mediaPrefix = '/media', chrome = false } = {}) {
   const photos = listing.meta?.photos ?? [];
   const media = (name) => `${mediaPrefix}/${encodeURIComponent(name)}`;
   const rent = listing.rent_estimate;
@@ -84,9 +84,20 @@ export function renderHtml(listing, { mediaPrefix = '/media' } = {}) {
     body.en li.es { display: none; }
     body.en li.en { display: list-item; }
     footer { text-align: center; padding: 40px 20px 60px; color: #66747c; font-size: 13px; }
+    .chrome {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 12px 7vw; background: rgba(244,239,230,.92); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .chrome a { color: inherit; text-decoration: none; font-size: 13px; font-weight: 600; }
+    .chrome .logo { font-family: "Cormorant Garamond", serif; font-size: 22px; }
+    .chrome nav { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .chrome .gold { color: var(--gold); }
   </style>
 </head>
 <body>
+  ${chrome ? `<div class="chrome"><a class="logo" href="/">HomesBrief</a><nav><a href="/fichas">Mis propiedades</a><a class="gold" href="/app">Nueva ficha</a></nav></div>` : ''}
   <header class="hero">
     <div class="kicker">HomesBrief · listing brief</div>
     <h1 class="es">${esc(listing.titles?.es)}</h1>

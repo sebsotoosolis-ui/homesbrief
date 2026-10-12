@@ -16,91 +16,77 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/brand.css" />
   <style>
-    :root {
-      --navy: #0c1820;
-      --ink: #14242e;
-      --gold: #c4a265;
-      --sand: #f3eee5;
-      --paper: #fffcf7;
-      --muted: #6b7880;
+    .hero {
+      padding: 56px 7vw 48px;
+      display: grid; gap: 48px; align-items: center;
     }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; font-family: Manrope, sans-serif; background: var(--sand); color: var(--ink); }
-    a { color: inherit; }
-    .nav {
-      position: sticky; top: 0; z-index: 10;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 18px 7vw; background: rgba(243,238,229,.9); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(20,36,46,.08);
+    @media (min-width: 980px) {
+      .hero { grid-template-columns: 1.05fr .95fr; min-height: calc(100vh - 72px); padding-top: 72px; }
     }
-    .logo { font-family: "Cormorant Garamond", serif; font-size: 28px; font-weight: 600; text-decoration: none; letter-spacing: -0.02em; }
-    .logo span { color: var(--gold); }
-    .nav-links { display: flex; gap: 22px; align-items: center; font-size: 14px; }
-    .nav-links a { text-decoration: none; color: var(--muted); }
-    @media (max-width: 720px) {
-      .nav { padding: 14px 5vw; }
-      .nav-links a:not(.btn) { display: none; }
-      .hero { padding: 40px 5vw 28px; }
-      section { padding: 48px 5vw; }
-      footer { flex-direction: column; gap: 8px; padding: 24px 5vw 40px; }
-    }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      text-decoration: none; border-radius: 999px; padding: 12px 20px; font-weight: 600; font-size: 14px;
-    }
-    .btn-gold { background: var(--gold); color: var(--navy); }
-    .btn-navy { background: var(--navy); color: white; }
-    .btn-ghost { border: 1px solid rgba(20,36,46,.2); }
-    .hero { padding: 72px 7vw 40px; display: grid; gap: 40px; align-items: center; }
-    @media (min-width: 960px) { .hero { grid-template-columns: 1.1fr .9fr; min-height: 78vh; } }
-    .kicker { letter-spacing: .2em; text-transform: uppercase; font-size: 12px; color: var(--gold); font-weight: 700; }
-    h1 { font-family: "Cormorant Garamond", serif; font-size: clamp(40px, 6vw, 76px); line-height: .92; margin: 14px 0 18px; font-weight: 500; }
-    .lead { font-size: 18px; color: var(--muted); max-width: 52ch; line-height: 1.6; }
+    h1 { font-size: clamp(42px, 6.4vw, 82px); line-height: .9; margin: 16px 0 18px; }
     .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .hero-stage { position: relative; }
     a.hero-card { text-decoration: none; color: var(--sand); }
     .hero-card {
-      position: relative; overflow: hidden; color: var(--sand); border-radius: 28px;
-      min-height: 360px; display: flex; flex-direction: column; justify-content: flex-end;
+      position: relative; overflow: hidden; border-radius: 32px; min-height: 420px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      box-shadow: 0 40px 80px rgba(11, 23, 31, .28);
     }
     .hero-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .hero-card-copy {
-      position: relative; padding: 28px;
-      background: linear-gradient(180deg, transparent, rgba(12,24,32,.82));
+      position: relative; padding: 32px 28px 28px;
+      background: linear-gradient(180deg, transparent, rgba(11,23,31,.88));
     }
-    .hero-card small { color: var(--gold); letter-spacing: .12em; text-transform: uppercase; }
-    .hero-card h2 { font-family: "Cormorant Garamond", serif; font-size: 32px; margin: 8px 0 0; }
-    section { padding: 64px 7vw; }
-    h3 { font-family: "Cormorant Garamond", serif; font-size: 40px; margin: 0 0 24px; }
+    .hero-card small { color: var(--gold); letter-spacing: .14em; text-transform: uppercase; font-size: 11px; font-weight: 700; }
+    .hero-card h2 { font-family: "Cormorant Garamond", serif; font-size: 34px; margin: 8px 0 8px; line-height: 1; }
+    .thumbs { display: flex; gap: 8px; margin-top: 12px; }
+    .thumbs img { width: 64px; height: 48px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(255,255,255,.25); }
+    section { padding: 72px 7vw; }
+    .section-title { font-size: clamp(34px, 4vw, 48px); margin-bottom: 28px; }
     .grid-3 { display: grid; gap: 16px; }
     @media (min-width: 800px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
-    .card { background: var(--paper); border-radius: 22px; padding: 24px; }
-    .card b { display: block; margin-bottom: 8px; }
+    .card {
+      background: var(--paper); border-radius: 24px; padding: 26px;
+      box-shadow: 0 10px 30px rgba(11,23,31,.04);
+    }
+    .card b { display: block; margin-bottom: 8px; font-size: 16px; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.55; }
     .steps { counter-reset: step; }
     .steps article { counter-increment: step; }
     .steps article::before {
       content: counter(step); display: inline-flex; width: 28px; height: 28px; border-radius: 50%;
-      background: var(--navy); color: white; align-items: center; justify-content: center; font-size: 13px; margin-bottom: 12px;
+      background: var(--navy); color: white; align-items: center; justify-content: center;
+      font-size: 13px; margin-bottom: 14px; font-weight: 700;
     }
-    .price { font-size: 36px; font-weight: 700; margin: 8px 0 16px; }
+    .price { font-size: 40px; font-weight: 700; margin: 10px 0 16px; }
     .price span { font-size: 14px; font-weight: 500; color: var(--muted); }
-    .featured { outline: 2px solid var(--gold); }
-    ul { margin: 0; padding-left: 18px; color: var(--muted); }
-    li { margin: 8px 0; }
+    .featured { outline: 1.5px solid var(--gold); }
+    .card ul { margin: 0 0 18px; padding-left: 18px; color: var(--muted); }
+    .card li { margin: 8px 0; }
     .band { background: var(--navy); color: var(--sand); text-align: center; }
-    .band h3 { color: white; }
-    footer { padding: 28px 7vw 48px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; }
+    .band h3 { color: white; font-size: clamp(32px, 4vw, 46px); margin-bottom: 10px; }
+    footer { padding: 28px 7vw 48px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    @media (max-width: 720px) {
+      .hero { padding: 36px 5vw 24px; }
+      section { padding: 52px 5vw; }
+    }
   </style>
 </head>
 <body>
   <nav class="nav">
     <a class="logo" href="/">Homes<span>Brief</span></a>
-    <div class="nav-links">
+    <div class="nav-links" id="nav-guest">
       <a href="#como">Producto</a>
       <a href="#precios">Precios</a>
       <a href="/login">Iniciar sesión</a>
       <a class="btn btn-gold" href="/registro">Regístrate</a>
+    </div>
+    <div class="nav-links off" id="nav-user">
+      <a href="/fichas">Mis propiedades</a>
+      <a class="btn btn-navy" href="/app">Nueva ficha</a>
+      <div id="user-button"></div>
     </div>
   </nav>
 
@@ -108,42 +94,50 @@
     <div>
       <div class="kicker">AI listing briefs · anywhere you sell</div>
       <h1>De las fotos al listing de lujo, en un clic.</h1>
-      <p class="lead">HomesBrief escribe la ficha de la propiedad: títulos, copy bilingüe, redes y un estimado de renta. Para agencias e independientes en cualquier mercado. Pegas Airbnb o subes fotos. Publicas.</p>
+      <p class="lead">HomesBrief escribe la ficha: títulos, copy bilingüe, redes y estimado de renta. Para agencias e independientes. Pegas Airbnb o subes fotos. Publicas.</p>
       <div class="cta">
         <a class="btn btn-navy" href="/registro">Regístrate gratis</a>
-        <a class="btn btn-ghost" href="#precios">Ver precios</a>
+        <a class="btn btn-ghost" href="/ejemplo">Ver el ejemplo</a>
       </div>
     </div>
-    <a class="hero-card" href="/ejemplo">
-      <img src="/demo/01.jpg" alt="Ejemplo de ficha: Udara Bucerías frente al mar" />
-      <div class="hero-card-copy">
-        <small>Ejemplo de ficha</small>
-        <h2>Udara Bucerías · frente al mar</h2>
-        <p>Así se ve un listing generado: títulos, copy ES/EN, redes y tarifa. Toca para abrirla.</p>
-      </div>
-    </a>
+    <div class="hero-stage">
+      <a class="hero-card" href="/ejemplo">
+        <img src="/demo/01.jpg" alt="Ejemplo de ficha: Udara Bucerías frente al mar" />
+        <div class="hero-card-copy">
+          <small>Ejemplo de ficha</small>
+          <h2>Udara Bucerías · frente al mar</h2>
+          <p>Títulos, copy ES/EN, redes y tarifa. Toca para abrirla.</p>
+          <div class="thumbs">
+            <img src="/demo/03.jpg" alt="" />
+            <img src="/demo/08.jpg" alt="" />
+            <img src="/demo/14.jpg" alt="" />
+            <img src="/demo/18.jpg" alt="" />
+          </div>
+        </div>
+      </a>
+    </div>
   </section>
 
   <section id="como">
-    <h3>Cómo funciona</h3>
+    <h3 class="section-title">Cómo funciona</h3>
     <div class="grid-3 steps">
-      <article class="card"><b>1. Sube o pega</b>Fotos del depto o el link de Airbnb del cliente.</article>
-      <article class="card"><b>2. Personaliza</b>Zona, venta o renta, precio que quieres comunicar y notas del agente.</article>
-      <article class="card"><b>3. Publica</b>Ficha bilingüe, WhatsApp, Instagram, Facebook, Reels y estimado de renta.</article>
+      <article class="card"><b>Sube o pega</b><p>Fotos del depto o el link de Airbnb del cliente. Hasta 20 imágenes en HD.</p></article>
+      <article class="card"><b>Personaliza</b><p>Zona, venta o renta, precio que quieres comunicar y notas del agente.</p></article>
+      <article class="card"><b>Publica</b><p>Ficha bilingüe, WhatsApp, Instagram, Facebook, Reels y estimado de renta. Queda guardada en tu menú.</p></article>
     </div>
   </section>
 
   <section>
-    <h3>Hecho para vender más rápido</h3>
+    <h3 class="section-title">Hecho para vender más rápido</h3>
     <div class="grid-3">
-      <article class="card"><b>Copy de lujo</b>Tono premium, no plantillas genéricas de MLS. Adapta zona, idioma y precio que tú indiques.</article>
-      <article class="card"><b>Importa desde Airbnb</b>Baja las fotos HD del listing y arma el paquete sin recortar miniaturas.</article>
-      <article class="card"><b>Precio por temporada</b>Estimado de noche baja, alta y pico para hablarle al dueño con números.</article>
+      <article class="card"><b>Copy de lujo</b><p>Tono premium, no plantillas genéricas de MLS. Adapta zona, idioma y precio que tú indiques.</p></article>
+      <article class="card"><b>Importa desde Airbnb</b><p>Baja las fotos HD del listing y arma el paquete sin recortar miniaturas.</p></article>
+      <article class="card"><b>Precio por temporada</b><p>Estimado de noche baja, alta y pico para hablarle al dueño con números.</p></article>
     </div>
   </section>
 
   <section id="precios">
-    <h3>Precios</h3>
+    <h3 class="section-title">Precios</h3>
     <div class="grid-3">
       <article class="card">
         <div>Starter</div>
@@ -171,15 +165,16 @@
         <ul>
           <li>Fichas ilimitadas</li>
           <li>Hasta 8 usuarios</li>
-          <li>Marca de la agencia (próximo)</li>
+          <li>Código de beta para las primeras agencias</li>
         </ul>
-        <p><a class="btn btn-ghost" href="/checkout/agencia">Suscribirme</a></p>
+        <p><a class="btn btn-ghost" href="/app">Tengo un código</a></p>
       </article>
     </div>
   </section>
 
   <section class="band">
     <h3>Tu siguiente listing, en el tiempo de un café.</h3>
+    <p>Guarda cada casa en tu portafolio y ábrela cuando el cliente pregunte.</p>
     <p><a class="btn btn-gold" href="/registro">Crear cuenta</a></p>
   </section>
 
@@ -187,5 +182,9 @@
     <span>HomesBrief · homesbrief.com</span>
     <span>Starter 14 días · luego Agente o Agencia</span>
   </footer>
+  <script src="/clerk-client.js"></script>
+  <script>
+    bootClerk().then(mountSignedInNav).catch(() => {});
+  </script>
 </body>
 </html>

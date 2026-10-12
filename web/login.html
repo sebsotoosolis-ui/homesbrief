@@ -6,43 +6,57 @@
   <title>Iniciar sesión · HomesBrief</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/brand.css" />
   <style>
-    body { margin:0; font-family: Manrope, sans-serif; background:#f3eee5; color:#14242e; }
-    .nav { display:flex; justify-content:space-between; align-items:center; padding:18px 7vw; }
-    .logo { font-family:"Cormorant Garamond", serif; font-size:26px; text-decoration:none; color:inherit; }
-    .logo span { color:#c4a265; }
-    main { width:min(480px, calc(100% - 40px)); margin: 20px auto 80px; background:#fffcf7; border-radius:24px; padding:32px; }
-    h1 { font-family:"Cormorant Garamond", serif; font-size:36px; margin:0 0 8px; }
-    p { color:#6b7880; }
-    a { color:#c4a265; }
-    #sign-in { min-height: 320px; }
-    .err { color:#9b2c2c; }
+    .split { min-height: 100vh; display: grid; }
+    @media (min-width: 900px) { .split { grid-template-columns: 1.05fr .95fr; } }
+    .photo { display: none; position: relative; min-height: 280px; }
+    @media (min-width: 900px) { .photo { display: block; } }
+    .photo img { width: 100%; height: 100%; object-fit: cover; }
+    .photo span {
+      position: absolute; left: 32px; bottom: 32px; color: white;
+      font-family: "Cormorant Garamond", serif; font-size: 32px; max-width: 14ch; line-height: 1;
+      text-shadow: 0 8px 24px rgba(0,0,0,.35);
+    }
+    .panel { padding: 20px 7vw 64px; }
+    #sign-in { min-height: 320px; margin-top: 8px; }
   </style>
 </head>
 <body>
-  <div class="nav"><a class="logo" href="/">Homes<span>Brief</span></a><a href="/registro">Regístrate</a></div>
-  <main>
-    <h1>Iniciar sesión</h1>
-    <p>Entra para generar la siguiente ficha.</p>
-    <div id="sign-in"></div>
-    <p class="err" id="err"></p>
-  </main>
+  <div class="split">
+    <div class="photo">
+      <img src="/demo/01.jpg" alt="" />
+      <span>Tu portafolio de lujo, siempre a la mano.</span>
+    </div>
+    <div class="panel">
+      <nav class="nav" style="position:static;padding:18px 0;background:transparent;border:0">
+        <a class="logo" href="/">Homes<span>Brief</span></a>
+        <a href="/registro">Regístrate</a>
+      </nav>
+      <h1 style="font-size:42px;margin:12px 0 8px">Iniciar sesión</h1>
+      <p class="lead">La sesión se mantiene abierta en este dispositivo.</p>
+      <div id="sign-in"></div>
+      <p class="err" id="err"></p>
+    </div>
+  </div>
   <script src="/clerk-client.js"></script>
   <script>
-    const next = new URLSearchParams(location.search).get('next') || '/app';
-    bootClerk().then((clerk) => {
+    const next = new URLSearchParams(location.search).get('next') || '/fichas';
+    bootClerk(next).then((clerk) => {
       if (clerk.isSignedIn) {
         window.location.href = next;
         return;
       }
       clerk.mountSignIn(document.getElementById('sign-in'), {
         appearance: clerkAppearance,
-        afterSignInUrl: next,
+        forceRedirectUrl: next,
+        fallbackRedirectUrl: next,
         signUpUrl: '/registro?next=' + encodeURIComponent(next),
       });
     }).catch((error) => {
       document.getElementById('err').textContent = error.message;
+      document.getElementById('err').classList.add('on');
     });
   </script>
 </body>

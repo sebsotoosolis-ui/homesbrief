@@ -1,3 +1,5 @@
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import Stripe from 'stripe';
 import { clerkClient } from '@clerk/express';
 
@@ -83,7 +85,28 @@ export function planLimit(plan) {
   return { max: 0, period: 'none' };
 }
 
+export function normalizePromo(code) {
+  return String(code || '').trim().toUpperCase().replace(/\s+/g, '');
+}
+
+export function validPromoCodes() {
+  const raw = process.env.BETA_PROMO_CODE || 'HOMESBRIEF-BETA';
+  return raw.split(',').map(normalizePromo).filter(Boolean);
+}
+
+export async function redeemPromo(userId, code) {
+  const normalized = normalizePromo(code);
+  if (!validPromoCodes().includes(normalized)) {
+    throw new Error('Ese código no es válido.');
+  }
+  await savePlanGrant(userId, 'agencia', normalized);
+  return { ok: true, plan: 'agencia' };
+}
+
 export async function getAccess(userId) {
+  const grant = await readPlanGrant(userId);
+  if (grant) return { ok: true, plan: grant, source: 'promo' };
+
   const stripe = getStripe();
   if (!stripe) return { ok: true, plan: 'open' };
 
@@ -101,6 +124,41 @@ export async function getAccess(userId) {
     plan: 'none',
     error: 'Tu trial de 14 días terminó. Elige Agente o Agencia para seguir generando fichas.',
   };
+}
+
+async function readPlanGrant(userId) {
+  try {
+    const user = await clerkClient.users.getUser(userId);
+    const plan = user.privateMetadata?.homesbriefPlan;
+    if (plan === 'agencia' || plan === 'agente') return plan;
+  } catch {
+    /* local / sin Clerk */
+  }
+  try {
+    const file = join(resolve(process.env.DATA_DIR || 'data'), String(userId).replace(/[^a-zA-Z0-9_-]/g, ''), 'access.json');
+    if (!existsSync(file)) return null;
+    const plan = JSON.parse(readFileSync(file, 'utf8')).plan;
+    return plan === 'agencia' || plan === 'agente' ? plan : null;
+  } catch {
+    return null;
+  }
+}
+
+async function savePlanGrant(userId, plan, promoCode) {
+  try {
+    await clerkClient.users.updateUserMetadata(userId, {
+      privateMetadata: {
+        homesbriefPlan: plan,
+        promoCode,
+        promoAt: new Date().toISOString(),
+      },
+    });
+  } catch {
+    /* Clerk no disponible: se guarda en disco */
+  }
+  const dir = join(resolve(process.env.DATA_DIR || 'data'), String(userId).replace(/[^a-zA-Z0-9_-]/g, '') || 'local');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'access.json'), JSON.stringify({ plan, promoCode, at: new Date().toISOString() }, null, 2), 'utf8');
 }
 
 async function isInTrial(userId) {

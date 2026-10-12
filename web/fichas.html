@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mis propiedades · HomesBrief</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/brand.css" />
+  <style>
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 28px auto 96px; }
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+    h1 { font-size: clamp(36px, 5vw, 56px); line-height: .95; }
+    .grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1040px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    .property {
+      display: block; text-decoration: none; color: inherit;
+      background: var(--paper); border-radius: 22px; overflow: hidden;
+      box-shadow: 0 16px 40px rgba(11,23,31,.06);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .property:hover { transform: translateY(-3px); box-shadow: 0 22px 50px rgba(11,23,31,.12); }
+    .cover { height: 210px; background: #1a2c36 center/cover no-repeat; }
+    .copy { padding: 18px 20px 22px; }
+    .copy small { color: var(--gold); letter-spacing: .12em; text-transform: uppercase; font-size: 11px; font-weight: 700; }
+    .copy h2 { font-size: 24px; margin: 6px 0 8px; line-height: 1.1; }
+    .copy p { margin: 0; color: var(--muted); font-size: 14px; }
+    .empty { background: var(--paper); border-radius: 28px; padding: 48px 32px; text-align: center; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="logo" href="/">Homes<span>Brief</span></a>
+    <div class="nav-links">
+      <a class="on" href="/fichas">Mis propiedades</a>
+      <a href="/app">Nueva ficha</a>
+      <div id="user-button"></div>
+    </div>
+  </nav>
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="kicker">Tu portafolio</div>
+        <h1>Mis propiedades</h1>
+        <p class="lead">Abre cualquier ficha cuando la necesites. Cada cuenta guarda las suyas.</p>
+      </div>
+      <a class="btn btn-navy" href="/app">Nueva ficha</a>
+    </div>
+    <div id="grid" class="grid"></div>
+  </div>
+  <script src="/clerk-client.js"></script>
+  <script>
+    bootClerk().then(async (clerk) => {
+      if (!clerk.isSignedIn) {
+        window.location.href = '/login?next=/fichas';
+        return;
+      }
+      mountSignedInNav(clerk);
+      const response = await fetch('/api/listings', { headers: await clerkAuthHeader() });
+      const data = await response.json();
+      const grid = document.getElementById('grid');
+      if (!data.listings?.length) {
+        grid.className = '';
+        grid.innerHTML = '<div class="empty"><h2>Aún no hay casas guardadas</h2><p class="lead" style="margin:12px auto 22px">Genera la primera con fotos o un link de Airbnb.</p><a class="btn btn-gold" href="/app">Crear ficha</a></div>';
+        return;
+      }
+      const esc = (value) => String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+      grid.innerHTML = data.listings.map((item) => {
+        const date = item.generatedAt ? new Date(item.generatedAt).toLocaleDateString('es', { day: 'numeric', month: 'short' }) : '';
+        const cover = item.cover ? `style="background-image:url('${esc(item.cover)}')"` : '';
+        return `<a class="property" href="/ficha/${esc(item.listingId)}"><div class="cover" ${cover}></div><div class="copy"><small>${esc(date)}</small><h2>${esc(item.title)}</h2><p>${esc(item.location || item.type)}</p></div></a>`;
+      }).join('');
+    }).catch(() => {
+      window.location.href = '/login?next=/fichas';
+    });
+  </script>
+</body>
+</html>
