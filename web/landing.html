@@ -7,9 +7,10 @@
   <meta name="description" content="HomesBrief genera fichas de lujo con IA: títulos, copy bilingüe, redes y estimado de renta. Pega un Airbnb o sube fotos. Para agencias e independientes en cualquier mercado." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://homesbrief.com/" />
-  <link rel="icon" href="/favicon.ico" sizes="32x32" />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
+  <link rel="shortcut icon" href="/favicon.ico?v=3" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#0b171f" />
   <meta property="og:title" content="HomesBrief — De las fotos al listing de lujo" />
@@ -73,6 +74,7 @@
     .band { background: var(--navy); color: var(--sand); text-align: center; }
     .band h3 { color: white; font-size: clamp(32px, 4vw, 46px); margin-bottom: 10px; }
     footer { padding: 28px 7vw 48px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    footer a, #contacto a { color: var(--gold); text-decoration: none; font-weight: 600; }
     @media (max-width: 720px) {
       .hero { padding: 36px 5vw 24px; }
       section { padding: 52px 5vw; }
@@ -85,6 +87,7 @@
     <div class="nav-links" id="nav-guest">
       <a href="#como">Producto</a>
       <a href="#precios">Precios</a>
+      <a href="#contacto">Contacto</a>
       <a href="/login">Iniciar sesión</a>
       <a class="btn btn-gold" href="/registro">Regístrate</a>
     </div>
@@ -178,6 +181,25 @@
     </div>
   </section>
 
+  <section id="contacto">
+    <h3 class="section-title">Contacto</h3>
+    <p class="lead">Beta, demos o una ficha de prueba. Escríbeme o mándame WhatsApp.</p>
+    <div class="grid-3" style="margin-top:24px">
+      <article class="card">
+        <b>WhatsApp / teléfono</b>
+        <p><a href="https://wa.me/524422198327">+52 442 219 8327</a></p>
+      </article>
+      <article class="card">
+        <b>Correo</b>
+        <p><a href="mailto:homesbrief@gmail.com">homesbrief@gmail.com</a></p>
+      </article>
+      <article class="card">
+        <b>Web</b>
+        <p><a href="https://homesbrief.com">homesbrief.com</a></p>
+      </article>
+    </div>
+  </section>
+
   <section class="band">
     <h3>Tu siguiente listing, en el tiempo de un café.</h3>
     <p>Guarda cada casa en tu portafolio y ábrela cuando el cliente pregunte.</p>
@@ -185,7 +207,7 @@
   </section>
 
   <footer>
-    <span>HomesBrief · homesbrief.com</span>
+    <span>HomesBrief · <a href="mailto:homesbrief@gmail.com">homesbrief@gmail.com</a> · <a href="https://wa.me/524422198327">+52 442 219 8327</a></span>
     <span>Starter 14 días · luego Agente o Agencia</span>
   </footer>
   <script src="/clerk-client.js"></script>

@@ -56,13 +56,22 @@ app.get('/brand.css', (_req, res) => {
   res.sendFile(resolve('web', 'brand.css'));
 });
 app.get('/favicon.ico', (_req, res) => {
-  res.type('image/x-icon').sendFile(resolve('web', 'favicon.ico'));
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.type('image/png');
+  res.sendFile(resolve('web', 'favicon-32.png'));
 });
 app.get('/favicon.svg', (_req, res) => {
-  res.type('image/svg+xml').sendFile(resolve('web', 'favicon.svg'));
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.type('image/svg+xml');
+  res.sendFile(resolve('web', 'favicon.svg'));
 });
 app.get('/logo.svg', (_req, res) => {
   res.type('image/svg+xml').sendFile(resolve('web', 'logo.svg'));
+});
+app.get('/favicon-32.png', (_req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.type('image/png');
+  res.sendFile(resolve('web', 'favicon-32.png'));
 });
 app.get('/logo-512.png', (_req, res) => {
   res.type('image/png').sendFile(resolve('web', 'logo-512.png'));
