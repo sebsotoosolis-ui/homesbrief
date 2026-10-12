@@ -55,6 +55,24 @@ app.get('/clerk-client.js', (_req, res) => {
 app.get('/brand.css', (_req, res) => {
   res.sendFile(resolve('web', 'brand.css'));
 });
+app.get('/favicon.ico', (_req, res) => {
+  res.type('image/x-icon').sendFile(resolve('web', 'favicon.ico'));
+});
+app.get('/favicon.svg', (_req, res) => {
+  res.type('image/svg+xml').sendFile(resolve('web', 'favicon.svg'));
+});
+app.get('/logo.svg', (_req, res) => {
+  res.type('image/svg+xml').sendFile(resolve('web', 'logo.svg'));
+});
+app.get('/logo-512.png', (_req, res) => {
+  res.type('image/png').sendFile(resolve('web', 'logo-512.png'));
+});
+app.get('/apple-touch-icon.png', (_req, res) => {
+  res.type('image/png').sendFile(resolve('web', 'apple-touch-icon.png'));
+});
+app.get('/site.webmanifest', (_req, res) => {
+  res.sendFile(resolve('web', 'site.webmanifest'));
+});
 
 function currentUserId(req) {
   if (!clerkEnabled) return 'local';

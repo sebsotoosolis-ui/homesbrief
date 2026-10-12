@@ -1,0 +1,16 @@
+{
+  "name": "HomesBrief",
+  "short_name": "HomesBrief",
+  "description": "AI listing briefs for luxury real estate",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f1ebe1",
+  "theme_color": "#0b171f",
+  "icons": [
+    {
+      "src": "/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
