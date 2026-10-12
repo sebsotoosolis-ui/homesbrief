@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import express from 'express';
 import multer from 'multer';
+import { clerkMiddleware, getAuth } from '@clerk/express';
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { runListingJob } from './engine.js';
@@ -22,15 +23,37 @@ const upload = multer({
   limits: { files: 20, fileSize: 20 * 1024 * 1024 },
 });
 
+const clerkEnabled = Boolean(process.env.CLERK_SECRET_KEY && process.env.CLERK_PUBLISHABLE_KEY);
+
 app.disable('x-powered-by');
 app.use(express.urlencoded({ extended: true }));
+if (clerkEnabled) {
+  app.use(clerkMiddleware());
+}
 app.use('/demo', express.static(DEMO_DIR, { fallthrough: false, maxAge: '7d' }));
+app.get('/clerk-client.js', (_req, res) => {
+  res.sendFile(resolve('web', 'clerk-client.js'));
+});
+
+function requireUser(req, res, next) {
+  if (!clerkEnabled) return next();
+  const auth = getAuth(req);
+  if (!auth.isAuthenticated) {
+    if (req.path.startsWith('/api/')) {
+      res.status(401).json({ error: 'Inicia sesión para generar fichas.' });
+      return;
+    }
+    res.redirect('/login');
+    return;
+  }
+  next();
+}
 
 app.get('/', (_req, res) => {
   res.sendFile(resolve('web', 'landing.html'));
 });
 
-app.get('/app', (_req, res) => {
+app.get('/app', requireUser, (_req, res) => {
   res.sendFile(resolve('web', 'app.html'));
 });
 
@@ -65,11 +88,15 @@ app.get('/sitemap.xml', (_req, res) => {
 `);
 });
 
+app.get('/api/clerk-config', (_req, res) => {
+  res.json({ publishableKey: process.env.CLERK_PUBLISHABLE_KEY || '' });
+});
+
 app.get('/health', (_req, res) => {
   res.json({ ok: true, service: 'homesbrief' });
 });
 
-app.get('/api/jobs/:id', (req, res) => {
+app.get('/api/jobs/:id', requireUser, (req, res) => {
   const job = jobs.get(req.params.id);
   if (!job) {
     res.status(404).json({ error: 'Ese trabajo ya no está. Vuelve a generar.' });
@@ -92,6 +119,7 @@ app.get('/media/:name', (req, res) => {
 
 app.post(
   '/api/generate',
+  requireUser,
   (req, _res, next) => {
     req.uploadDir = join(UPLOADS, String(Date.now()));
     mkdirSync(req.uploadDir, { recursive: true });
@@ -140,6 +168,7 @@ app.post(
 
 app.listen(PORT, HOST, () => {
   console.log(`HomesBrief en http://localhost:${PORT}`);
+  if (!clerkEnabled) console.log('Clerk desactivado: faltan CLERK_PUBLISHABLE_KEY y CLERK_SECRET_KEY');
 });
 
 function readListing() {

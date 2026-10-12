@@ -43,10 +43,10 @@
       <strong><a href="/" style="color:inherit;text-decoration:none">HomesBrief</a></strong>
       <div class="sub">AI listing briefs</div>
     </div>
-    <div>
+    <div style="display:flex;align-items:center;gap:14px">
       <a class="ghost" href="/ficha">Última ficha</a>
-      &nbsp;·&nbsp;
       <a class="ghost" href="/">Inicio</a>
+      <div id="user-button"></div>
     </div>
   </header>
   <main>
@@ -108,6 +108,7 @@
       <div class="err" id="err"></div>
     </form>
   </main>
+  <script src="/clerk-client.js"></script>
   <script>
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach((tab) => {
@@ -128,7 +129,7 @@
       const deadline = Date.now() + 180000;
       while (Date.now() < deadline) {
         await new Promise((resolve) => setTimeout(resolve, 2500));
-        const response = await fetch('/api/jobs/' + jobId);
+        const response = await fetch('/api/jobs/' + jobId, { headers: await clerkAuthHeader() });
         const job = await response.json();
         if (!response.ok) throw new Error(job.error || 'No se pudo generar');
         if (job.status === 'done') return job;
@@ -136,6 +137,16 @@
       }
       throw new Error('La ficha tardó más de 3 minutos. Recarga e inténtalo otra vez.');
     }
+
+    bootClerk().then((clerk) => {
+      if (!clerk.isSignedIn) {
+        window.location.href = '/login';
+        return;
+      }
+      clerk.mountUserButton(document.getElementById('user-button'), { appearance: clerkAppearance });
+    }).catch(() => {
+      window.location.href = '/login';
+    });
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -145,6 +156,7 @@
       try {
         const response = await fetch('/api/generate', {
           method: 'POST',
+          headers: await clerkAuthHeader(),
           body: new FormData(form),
         });
         const data = await response.json();

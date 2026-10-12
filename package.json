@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@clerk/express": "^2.1.78",
     "@google/genai": "^2.28.0",
     "express": "^5.3.0",
     "heic-convert": "^2.1.0",

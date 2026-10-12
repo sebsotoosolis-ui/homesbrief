@@ -12,13 +12,12 @@
     .nav { display:flex; justify-content:space-between; align-items:center; padding:18px 7vw; }
     .logo { font-family:"Cormorant Garamond", serif; font-size:26px; text-decoration:none; color:inherit; }
     .logo span { color:#c4a265; }
-    main { width:min(460px, calc(100% - 40px)); margin: 20px auto 80px; background:#fffcf7; border-radius:24px; padding:32px; }
+    main { width:min(480px, calc(100% - 40px)); margin: 20px auto 80px; background:#fffcf7; border-radius:24px; padding:32px; }
     h1 { font-family:"Cormorant Garamond", serif; font-size:36px; margin:0 0 8px; }
     p { color:#6b7880; }
-    label { display:block; font-size:13px; font-weight:600; margin:14px 0 6px; }
-    input, select { width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(20,36,46,.12); font:inherit; box-sizing:border-box; }
-    button { width:100%; margin-top:18px; border:0; background:#0c1820; color:white; border-radius:999px; padding:14px; font:inherit; font-weight:600; cursor:pointer; }
     a { color:#c4a265; }
+    #sign-up { min-height: 360px; }
+    .err { color:#9b2c2c; }
   </style>
 </head>
 <body>
@@ -26,27 +25,23 @@
   <main>
     <h1>Crea tu cuenta</h1>
     <p>Empieza con 3 fichas gratis. Sin tarjeta para el trial.</p>
-    <form id="form">
-      <label>Nombre</label>
-      <input name="name" required placeholder="Sofía" />
-      <label>Email</label>
-      <input name="email" type="email" required placeholder="tu@agencia.com" />
-      <label>Contraseña</label>
-      <input name="password" type="password" required minlength="6" />
-      <label>Soy</label>
-      <select name="role">
-        <option value="agente">Agente independiente</option>
-        <option value="agencia">Agencia</option>
-      </select>
-      <button type="submit">Regístrate</button>
-    </form>
+    <div id="sign-up"></div>
+    <p class="err" id="err"></p>
   </main>
+  <script src="/clerk-client.js"></script>
   <script>
-    document.getElementById('form').addEventListener('submit', (event) => {
-      event.preventDefault();
-      const data = Object.fromEntries(new FormData(event.target).entries());
-      localStorage.setItem('homesbrief_user', JSON.stringify({ name: data.name, email: data.email, role: data.role }));
-      window.location.href = '/app';
+    bootClerk().then((clerk) => {
+      if (clerk.isSignedIn) {
+        window.location.href = '/app';
+        return;
+      }
+      clerk.mountSignUp(document.getElementById('sign-up'), {
+        appearance: clerkAppearance,
+        afterSignUpUrl: '/app',
+        signInUrl: '/login',
+      });
+    }).catch((error) => {
+      document.getElementById('err').textContent = error.message;
     });
   </script>
 </body>

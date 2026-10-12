@@ -12,13 +12,12 @@
     .nav { display:flex; justify-content:space-between; align-items:center; padding:18px 7vw; }
     .logo { font-family:"Cormorant Garamond", serif; font-size:26px; text-decoration:none; color:inherit; }
     .logo span { color:#c4a265; }
-    main { width:min(460px, calc(100% - 40px)); margin: 20px auto 80px; background:#fffcf7; border-radius:24px; padding:32px; }
+    main { width:min(480px, calc(100% - 40px)); margin: 20px auto 80px; background:#fffcf7; border-radius:24px; padding:32px; }
     h1 { font-family:"Cormorant Garamond", serif; font-size:36px; margin:0 0 8px; }
     p { color:#6b7880; }
-    label { display:block; font-size:13px; font-weight:600; margin:14px 0 6px; }
-    input { width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(20,36,46,.12); font:inherit; box-sizing:border-box; }
-    button { width:100%; margin-top:18px; border:0; background:#0c1820; color:white; border-radius:999px; padding:14px; font:inherit; font-weight:600; cursor:pointer; }
     a { color:#c4a265; }
+    #sign-in { min-height: 320px; }
+    .err { color:#9b2c2c; }
   </style>
 </head>
 <body>
@@ -26,21 +25,23 @@
   <main>
     <h1>Iniciar sesión</h1>
     <p>Entra para generar la siguiente ficha.</p>
-    <form id="form">
-      <label>Email</label>
-      <input name="email" type="email" required />
-      <label>Contraseña</label>
-      <input name="password" type="password" required />
-      <button type="submit">Entrar</button>
-    </form>
+    <div id="sign-in"></div>
+    <p class="err" id="err"></p>
   </main>
+  <script src="/clerk-client.js"></script>
   <script>
-    document.getElementById('form').addEventListener('submit', (event) => {
-      event.preventDefault();
-      const email = new FormData(event.target).get('email');
-      const existing = JSON.parse(localStorage.getItem('homesbrief_user') || '{}');
-      localStorage.setItem('homesbrief_user', JSON.stringify({ ...existing, email }));
-      window.location.href = '/app';
+    bootClerk().then((clerk) => {
+      if (clerk.isSignedIn) {
+        window.location.href = '/app';
+        return;
+      }
+      clerk.mountSignIn(document.getElementById('sign-in'), {
+        appearance: clerkAppearance,
+        afterSignInUrl: '/app',
+        signUpUrl: '/registro',
+      });
+    }).catch((error) => {
+      document.getElementById('err').textContent = error.message;
     });
   </script>
 </body>
