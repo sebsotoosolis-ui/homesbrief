@@ -1,8 +1,11 @@
+import { randomUUID } from 'node:crypto';
 import express from 'express';
 import multer from 'multer';
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { runListingJob } from './engine.js';
+
+const jobs = new Map();
 
 const PORT = Number(process.env.PORT) || 3456;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -66,6 +69,15 @@ app.get('/health', (_req, res) => {
   res.json({ ok: true, service: 'homesbrief' });
 });
 
+app.get('/api/jobs/:id', (req, res) => {
+  const job = jobs.get(req.params.id);
+  if (!job) {
+    res.status(404).json({ error: 'Ese trabajo ya no está. Vuelve a generar.' });
+    return;
+  }
+  res.json(job);
+});
+
 app.get('/media/:name', (req, res) => {
   const name = basename(req.params.name);
   const listing = readListing();
@@ -95,9 +107,10 @@ app.post(
         return;
       }
 
-      const listing = await runListingJob({
+      const jobId = randomUUID();
+      const options = {
         airbnbUrl: airbnbUrl || undefined,
-        photoDir: photos.length ? req.uploadDir : airbnbUrl ? req.uploadDir : undefined,
+        photoDir: photos.length ? req.uploadDir : undefined,
         preferences: {
           zone: req.body.zone,
           goal: req.body.goal,
@@ -106,9 +119,18 @@ app.post(
           notes: req.body.notes,
         },
         log: true,
-      });
+      };
+      jobs.set(jobId, { status: 'running' });
+      res.json({ ok: true, jobId });
 
-      res.json({ ok: true, title: listing.titles?.es });
+      runListingJob(options)
+        .then((listing) => {
+          jobs.set(jobId, { status: 'done', title: listing.titles?.es });
+        })
+        .catch((error) => {
+          console.error(error);
+          jobs.set(jobId, { status: 'error', error: error.message || 'Error al generar la ficha' });
+        });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message || 'Error al generar la ficha' });

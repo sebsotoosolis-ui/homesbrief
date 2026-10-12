@@ -11,7 +11,7 @@
     "app": "node server.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": "20.x"
   },
   "keywords": [],
   "author": "",

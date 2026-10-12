@@ -161,7 +161,10 @@ export async function runListingJob({
     for (const image of images) console.log(`  • ${image.name} (${image.width}x${image.height})`);
   }
 
-  const ai = new GoogleGenAI({ apiKey: API_KEY });
+  const ai = new GoogleGenAI({
+    apiKey: API_KEY,
+    httpOptions: { timeout: 90_000 },
+  });
   const parts = [{ text: buildPrompt(context, images) }];
   for (const image of images) {
     parts.push({ text: `Foto: ${image.name}` });
@@ -186,6 +189,18 @@ export async function runListingJob({
   return listing;
 }
 
+function isRetryableModelError(raw) {
+  const text = String(raw);
+  return (
+    text.includes('503') ||
+    text.includes('UNAVAILABLE') ||
+    text.includes('fetch failed') ||
+    text.includes('timeout') ||
+    text.includes('UND_ERR') ||
+    text.includes('ECONNRESET')
+  );
+}
+
 async function generateWithFallback(ai, parts) {
   let lastError;
   for (const model of MODELS) {
@@ -194,7 +209,7 @@ async function generateWithFallback(ai, parts) {
     } catch (error) {
       lastError = error;
       const raw = error?.message ?? String(error);
-      if (raw.includes('503') || raw.includes('UNAVAILABLE') || raw.includes('404') || raw.includes('NOT_FOUND') || raw.includes('no longer available')) {
+      if (isRetryableModelError(raw) || raw.includes('404') || raw.includes('NOT_FOUND') || raw.includes('no longer available')) {
         continue;
       }
       throw error;
@@ -215,7 +230,7 @@ async function generateWithRetry(ai, model, parts) {
     } catch (error) {
       lastError = error;
       const raw = error?.message ?? String(error);
-      if (!raw.includes('503') && !raw.includes('UNAVAILABLE')) throw error;
+      if (!isRetryableModelError(raw)) throw error;
       if (attempt === MAX_RETRIES) throw error;
       await new Promise((resolve) => setTimeout(resolve, 2000 * 2 ** (attempt - 1)));
     }

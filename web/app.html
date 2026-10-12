@@ -104,7 +104,7 @@
       <textarea name="notes" placeholder="4 recámaras, HOA, mascotas, lo que quieras que salga en el copy..."></textarea>
 
       <button class="submit" type="submit">Generar ficha</button>
-      <div class="status" id="status">Leyendo fotos y escribiendo copy. Esto tarda 30–90 segundos...</div>
+      <div class="status" id="status">Despertando el servidor y escribiendo el listing. En celular puede tardar 1–2 minutos...</div>
       <div class="err" id="err"></div>
     </form>
   </main>
@@ -124,6 +124,19 @@
     const err = document.getElementById('err');
     const submit = form.querySelector('button.submit');
 
+    async function waitForJob(jobId) {
+      const deadline = Date.now() + 180000;
+      while (Date.now() < deadline) {
+        await new Promise((resolve) => setTimeout(resolve, 2500));
+        const response = await fetch('/api/jobs/' + jobId);
+        const job = await response.json();
+        if (!response.ok) throw new Error(job.error || 'No se pudo generar');
+        if (job.status === 'done') return job;
+        if (job.status === 'error') throw new Error(job.error || 'Gemini tardó demasiado. Intenta de nuevo.');
+      }
+      throw new Error('La ficha tardó más de 3 minutos. Recarga e inténtalo otra vez.');
+    }
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       err.classList.remove('on');
@@ -136,6 +149,11 @@
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'No se pudo generar');
+        if (!data.jobId) {
+          window.location.href = '/ficha';
+          return;
+        }
+        await waitForJob(data.jobId);
         window.location.href = '/ficha';
       } catch (error) {
         err.textContent = error.message;
