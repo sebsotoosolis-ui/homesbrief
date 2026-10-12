@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lujo Frente al Mar en Udara: Residencia de 4 Recámaras en Bucerías, Riviera Nayarit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #10202b;
+      --ink: #1b2c36;
+      --sand: #f4efe6;
+      --gold: #b08d57;
+      --paper: #fffdf8;
+      --line: rgba(16, 32, 43, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Manrope, sans-serif;
+      background: var(--sand);
+      color: var(--ink);
+    }
+    h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; margin: 0; }
+    .hero {
+      min-height: 72vh;
+      background:
+        linear-gradient(180deg, rgba(16,32,43,.15), rgba(16,32,43,.72)),
+        url("/media/01.jpg") center/cover;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px 8vw 48px;
+    }
+    .kicker { letter-spacing: .18em; text-transform: uppercase; font-size: 12px; color: var(--gold); }
+    .hero h1 { font-size: clamp(32px, 5vw, 64px); max-width: 16ch; line-height: .95; margin: 12px 0 16px; }
+    .meta { opacity: .9; }
+    .wrap { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+    .pills { display: flex; gap: 10px; flex-wrap: wrap; margin: -28px auto 32px; width: min(1120px, calc(100% - 48px)); }
+    .pill { background: white; border-radius: 999px; padding: 10px 16px; box-shadow: 0 8px 24px rgba(16,32,43,.08); font-size: 14px; }
+    section { background: var(--paper); border-radius: 24px; padding: 28px; margin: 0 auto 20px; width: min(1120px, calc(100% - 48px)); box-shadow: 0 10px 40px rgba(16,32,43,.04); }
+    .row { display: grid; gap: 18px; }
+    @media (min-width: 860px) { .row-2 { grid-template-columns: 1.2fr .8fr; } .gallery { grid-template-columns: repeat(4, 1fr); } }
+    .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .gallery img { width: 100%; height: 140px; object-fit: cover; border-radius: 14px; }
+    .copy { white-space: pre-wrap; line-height: 1.65; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+    button.copy, .lang {
+      border: 1px solid var(--line); background: white; border-radius: 999px; padding: 8px 14px; cursor: pointer; font: inherit;
+    }
+    button.copy:hover { border-color: var(--gold); color: var(--gold); }
+    ul { margin: 8px 0 0; padding-left: 18px; }
+    li { margin: 6px 0; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .muted { color: #66747c; font-size: 13px; }
+    .en { display: none; }
+    body.en .es { display: none; }
+    body.en .en { display: block; }
+    body.en li.es { display: none; }
+    body.en li.en { display: list-item; }
+    footer { text-align: center; padding: 40px 20px 60px; color: #66747c; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="kicker">HomesBrief · listing brief</div>
+    <h1 class="es">Lujo Frente al Mar en Udara: Residencia de 4 Recámaras en Bucerías, Riviera Nayarit</h1>
+    <h1 class="en">Oceanfront Luxury at Udara: Stunning 4-Bedroom Beachfront Condo in Bucerias</h1>
+    <p class="meta">Condominio de lujo frente al mar · Bucerías, Riviera Nayarit</p>
+  </header>
+
+  <div class="pills">
+    <div class="pill">Condominio · Bucerías · ★5.0 · 4 habitaciones · 6 camas · 4 baños</div>
+    <div class="pill">Contemporáneo costero sofisticado, sereno y luminoso con carpintería en parota y acabados de diseñador</div>
+    <button class="lang" type="button" id="langBtn">ES / EN</button>
+  </div>
+
+  <section>
+    <div class="toolbar"><h2>Galería</h2><span class="muted">20 fotos listas para publicar</span></div>
+    <div class="gallery">
+      <img src="/media/01.jpg" alt="01.jpg" /><img src="/media/02.jpg" alt="02.jpg" /><img src="/media/03.jpg" alt="03.jpg" /><img src="/media/04.jpg" alt="04.jpg" /><img src="/media/05.jpg" alt="05.jpg" /><img src="/media/06.jpg" alt="06.jpg" /><img src="/media/07.jpg" alt="07.jpg" /><img src="/media/08.jpg" alt="08.jpg" /><img src="/media/09.jpg" alt="09.jpg" /><img src="/media/10.jpg" alt="10.jpg" /><img src="/media/11.jpg" alt="11.jpg" /><img src="/media/12.jpg" alt="12.jpg" /><img src="/media/13.jpg" alt="13.jpg" /><img src="/media/14.jpg" alt="14.jpg" /><img src="/media/15.jpg" alt="15.jpg" /><img src="/media/16.jpg" alt="16.jpg" /><img src="/media/17.jpg" alt="17.jpg" /><img src="/media/18.jpg" alt="18.jpg" /><img src="/media/19.jpg" alt="19.jpg" /><img src="/media/20.jpg" alt="20.jpg" />
+    </div>
+  </section>
+
+  <section class="row row-2">
+    <div>
+      <div class="toolbar"><h2 class="es">Ficha comercial</h2><h2 class="en">Listing copy</h2>
+        <button class="copy" data-copy="Viva la máxima expresión del estilo de vida frente al mar en Udara, el desarrollo residencial más codiciado de Bucerías. Esta impecable residencia de 4 recámaras y 4 baños combina a la perfección la arquitectura contemporánea con cálidos acentos en madera natural y vistas panorámicas de la Bahía de Banderas. La amplia área social fluye sin interrupciones hacia una generosa terraza privada techada con asador y comedor al aire libre, ideal para contemplar los atardeceres y la brisa marina. Su cocina gourmet con isla en cascada, recámaras diseñadas para el descanso y amenidades exclusivas como alberca infinita y gimnasio profesional, hacen de esta propiedad una joya patrimonial y una inversión de alto rendimiento vacacional lista para disfrutarse.">Copiar ES</button>
+      </div>
+      <p class="copy es">Viva la máxima expresión del estilo de vida frente al mar en Udara, el desarrollo residencial más codiciado de Bucerías. Esta impecable residencia de 4 recámaras y 4 baños combina a la perfección la arquitectura contemporánea con cálidos acentos en madera natural y vistas panorámicas de la Bahía de Banderas. La amplia área social fluye sin interrupciones hacia una generosa terraza privada techada con asador y comedor al aire libre, ideal para contemplar los atardeceres y la brisa marina. Su cocina gourmet con isla en cascada, recámaras diseñadas para el descanso y amenidades exclusivas como alberca infinita y gimnasio profesional, hacen de esta propiedad una joya patrimonial y una inversión de alto rendimiento vacacional lista para disfrutarse.</p>
+      <p class="copy en">Experience prime beachfront living in Bucerías at Udara Luxury Residences. This turn-key 4-bedroom, 4-bathroom residence showcases exceptional coastal contemporary architecture, expansive open-plan interiors, and unobstructed ocean views across Banderas Bay. Floor-to-ceiling glass doors open seamlessly to a deep covered terrace complete with an outdoor dining setup and built-in BBQ, capturing sea breezes and panoramic sunsets. Featuring a chef-grade quartz kitchen, custom millwork, designer en-suite bathrooms, and resort amenities—including an oceanfront infinity pool and fully equipped fitness center—this property stands out as both an unmatched private coastal sanctuary and a high-yield vacation rental powerhouse.</p>
+    </div>
+    <div>
+      <h2>Puntos fuertes</h2>
+      <ul><li>Ubicación privilegiada en Udara, exclusivo desarrollo frente a la playa en Bucerías</li><li>Capacidad para hasta 10 huéspedes con 4 amplias recámaras y 4 baños completos</li><li>Amplia terraza privada con asador y comedor exterior con vista despejada al océano</li><li>Amenidades de resort incluyendo alberca infinita frente a la playa y gimnasio de clase mundial</li><li>Excelente potencial de ingresos por rentas vacacionales gracias a su diseño de lujo y distribución</li></ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Estimado de renta vacacional</h2>
+    <p>Segmento de ultra-lujo familiar y grupos selectos frente a la playa en Bucerías / Riviera Nayarit</p>
+    <table>
+      <tr><td>Temporada baja</td><td>USD 550 / noche</td></tr>
+      <tr><td>Temporada media</td><td>USD 750 / noche</td></tr>
+      <tr><td>Temporada alta</td><td>USD 1,100 / noche</td></tr>
+      <tr><td>Pico (Navidad / Semana Santa)</td><td>USD 1,650 / noche</td></tr>
+      <tr><td>Semana alta</td><td>USD 7,200</td></tr>
+      <tr><td>Mensual</td><td>USD 9,500</td></tr>
+      <tr><td>Ocupación estimada</td><td>62%</td></tr>
+      <tr><td>Bruto anual estimado</td><td>USD 185,000</td></tr>
+    </table>
+    <p class="muted">Las tarifas y proyecciones financieras son únicamente estimaciones de mercado basadas en propiedades comparables de lujo en Bucerías y no representan una garantía de ingresos.</p>
+  </section>
+
+  <section>
+    <div class="toolbar"><h2>WhatsApp (listo para enviar)</h2><button class="copy" data-copy="Lujo Frente al Mar en Udara: Residencia de 4 Recámaras en Bucerías, Riviera Nayarit&#10;&#10;Bucerías, Riviera Nayarit&#10;Condominio de lujo frente al mar&#10;&#10;• Ubicación privilegiada en Udara, exclusivo desarrollo frente a la playa en Bucerías&#10;• Capacidad para hasta 10 huéspedes con 4 amplias recámaras y 4 baños completos&#10;• Amplia terraza privada con asador y comedor exterior con vista despejada al océano&#10;• Amenidades de resort incluyendo alberca infinita frente a la playa y gimnasio de clase mundial&#10;&#10;¿Te mando ficha completa y disponibilidad?">Copiar</button></div>
+    <p class="copy">Lujo Frente al Mar en Udara: Residencia de 4 Recámaras en Bucerías, Riviera Nayarit
+
+Bucerías, Riviera Nayarit
+Condominio de lujo frente al mar
+
+• Ubicación privilegiada en Udara, exclusivo desarrollo frente a la playa en Bucerías
+• Capacidad para hasta 10 huéspedes con 4 amplias recámaras y 4 baños completos
+• Amplia terraza privada con asador y comedor exterior con vista despejada al océano
+• Amenidades de resort incluyendo alberca infinita frente a la playa y gimnasio de clase mundial
+
+¿Te mando ficha completa y disponibilidad?</p>
+  </section>
+
+  <section>
+    <div class="toolbar"><h2>Instagram</h2><button class="copy" data-copy="Despertar con el sonido de las olas y vistas infinitas a la Bahía de Banderas es una realidad en Udara, Bucerías. ✨ 4 recámaras, terraza privada con asador y acceso directo a la playa. El balance perfecto entre diseño sofisticado y descanso tropical. Envíanos un mensaje directo para agendar tu recorrido privado o recibir el dossier completo.&#10;&#10;#Bucerias #RivieraNayarit #BuceriasRealEstate #UdaraBucerias #LuxuryRealEstateMexico #BeachfrontLiving #CondosFrenteAlMar #BanderasBay">Copiar</button></div>
+    <p class="copy">Despertar con el sonido de las olas y vistas infinitas a la Bahía de Banderas es una realidad en Udara, Bucerías. ✨ 4 recámaras, terraza privada con asador y acceso directo a la playa. El balance perfecto entre diseño sofisticado y descanso tropical. Envíanos un mensaje directo para agendar tu recorrido privado o recibir el dossier completo.
+
+#Bucerias #RivieraNayarit #BuceriasRealEstate #UdaraBucerias #LuxuryRealEstateMexico #BeachfrontLiving #CondosFrenteAlMar #BanderasBay</p>
+  </section>
+
+  <section>
+    <div class="toolbar"><h2>Facebook</h2><button class="copy" data-copy="Descubra una oportunidad inigualable frente al mar en Riviera Nayarit. Ubicado en el prestigioso desarrollo Udara en Bucerías, este condominio de 4 habitaciones y 4 baños ofrece amplios interiores, terraza privada con asador, alberca infinita y gimnasio de primer nivel. Ideal para quienes buscan un refugio familiar o una propiedad llave en mano de alto rendimiento en rentas vacacionales. Contáctenos hoy para más información y visitas privadas.&#10;&#10;#Bucerias #RivieraNayaritRealEstate #BienesRaicesMexico #CondoDeLujo #UdaraResidences #BeachfrontCondo">Copiar</button></div>
+    <p class="copy">Descubra una oportunidad inigualable frente al mar en Riviera Nayarit. Ubicado en el prestigioso desarrollo Udara en Bucerías, este condominio de 4 habitaciones y 4 baños ofrece amplios interiores, terraza privada con asador, alberca infinita y gimnasio de primer nivel. Ideal para quienes buscan un refugio familiar o una propiedad llave en mano de alto rendimiento en rentas vacacionales. Contáctenos hoy para más información y visitas privadas.
+
+#Bucerias #RivieraNayaritRealEstate #BienesRaicesMexico #CondoDeLujo #UdaraResidences #BeachfrontCondo</p>
+  </section>
+
+  <section>
+    <div class="toolbar"><h2>Reels / TikTok (15s)</h2><button class="copy" data-copy="0-3s: vista al mar / terraza&#10;3-7s: sala abriéndose a la terraza&#10;7-11s: recámara principal y cocina&#10;11-15s: alberca o amenidad + texto: &quot;Lujo Frente al Mar en Udara: Residencia de 4 Recámaras en Bucerías, Riviera Nayarit&quot;&#10;CTA: Escríbeme por WhatsApp">Copiar</button></div>
+    <p class="copy">0-3s: vista al mar / terraza
+3-7s: sala abriéndose a la terraza
+7-11s: recámara principal y cocina
+11-15s: alberca o amenidad + texto: "Lujo Frente al Mar en Udara: Residencia de 4 Recámaras en Bucerías, Riviera Nayarit"
+CTA: Escríbeme por WhatsApp</p>
+  </section>
+
+  <section>
+    <h2>Bullets para portales (Inmuebles24, Airbnb, MLS)</h2>
+    <ul><li>Vistas panorámicas directas al mar y a la Bahía de Banderas</li><li>Puertas corredizas de piso a techo que integran interior y exterior</li><li>Carpintería de parota natural en puertas y muebles a la medida</li><li>Cubiertas de cuarzo y mármol en cocina y baños</li><li>Iluminación LED indirecta y de acento</li><li>Pisos de porcelanato de gran formato en tonos claros</li><li>Gimnasio climatizado con equipo cardiovascular y de peso libre de última generación</li></ul>
+  </section>
+
+  <section>
+    <h2>Espacios detectados</h2>
+    <ul><li><strong>Área social integrada (Sala y Comedor):</strong> Planta abierta con ventanales de piso a techo corredizos, comedor de madera con sillas estilo Wishbone para 8 comensales, sala seccional y mueble empotrado para TV en madera natural.</li><li><strong>Cocina integral de diseñador:</strong> Cocina abierta con isla central y barra desayunadora de cuarzo en cascada, electrodomésticos empotrados de acero inoxidable y gabinetes modernos al alto impacto.</li><li><strong>Terraza principal frente al mar:</strong> Terraza techada con vista panorámica a la bahía, barandal de cristal templado, jardinera integrada, comedor exterior para 10 personas y asador de acero inoxidable.</li><li><strong>Recámara principal:</strong> Cama King size, salida directa a la terraza con vista al océano, respaldo de parota integrado, Smart TV y baño en suite con vestidor.</li><li><strong>Recámaras secundarias:</strong> Tres recámaras secundarias decoradas en tonos neutros y toques terracota, equipadas con camas matrimoniales/queen, persianas black-out y carpintería fina.</li><li><strong>Baños completos y vestidores:</strong> Baños contemporáneos con canceles de cristal templado, muebles flotantes de doble y sencillo lavamanos, espejos con luz perimetral LED y vestidor en suite.</li><li><strong>Cuarto de lavado:</strong> Área de servicio independiente equipada con centro de lavado frontal de gran capacidad.</li><li><strong>Amenidades comunes del desarrollo (UDARA):</strong> Alberca infinity frente al mar con área de asoleadero, camastros y sombrillas; gimnasio profesional completamente equipado con marcas de alto rendimiento.</li></ul>
+  </section>
+
+  <footer>Ficha generada para que el agente copie y publique. No reemplaza un avalúo ni una visita.</footer>
+  <script>
+    document.getElementById('langBtn').addEventListener('click', () => {
+      document.body.classList.toggle('en');
+    });
+    document.querySelectorAll('button.copy').forEach((button) => {
+      button.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(button.dataset.copy || '');
+        button.textContent = 'Copiado';
+        setTimeout(() => { button.textContent = 'Copiar'; }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

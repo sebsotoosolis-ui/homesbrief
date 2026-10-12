@@ -1,0 +1,8 @@
+node_modules/
+.env
+*.log
+/ficha.json
+/fotos/
+/uploads/
+airbnb-page.html
+airbnb-photos.json

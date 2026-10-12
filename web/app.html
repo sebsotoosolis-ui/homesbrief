@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nueva ficha · HomesBrief</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --navy:#10202b; --gold:#b08d57; --sand:#f4efe6; --paper:#fffdf8; --line:rgba(16,32,43,.12); }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Manrope, sans-serif; background: var(--sand); color: var(--navy); }
+    header { padding: 28px 8vw 8px; display:flex; justify-content:space-between; align-items:center; }
+    header strong { font-family: "Cormorant Garamond", serif; font-size: 28px; }
+    .sub { color:#66747c; font-size:14px; }
+    main { width: min(760px, calc(100% - 40px)); margin: 12px auto 80px; background: var(--paper); border-radius: 28px; padding: 32px; box-shadow: 0 16px 50px rgba(16,32,43,.06); }
+    h1 { font-family: "Cormorant Garamond", serif; font-size: 42px; line-height: .95; margin: 0 0 10px; }
+    p.lead { color:#4b5b64; }
+    .tabs { display:flex; gap:8px; margin: 22px 0 18px; }
+    .tab { border:1px solid var(--line); background:white; border-radius:999px; padding:10px 16px; cursor:pointer; font:inherit; }
+    .tab.on { background: var(--navy); color:white; border-color: var(--navy); }
+    label { display:block; font-size:13px; font-weight:600; margin: 14px 0 6px; }
+    input, select, textarea { width:100%; border:1px solid var(--line); border-radius:14px; padding:12px 14px; font:inherit; background:white; }
+    textarea { min-height: 90px; resize: vertical; }
+    .row { display:grid; gap:12px; }
+    @media (min-width:720px) { .row-2 { grid-template-columns: 1fr 1fr; } }
+    .drop { border:1.5px dashed #cbbba0; border-radius:18px; padding:22px; text-align:center; background:#faf7f1; color:#66747c; }
+    button.submit { margin-top: 22px; width:100%; border:0; background: var(--navy); color:white; border-radius:999px; padding:16px; font:inherit; font-weight:600; cursor:pointer; }
+    button.submit:disabled { opacity:.55; cursor:wait; }
+    .status { display:none; margin-top:16px; padding:14px 16px; border-radius:14px; background:#10202b; color:#f4efe6; }
+    .status.on { display:block; }
+    .err { display:none; margin-top:12px; color:#9b2c2c; }
+    .err.on { display:block; }
+    a.ghost { color: var(--gold); }
+    .pane { display:none; }
+    .pane.on { display:block; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <strong><a href="/" style="color:inherit;text-decoration:none">HomesBrief</a></strong>
+      <div class="sub">AI listing briefs</div>
+    </div>
+    <div>
+      <a class="ghost" href="/ficha">Última ficha</a>
+      &nbsp;·&nbsp;
+      <a class="ghost" href="/">Inicio</a>
+    </div>
+  </header>
+  <main>
+    <h1>Crea la ficha. El agente solo publica.</h1>
+    <p class="lead">El cliente sube fotos o pega su Airbnb, indica zona, precio y notas. El software arma títulos, copy bilingüe, redes y estimado de renta.</p>
+
+    <div class="tabs">
+      <button class="tab on" type="button" data-tab="airbnb">Link de Airbnb</button>
+      <button class="tab" type="button" data-tab="fotos">Subir fotos</button>
+    </div>
+
+    <form id="form">
+      <div class="pane on" id="pane-airbnb">
+        <label>URL del listing</label>
+        <input name="airbnbUrl" placeholder="https://www.airbnb.mx/rooms/..." />
+      </div>
+      <div class="pane" id="pane-fotos">
+        <label>Fotos de la propiedad (hasta 20)</label>
+        <div class="drop">
+          <input name="photos" type="file" accept="image/*" multiple />
+          <div>JPG, HEIC, PNG, WEBP, AVIF</div>
+        </div>
+      </div>
+
+      <div class="row row-2">
+        <div>
+          <label>Zona</label>
+          <input name="zone" placeholder="Miami, Madrid, Punta Mita..." />
+        </div>
+        <div>
+          <label>¿Para qué es la ficha?</label>
+          <select name="goal">
+            <option value="renta vacacional">Renta vacacional</option>
+            <option value="venta">Venta</option>
+            <option value="venta y renta">Venta y renta</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row row-2">
+        <div>
+          <label>Precio o tarifa que quieres comunicar (opcional)</label>
+          <input name="askingPrice" placeholder="950 USD / noche  o  890,000 USD" />
+        </div>
+        <div>
+          <label>Moneda</label>
+          <select name="currency">
+            <option value="USD">USD</option>
+            <option value="MXN">MXN</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Notas del agente / dueño</label>
+      <textarea name="notes" placeholder="4 recámaras, HOA, mascotas, lo que quieras que salga en el copy..."></textarea>
+
+      <button class="submit" type="submit">Generar ficha</button>
+      <div class="status" id="status">Leyendo fotos y escribiendo copy. Esto tarda 30–90 segundos...</div>
+      <div class="err" id="err"></div>
+    </form>
+  </main>
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((item) => item.classList.remove('on'));
+        tab.classList.add('on');
+        document.querySelectorAll('.pane').forEach((pane) => pane.classList.remove('on'));
+        document.getElementById('pane-' + tab.dataset.tab).classList.add('on');
+      });
+    });
+
+    const form = document.getElementById('form');
+    const status = document.getElementById('status');
+    const err = document.getElementById('err');
+    const submit = form.querySelector('button.submit');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      err.classList.remove('on');
+      status.classList.add('on');
+      submit.disabled = true;
+      try {
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          body: new FormData(form),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'No se pudo generar');
+        window.location.href = '/ficha';
+      } catch (error) {
+        err.textContent = error.message;
+        err.classList.add('on');
+      } finally {
+        submit.disabled = false;
+        status.classList.remove('on');
+      }
+    });
+  </script>
+</body>
+</html>

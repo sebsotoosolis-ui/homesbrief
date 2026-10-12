@@ -1,0 +1,143 @@
+import express from 'express';
+import multer from 'multer';
+import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
+import { basename, join, resolve } from 'node:path';
+import { runListingJob } from './engine.js';
+
+const PORT = Number(process.env.PORT) || 3456;
+const HOST = process.env.HOST || '0.0.0.0';
+const app = express();
+const UPLOADS = resolve('uploads');
+const DEMO_DIR = resolve('web', 'demo');
+mkdirSync(UPLOADS, { recursive: true });
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, _file, cb) => cb(null, req.uploadDir),
+    filename: (_req, file, cb) => cb(null, file.originalname),
+  }),
+  limits: { files: 20, fileSize: 20 * 1024 * 1024 },
+});
+
+app.disable('x-powered-by');
+app.use(express.urlencoded({ extended: true }));
+app.use('/demo', express.static(DEMO_DIR, { fallthrough: false, maxAge: '7d' }));
+
+app.get('/', (_req, res) => {
+  res.sendFile(resolve('web', 'landing.html'));
+});
+
+app.get('/app', (_req, res) => {
+  res.sendFile(resolve('web', 'app.html'));
+});
+
+app.get('/registro', (_req, res) => {
+  res.sendFile(resolve('web', 'registro.html'));
+});
+
+app.get('/login', (_req, res) => {
+  res.sendFile(resolve('web', 'login.html'));
+});
+
+app.get('/ficha', (_req, res) => {
+  const page = resolve('web', 'index.html');
+  if (!existsSync(page)) {
+    res.redirect('/');
+    return;
+  }
+  res.sendFile(page);
+});
+
+app.get('/robots.txt', (_req, res) => {
+  res.type('text/plain').send('User-agent: *\nAllow: /\nSitemap: https://homesbrief.com/sitemap.xml\n');
+});
+
+app.get('/sitemap.xml', (_req, res) => {
+  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://homesbrief.com/</loc></url>
+  <url><loc>https://homesbrief.com/registro</loc></url>
+  <url><loc>https://homesbrief.com/login</loc></url>
+</urlset>
+`);
+});
+
+app.get('/health', (_req, res) => {
+  res.json({ ok: true, service: 'homesbrief' });
+});
+
+app.get('/media/:name', (req, res) => {
+  const name = basename(req.params.name);
+  const listing = readListing();
+  const dir = resolvePhotoDir(listing);
+  const filePath = join(dir, name);
+  if (!existsSync(filePath) || !statSync(filePath).isFile()) {
+    res.status(404).end();
+    return;
+  }
+  res.sendFile(filePath);
+});
+
+app.post(
+  '/api/generate',
+  (req, _res, next) => {
+    req.uploadDir = join(UPLOADS, String(Date.now()));
+    mkdirSync(req.uploadDir, { recursive: true });
+    next();
+  },
+  upload.array('photos', 20),
+  async (req, res) => {
+    try {
+      const airbnbUrl = String(req.body.airbnbUrl || '').trim();
+      const photos = req.files || [];
+      if (!airbnbUrl && photos.length === 0) {
+        res.status(400).json({ error: 'Pega un link de Airbnb o sube fotos.' });
+        return;
+      }
+
+      const listing = await runListingJob({
+        airbnbUrl: airbnbUrl || undefined,
+        photoDir: photos.length ? req.uploadDir : airbnbUrl ? req.uploadDir : undefined,
+        preferences: {
+          zone: req.body.zone,
+          goal: req.body.goal,
+          askingPrice: req.body.askingPrice,
+          currency: req.body.currency,
+          notes: req.body.notes,
+        },
+        log: true,
+      });
+
+      res.json({ ok: true, title: listing.titles?.es });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message || 'Error al generar la ficha' });
+    }
+  }
+);
+
+app.listen(PORT, HOST, () => {
+  console.log(`HomesBrief en http://localhost:${PORT}`);
+});
+
+function readListing() {
+  for (const file of [resolve('ficha.json'), resolve('web', 'ficha.json')]) {
+    if (!existsSync(file)) continue;
+    try {
+      return JSON.parse(readFileSync(file, 'utf8'));
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+function resolvePhotoDir(listing) {
+  const raw = listing?.meta?.photo_dir;
+  if (raw) {
+    const candidate = resolve(raw);
+    if (existsSync(candidate)) return candidate;
+  }
+  if (existsSync(DEMO_DIR)) return DEMO_DIR;
+  return resolve('fotos');
+}
