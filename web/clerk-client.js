@@ -27,6 +27,7 @@ function loadScript(src, attrs = {}) {
 }
 
 async function bootClerk(redirectTo = '/app') {
+  fetch('/health').catch(() => {});
   const config = await fetch('/api/clerk-config').then((response) => response.json());
   if (!config.publishableKey) {
     throw new Error('Falta configurar Clerk. Añade CLERK_PUBLISHABLE_KEY en Render.');

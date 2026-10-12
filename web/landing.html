@@ -104,6 +104,7 @@
         <a class="btn btn-navy" href="/registro">Regístrate gratis</a>
         <a class="btn btn-ghost" href="/ejemplo">Ver el ejemplo</a>
       </div>
+      <p class="lead" style="margin-top:18px;font-size:14px">La primera visita del día puede tardar ~1 minuto: el servidor gratis se despierta. Luego va rápido.</p>
     </div>
     <div class="hero-stage">
       <a class="hero-card" href="/ejemplo">
@@ -189,6 +190,7 @@
   </footer>
   <script src="/clerk-client.js"></script>
   <script>
+    fetch('/health').catch(() => {});
     bootClerk().then(mountSignedInNav).catch(() => {});
   </script>
 </body>
