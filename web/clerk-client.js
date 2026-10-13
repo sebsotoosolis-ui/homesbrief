@@ -51,42 +51,17 @@ async function clerkAuthHeader() {
   return token ? { Authorization: 'Bearer ' + token } : {};
 }
 
-const NAME_KEY = 'homesbrief-name';
-
 function clerkDisplayName(clerk) {
-  const first = String(clerk?.user?.firstName || '').trim();
-  if (!first || /[0-9@]/.test(first)) return '';
-  return first;
-}
-
-async function rememberDisplayName(clerk) {
   const user = clerk?.user;
   if (!user) return '';
-  const current = clerkDisplayName(clerk);
-  if (current) return current;
-  const pending = sessionStorage.getItem(NAME_KEY)?.trim() || '';
-  if (!pending || /[0-9@]/.test(pending)) return '';
-  await user.update({ firstName: pending });
-  sessionStorage.removeItem(NAME_KEY);
-  return pending;
-}
-
-function mountNameAsk(clerk, anchor) {
-  if (!anchor || clerkDisplayName(clerk) || anchor.parentElement?.querySelector('.name-ask')) return;
-  const form = document.createElement('form');
-  form.className = 'name-ask';
-  form.innerHTML = '<label>¿Cómo te llamamos?</label><div class="name-ask-row"><input name="firstName" autocomplete="given-name" placeholder="Tu nombre" required /><button class="btn btn-navy" type="submit">Guardar</button></div>';
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const value = String(new FormData(form).get('firstName') || '').trim();
-    if (!value) return;
-    await clerk.user.update({ firstName: value });
-    sessionStorage.removeItem(NAME_KEY);
-    const hello = document.getElementById('hello-name') || document.getElementById('hello');
-    if (hello) hello.textContent = 'Hola, ' + value + '.';
-    form.remove();
-  });
-  anchor.insertAdjacentElement('afterend', form);
+  const first = String(user.firstName || '').trim();
+  if (first) return first;
+  const full = String(user.fullName || '').trim();
+  if (full) return full.split(/\s+/)[0];
+  const email = user.primaryEmailAddress?.emailAddress || user.emailAddresses?.[0]?.emailAddress || '';
+  const local = email.split('@')[0].replace(/[._-]+/g, ' ').trim();
+  if (!local) return '';
+  return local.charAt(0).toUpperCase() + local.slice(1);
 }
 
 function greetSignedIn(clerk, { hello, lead, namedLead }) {

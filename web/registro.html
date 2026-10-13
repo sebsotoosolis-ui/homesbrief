@@ -40,8 +40,6 @@
       </nav>
       <h1 style="font-size:42px;margin:12px 0 8px">Crea tu cuenta</h1>
       <p class="lead">3 fichas de trial. Sin tarjeta. La sesión queda iniciada en este navegador.</p>
-      <label for="given-name">Tu nombre</label>
-      <input id="given-name" autocomplete="given-name" placeholder="Sebastian" />
       <div id="sign-up"></div>
       <p class="err" id="err"></p>
     </div>
@@ -49,10 +47,6 @@
   <script src="/clerk-client.js"></script>
   <script>
     const next = new URLSearchParams(location.search).get('next') || '/app';
-    const given = document.getElementById('given-name');
-    const saveName = () => sessionStorage.setItem('homesbrief-name', given.value.trim());
-    given.addEventListener('input', saveName);
-    given.addEventListener('change', saveName);
     bootClerk(next).then((clerk) => {
       if (clerk.isSignedIn) {
         window.location.href = next;

@@ -63,13 +63,11 @@
         return;
       }
       mountSignedInNav(clerk);
-      await rememberDisplayName(clerk);
       greetSignedIn(clerk, {
         hello: document.getElementById('hello'),
         lead: document.getElementById('hello-lead'),
         namedLead: 'Tus casas, listas cuando el cliente pregunte. ¿Abrimos una o armamos otra?',
       });
-      if (!clerkDisplayName(clerk)) mountNameAsk(clerk, document.getElementById('hello'));
       const response = await fetch('/api/listings', { headers: await clerkAuthHeader() });
       const data = await response.json();
       const grid = document.getElementById('grid');
