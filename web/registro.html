@@ -25,6 +25,15 @@
     }
     .panel { padding: 20px 7vw 64px; }
     #sign-up { min-height: 360px; margin-top: 8px; }
+    .name-hint { margin: 8px 0 0; font-size: 13px; color: #9b2c2c; font-weight: 600; }
+    .name-hint[hidden] { display: none; }
+    #given-name.missing { border-color: #9b2c2c; }
+    .back-email {
+      display: block; width: 100%; margin-top: 14px;
+      border: 1px solid rgba(20, 36, 46, 0.18); background: white; color: var(--ink);
+      border-radius: 999px; padding: 12px 20px; font: inherit; font-weight: 600; cursor: pointer;
+    }
+    .back-email[hidden] { display: none; }
   </style>
 </head>
 <body>
@@ -42,6 +51,8 @@
       <p class="lead">3 fichas de trial. Sin tarjeta. La sesión queda iniciada en este navegador.</p>
       <label for="given-name">Tu nombre</label>
       <input id="given-name" autocomplete="given-name" placeholder="ej: Camila" />
+      <p class="name-hint" id="name-err" hidden>Escribe tu nombre para continuar.</p>
+      <button type="button" class="back-email" id="back-email" hidden>Corregir correo</button>
       <div id="sign-up"></div>
       <p class="err" id="err"></p>
     </div>
@@ -50,11 +61,54 @@
   <script>
     const next = new URLSearchParams(location.search).get('next') || '/app';
     const given = document.getElementById('given-name');
+    const nameErr = document.getElementById('name-err');
+    const back = document.getElementById('back-email');
+    const signUpEl = document.getElementById('sign-up');
     const examples = ['Camila', 'Diego', 'Renata', 'Mateo', 'Lucía', 'Andrés', 'Valeria', 'Emiliano'];
     given.placeholder = 'ej: ' + examples[Math.floor(Math.random() * examples.length)];
-    const saveName = () => sessionStorage.setItem('homesbrief-name', given.value.trim());
+    const savedName = sessionStorage.getItem('homesbrief-name')?.trim() || '';
+    if (savedName) given.value = savedName;
+
+    const nameReady = () => given.value.trim().length >= 2;
+    const saveName = () => {
+      const value = given.value.trim();
+      if (value) sessionStorage.setItem('homesbrief-name', value);
+      else sessionStorage.removeItem('homesbrief-name');
+      if (nameReady()) {
+        nameErr.hidden = true;
+        given.classList.remove('missing');
+      }
+    };
+    const blockForName = (event) => {
+      if (nameReady()) return;
+      event.preventDefault();
+      event.stopPropagation();
+      nameErr.hidden = false;
+      given.classList.add('missing');
+      given.focus();
+    };
     given.addEventListener('input', saveName);
     given.addEventListener('change', saveName);
+    signUpEl.addEventListener('submit', blockForName, true);
+    signUpEl.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') blockForName(event);
+    }, true);
+    signUpEl.addEventListener('click', (event) => {
+      if (nameReady()) return;
+      if (!event.target.closest('.cl-formButtonPrimary')) return;
+      blockForName(event);
+    }, true);
+
+    const verifyingEmail = () => Boolean(signUpEl.querySelector(
+      '[data-localization-key="signUp.emailCode.title"], [data-localization-key="signUp.emailLink.title"], .cl-identityPreviewEditButton'
+    ));
+    const syncBack = () => { back.hidden = !verifyingEmail(); };
+    new MutationObserver(syncBack).observe(signUpEl, { childList: true, subtree: true });
+    back.addEventListener('click', () => {
+      const edit = signUpEl.querySelector('.cl-identityPreviewEditButton, button[aria-label="Edit email address"]');
+      if (edit) edit.click();
+    });
+
     bootClerk(next).then((clerk) => {
       if (clerk.isSignedIn) {
         window.location.href = next;
