@@ -160,11 +160,13 @@
         return;
       }
       mountSignedInNav(clerk);
+      await rememberDisplayName(clerk);
       greetSignedIn(clerk, {
         hello: document.getElementById('hello'),
         lead: document.getElementById('hello-lead'),
         namedLead: '¿Qué propiedad preparamos hoy? Fotos o Airbnb, zona y notas. El copy, las redes y la renta salen listos para publicar.',
       });
+      if (!clerkDisplayName(clerk)) mountNameAsk(clerk, document.getElementById('hello-lead'));
       refreshPlan().catch(() => {});
     }).catch(() => {
       window.location.href = '/login?next=/app';

@@ -74,6 +74,9 @@ textarea { min-height: 90px; resize: vertical; }
 .err.on { display: block; }
 .ok { display: none; margin-top: 12px; color: #1f6b45; }
 .ok.on { display: block; }
+.name-ask { margin: 14px 0 18px; }
+.name-ask-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.name-ask-row input { flex: 1; min-width: 160px; width: auto; }
 .plan-pill {
   font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
   color: var(--gold-deep); border: 1px solid rgba(196, 162, 101, .45);

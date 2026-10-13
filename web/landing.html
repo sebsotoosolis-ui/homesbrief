@@ -92,6 +92,7 @@
       color: white;
     }
     .hero .home-in .lead { margin: 8px 0 0; color: rgba(243, 238, 229, 0.92); font-size: 16px; max-width: none; }
+    .home-in .name-ask { margin: 12px 0 8px; color: rgba(243, 238, 229, 0.92); font-size: 14px; }
     section { padding: 88px 7vw; }
     .section-title { font-size: clamp(34px, 4vw, 48px); margin-bottom: 28px; }
     .grid-3 { display: grid; gap: 16px; }
@@ -149,7 +150,14 @@
       <div class="home-in" hidden>
         <div class="kicker">Tu cuenta</div>
         <h1 id="hello-name">Hola.</h1>
-        <p class="lead">Cuando tengas la propiedad, la ficha sale en un minuto.</p>
+        <p class="lead" id="hello-lead">¿En qué quieres trabajar hoy?</p>
+        <form class="name-form" id="name-form" hidden>
+          <p class="name-ask">¿Cómo te llamamos? Así no usamos tu correo.</p>
+          <div class="name-ask-row">
+            <input id="given-name" name="firstName" autocomplete="given-name" placeholder="Tu nombre" required />
+            <button class="btn btn-gold" type="submit">Guardar</button>
+          </div>
+        </form>
         <div class="cta">
           <a class="btn btn-gold" href="/app">Nueva ficha</a>
           <a class="btn btn-ghost" href="/fichas">Mis propiedades</a>
@@ -279,14 +287,25 @@
   <script src="/clerk-client.js"></script>
   <script>
     fetch('/health').catch(() => {});
-    bootClerk().then((clerk) => {
+    bootClerk().then(async (clerk) => {
       mountSignedInNav(clerk);
       if (!clerk.isSignedIn) return;
       document.body.classList.add('signed-in');
-      const name = clerkDisplayName(clerk);
       const hello = document.getElementById('hello-name');
+      const name = await rememberDisplayName(clerk);
       hello.textContent = name ? 'Hola, ' + name + '.' : 'Hola.';
       hello.closest('.home-in').hidden = false;
+      const form = document.getElementById('name-form');
+      if (!name) form.hidden = false;
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const value = document.getElementById('given-name').value.trim();
+        if (!value) return;
+        await clerk.user.update({ firstName: value });
+        sessionStorage.removeItem('homesbrief-name');
+        hello.textContent = 'Hola, ' + value + '.';
+        form.hidden = true;
+      });
     }).catch(() => {});
   </script>
 </body>
