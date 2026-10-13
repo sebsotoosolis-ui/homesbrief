@@ -35,12 +35,12 @@ a { color: inherit; }
 .nav-dark .nav-links a:hover, .nav-dark .nav-links a.on { color: var(--sand); }
 .nav-dark .btn-ghost { border-color: rgba(243, 238, 229, 0.28); color: var(--sand); }
 .logo {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; gap: 0;
   font-family: "Cormorant Garamond", serif;
   font-size: 28px; font-weight: 600; text-decoration: none; letter-spacing: -0.02em;
 }
 .logo span { color: var(--gold); }
-.logo-mark { width: 28px; height: 28px; border-radius: 7px; display: block; }
+.logo-mark { width: 28px; height: 28px; border-radius: 7px; display: block; margin-right: 10px; }
 .nav-links { display: flex; gap: 18px; align-items: center; font-size: 14px; }
 .nav-links a { text-decoration: none; color: var(--muted); font-weight: 500; }
 .nav-links a:hover, .nav-links a.on { color: var(--ink); }

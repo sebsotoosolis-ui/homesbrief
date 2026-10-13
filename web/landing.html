@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HomesBrief — De las fotos al listing de lujo</title>
-  <meta name="description" content="HomesBrief genera fichas de lujo con IA: títulos, copy bilingüe, redes y estimado de renta. Pega un Airbnb o sube fotos. Para agencias e independientes en cualquier mercado." />
+  <title>HomesBrief — Herramienta de fichas para agentes y agencias de lujo</title>
+  <meta name="description" content="HomesBrief es la herramienta para agentes y agencias de real estate de lujo. Pegas un Airbnb o subes fotos y en un minuto tienes la ficha: copy en español e inglés, WhatsApp, Instagram, Facebook y estimado de renta." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://homesbrief.com/" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=4" />
@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#0b171f" />
-  <meta property="og:title" content="HomesBrief" />
-  <meta property="og:description" content="De las fotos al listing de lujo. Copy ES/EN, redes y tarifa. Listo para publicar." />
+  <meta property="og:title" content="HomesBrief — Herramienta para agentes y agencias de lujo" />
+  <meta property="og:description" content="Pegas el Airbnb o subes las fotos. En un minuto: ficha en español e inglés, WhatsApp, Instagram, Facebook y estimado de renta." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://homesbrief.com/" />
   <meta property="og:image" content="https://homesbrief.com/og.png?v=1" />
@@ -23,8 +23,8 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="HomesBrief" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="HomesBrief" />
-  <meta name="twitter:description" content="De las fotos al listing de lujo. Copy ES/EN, redes y tarifa. Listo para publicar." />
+  <meta name="twitter:title" content="HomesBrief — Herramienta para agentes y agencias de lujo" />
+  <meta name="twitter:description" content="Pegas el Airbnb o subes las fotos. En un minuto: ficha en español e inglés, WhatsApp, Instagram, Facebook y estimado de renta." />
   <meta name="twitter:image" content="https://homesbrief.com/og.png?v=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -47,11 +47,32 @@
       position: absolute; inset: 0;
       background: linear-gradient(180deg, rgba(11,23,31,.25) 0%, rgba(11,23,31,.55) 45%, rgba(11,23,31,.88) 100%);
     }
-    .hero-copy { position: relative; max-width: 720px; padding-bottom: 12px; }
+    .hero-copy { position: relative; max-width: 780px; padding-bottom: 8px; }
     .hero .kicker { color: var(--gold); }
-    .hero h1 { font-size: clamp(44px, 7vw, 88px); line-height: .9; margin: 16px 0 18px; color: white; }
-    .hero .lead { color: rgba(243, 238, 229, 0.82); font-size: 18px; }
-    .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .hero h1 {
+      font-size: clamp(42px, 5.4vw, 76px);
+      line-height: .92;
+      margin: 14px 0 18px;
+      color: white;
+    }
+    .hero .lead {
+      color: rgba(243, 238, 229, 0.9);
+      font-size: 18px;
+      max-width: 46ch;
+      line-height: 1.55;
+    }
+    .outs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .outs span {
+      border: 1px solid rgba(243, 238, 229, 0.28);
+      background: rgba(11, 23, 31, 0.35);
+      color: var(--sand);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
     .hero .btn-ghost { color: var(--sand); border-color: rgba(243,238,229,.35); }
     .hello-bar {
       display: none;
@@ -116,31 +137,39 @@
     <div class="hero-veil"></div>
     <div class="hero-copy">
       <p class="hello-bar" id="hello-bar"></p>
-      <div class="kicker">Pacífico mexicano · listing briefs</div>
-      <h1>De las fotos al listing de lujo.</h1>
-      <p class="lead">Títulos, copy bilingüe, redes y estimado de renta. Para agencias que venden costa. Pegas Airbnb o subes fotos. Publicas.</p>
+      <div class="kicker">Real estate de lujo</div>
+      <h1>La herramienta para agentes y agencias de lujo.</h1>
+      <p class="lead">Pegas el link de Airbnb o subes las fotos. En un minuto HomesBrief arma la ficha de la propiedad: títulos y copy en español e inglés, textos de WhatsApp, Instagram y Facebook, y un estimado de renta. Tú revisas, copias y publicas.</p>
+      <div class="outs">
+        <span>Español e inglés</span>
+        <span>WhatsApp</span>
+        <span>Instagram</span>
+        <span>Facebook</span>
+        <span>Estimado de renta</span>
+      </div>
       <div class="cta">
-        <a class="btn btn-gold" href="/registro">Empezar</a>
-        <a class="btn btn-ghost" href="/ejemplo">Ver Udara Bucerías</a>
+        <a class="btn btn-gold" href="/registro">Probar la herramienta</a>
+        <a class="btn btn-ghost" href="/ejemplo">Ver una ficha</a>
       </div>
     </div>
   </section>
 
   <section id="como">
-    <h3 class="section-title">Cómo funciona</h3>
-    <div class="grid-3 steps">
-      <article class="card"><b>Sube o pega</b><p>Fotos del depto o el link de Airbnb del cliente. Hasta 20 imágenes en HD.</p></article>
-      <article class="card"><b>Personaliza</b><p>Zona, venta o renta, precio que quieres comunicar y notas del agente.</p></article>
-      <article class="card"><b>Publica</b><p>Ficha bilingüe, WhatsApp, Instagram, Facebook, Reels y estimado de renta. Queda guardada en tu menú.</p></article>
+    <h3 class="section-title">Qué hace HomesBrief</h3>
+    <p class="lead">Un agente o una agencia mete la propiedad. HomesBrief devuelve lo que hoy se escribe a mano para cada canal.</p>
+    <div class="grid-3 steps" style="margin-top:28px">
+      <article class="card"><b>Metes la propiedad</b><p>Link de Airbnb o hasta 20 fotos. Zona, venta o renta, y las notas del agente.</p></article>
+      <article class="card"><b>Sale la ficha</b><p>Títulos y descripción en español e inglés, al nivel de una casa de lujo. No un texto genérico de portal.</p></article>
+      <article class="card"><b>Publicas</b><p>WhatsApp, Instagram, Facebook y Reels listos para copiar, más un estimado de renta. Queda en tu menú.</p></article>
     </div>
   </section>
 
   <section>
-    <h3 class="section-title">Hecho para vender más rápido</h3>
+    <h3 class="section-title">Para quién es</h3>
     <div class="grid-3">
-      <article class="card"><b>Copy de lujo</b><p>Tono premium, no plantillas genéricas de MLS. Adapta zona, idioma y precio que tú indiques.</p></article>
-      <article class="card"><b>Importa desde Airbnb</b><p>Baja las fotos HD del listing y arma el paquete sin recortar miniaturas.</p></article>
-      <article class="card"><b>Precio por temporada</b><p>Estimado de noche baja, alta y pico para hablarle al dueño con números.</p></article>
+      <article class="card"><b>Agentes de lujo</b><p>Cada casa se anuncia en WhatsApp, Instagram y el portal. La herramienta te ahorra esa hora y mantiene el tono de la propiedad.</p></article>
+      <article class="card"><b>Agencias</b><p>El equipo usa el mismo sistema: mismas fichas, mismo nivel de copy, guardadas por cuenta. Plan Agencia para varios usuarios.</p></article>
+      <article class="card"><b>No es un redactor</b><p>No te escribe una propiedad a mano. Es el sistema: pegas el listing y sale el paquete para publicar.</p></article>
     </div>
   </section>
 
@@ -220,7 +249,7 @@
   </section>
 
   <section class="band">
-    <h3>Tu siguiente listing, en el tiempo de un café.</h3>
+    <h3>Tu próximo listing, en el tiempo de un café.</h3>
     <p>Guarda cada casa en tu portafolio y ábrela cuando el cliente pregunte.</p>
     <p><a class="btn btn-gold" href="/registro">Crear cuenta</a></p>
   </section>
