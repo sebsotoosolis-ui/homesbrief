@@ -74,14 +74,24 @@
     }
     .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
     .hero .btn-ghost { color: var(--sand); border-color: rgba(243,238,229,.35); }
-    .hello-bar {
-      display: none;
-      margin: 0 0 18px;
-      color: rgba(243, 238, 229, 0.9);
-      font-size: 15px;
+    .home-in { display: none; }
+    body.signed-in .pitch { display: none; }
+    body.signed-in .market { display: none; }
+    body.signed-in .home-in {
+      display: block;
+      width: min(560px, 100%);
+      padding: 32px 32px 28px;
+      border-radius: 28px;
+      background: rgba(11, 23, 31, 0.82);
+      border: 1px solid rgba(243, 238, 229, 0.2);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+      backdrop-filter: blur(18px);
     }
-    .hello-bar.on { display: block; }
-    .hello-bar a { color: var(--gold); font-weight: 600; }
+    body.signed-in .hero-veil {
+      background: linear-gradient(180deg, rgba(11,23,31,.45) 0%, rgba(11,23,31,.55) 42%, rgba(11,23,31,.9) 100%);
+    }
+    .home-in h1 { margin-top: 12px; }
+    .home-in .lead { margin: 0; color: rgba(243, 238, 229, 0.92); }
     section { padding: 88px 7vw; }
     .section-title { font-size: clamp(34px, 4vw, 48px); margin-bottom: 28px; }
     .grid-3 { display: grid; gap: 16px; }
@@ -135,8 +145,7 @@
   <section class="hero">
     <img class="hero-bg" src="/demo/01.jpg" alt="" />
     <div class="hero-veil"></div>
-    <div class="hero-copy">
-      <p class="hello-bar" id="hello-bar"></p>
+    <div class="hero-copy pitch">
       <div class="kicker">Real estate de lujo</div>
       <h1>La herramienta para agentes y agencias de lujo.</h1>
       <p class="lead">Pegas el link de Airbnb o subes las fotos. En un minuto HomesBrief arma la ficha de la propiedad: títulos y copy en español e inglés, textos de WhatsApp, Instagram y Facebook, y un estimado de renta. Tú revisas, copias y publicas.</p>
@@ -152,9 +161,18 @@
         <a class="btn btn-ghost" href="/ejemplo">Ver una ficha</a>
       </div>
     </div>
+    <div class="hero-copy home-in">
+      <div class="kicker">Tu cuenta</div>
+      <h1 id="hello-name">Hola.</h1>
+      <p class="lead">Cuando tengas la propiedad, la ficha sale en un minuto.</p>
+      <div class="cta">
+        <a class="btn btn-gold" href="/app">Nueva ficha</a>
+        <a class="btn btn-ghost" href="/fichas">Mis propiedades</a>
+      </div>
+    </div>
   </section>
 
-  <section id="como">
+  <section id="como" class="market">
     <h3 class="section-title">Qué hace HomesBrief</h3>
     <p class="lead">Un agente o una agencia mete la propiedad. HomesBrief devuelve lo que hoy se escribe a mano para cada canal.</p>
     <div class="grid-3 steps" style="margin-top:28px">
@@ -164,7 +182,7 @@
     </div>
   </section>
 
-  <section>
+  <section class="market">
     <h3 class="section-title">Para quién es</h3>
     <div class="grid-3">
       <article class="card"><b>Agentes de lujo</b><p>Cada casa se anuncia en WhatsApp, Instagram y el portal. La herramienta te ahorra esa hora y mantiene el tono de la propiedad.</p></article>
@@ -173,7 +191,7 @@
     </div>
   </section>
 
-  <section id="precios">
+  <section id="precios" class="market">
     <h3 class="section-title">Precios</h3>
     <div class="grid-3">
       <article class="card">
@@ -209,7 +227,7 @@
     </div>
   </section>
 
-  <section id="fundadores">
+  <section id="fundadores" class="market">
     <h3 class="section-title">Programa fundador · 10 agencias</h3>
     <p class="lead">Plan Agencia sin pagar durante la beta ($149/mes). A cambio, lo usas de verdad y me dices qué falla. Si no sirve, no debes nada.</p>
     <div class="grid-3" style="margin-top:24px">
@@ -229,7 +247,7 @@
     </div>
   </section>
 
-  <section id="contacto">
+  <section id="contacto" class="market">
     <h3 class="section-title">Contacto</h3>
     <p class="lead">Beta, demos o una ficha de prueba. Escríbeme o mándame WhatsApp.</p>
     <div class="grid-3" style="margin-top:24px">
@@ -248,7 +266,7 @@
     </div>
   </section>
 
-  <section class="band">
+  <section class="band market">
     <h3>Tu próximo listing, en el tiempo de un café.</h3>
     <p>Guarda cada casa en tu portafolio y ábrela cuando el cliente pregunte.</p>
     <p><a class="btn btn-gold" href="/registro">Crear cuenta</a></p>
@@ -264,14 +282,9 @@
     bootClerk().then((clerk) => {
       mountSignedInNav(clerk);
       if (!clerk.isSignedIn) return;
+      document.body.classList.add('signed-in');
       const name = clerkDisplayName(clerk);
-      const bar = document.getElementById('hello-bar');
-      bar.classList.add('on');
-      const link = document.createElement('a');
-      link.href = '/app';
-      link.textContent = name ? '¿Qué propiedad preparamos hoy?' : 'Continuar a tus fichas';
-      if (name) bar.append(document.createTextNode('Hola, ' + name + '. '));
-      bar.append(link);
+      document.getElementById('hello-name').textContent = name ? 'Hola, ' + name + '.' : 'Hola.';
     }).catch(() => {});
   </script>
 </body>
