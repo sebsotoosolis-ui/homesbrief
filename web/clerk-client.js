@@ -30,7 +30,7 @@ async function bootClerk(redirectTo = '/app') {
   fetch('/health').catch(() => {});
   const config = await fetch('/api/clerk-config').then((response) => response.json());
   if (!config.publishableKey) {
-    throw new Error('Falta configurar Clerk. Añade CLERK_PUBLISHABLE_KEY en Render.');
+    throw new Error('No se pudo abrir el registro.');
   }
   const frontendApi = clerkFrontendApi(config.publishableKey);
   await loadScript(`https://${frontendApi}/npm/@clerk/ui@1/dist/ui.browser.js`);
@@ -62,6 +62,17 @@ function clerkDisplayName(clerk) {
   const local = email.split('@')[0].replace(/[._-]+/g, ' ').trim();
   if (!local) return '';
   return local.charAt(0).toUpperCase() + local.slice(1);
+}
+
+async function applySavedName(clerk) {
+  const user = clerk?.user;
+  const saved = sessionStorage.getItem('homesbrief-name')?.trim() || '';
+  if (user && saved && !String(user.firstName || '').trim()) {
+    await user.update({ firstName: saved });
+    sessionStorage.removeItem('homesbrief-name');
+    return saved;
+  }
+  return clerkDisplayName(clerk);
 }
 
 function greetSignedIn(clerk, { hello, lead, namedLead }) {

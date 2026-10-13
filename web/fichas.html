@@ -63,6 +63,7 @@
         return;
       }
       mountSignedInNav(clerk);
+      await applySavedName(clerk);
       greetSignedIn(clerk, {
         hello: document.getElementById('hello'),
         lead: document.getElementById('hello-lead'),

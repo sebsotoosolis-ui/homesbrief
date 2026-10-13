@@ -279,11 +279,11 @@
   <script src="/clerk-client.js"></script>
   <script>
     fetch('/health').catch(() => {});
-    bootClerk().then((clerk) => {
+    bootClerk().then(async (clerk) => {
       mountSignedInNav(clerk);
       if (!clerk.isSignedIn) return;
       document.body.classList.add('signed-in');
-      const name = clerkDisplayName(clerk);
+      const name = await applySavedName(clerk);
       const hello = document.getElementById('hello-name');
       hello.textContent = name ? 'Hola, ' + name + '.' : 'Hola.';
       hello.closest('.home-in').hidden = false;
