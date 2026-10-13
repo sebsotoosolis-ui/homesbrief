@@ -8,7 +8,7 @@ export function writeListingPage(listing, { photoDir } = {}) {
   writeFileSync(join(process.cwd(), 'web', 'ficha.json'), JSON.stringify(listing, null, 2), 'utf8');
 }
 
-export function renderHtml(listing, { mediaPrefix = '/media', chrome = false } = {}) {
+export function renderHtml(listing, { mediaPrefix = '/media', chrome = false, home = false } = {}) {
   const photos = listing.meta?.photos ?? [];
   const media = (name) => `${mediaPrefix}/${encodeURIComponent(name)}`;
   const rent = listing.rent_estimate;
@@ -98,12 +98,15 @@ export function renderHtml(listing, { mediaPrefix = '/media', chrome = false } =
     .chrome .logo { font-family: "Cormorant Garamond", serif; font-size: 22px; }
     .chrome nav { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
     .chrome .gold { color: var(--gold); }
+    .chrome .home {
+      background: var(--navy); color: white !important; border-radius: 999px; padding: 8px 14px;
+    }
     .chrome .logo { display: inline-flex; align-items: center; gap: 8px; }
     .chrome .logo img { width: 22px; height: 22px; border-radius: 6px; }
   </style>
 </head>
 <body>
-  ${chrome ? `<div class="chrome"><a class="logo" href="/"><img src="/logo.svg" alt="" />HomesBrief</a><nav><a href="/fichas">Mis propiedades</a><a class="gold" href="/app">Nueva ficha</a><a href="https://wa.me/524422198327?text=${encodeURIComponent('Hola Seb, ya usé HomesBrief. Feedback: 1) qué sirvió 2) qué está mal 3) qué me faltó.')}">Feedback</a></nav></div>` : ''}
+  ${home ? `<div class="chrome"><a class="logo" href="/"><img src="/logo.svg" alt="" />HomesBrief</a><nav><a class="home" href="/">Inicio</a></nav></div>` : chrome ? `<div class="chrome"><a class="logo" href="/"><img src="/logo.svg" alt="" />HomesBrief</a><nav><a href="/fichas">Mis propiedades</a><a class="gold" href="/app">Nueva ficha</a><a href="https://wa.me/524422198327?text=${encodeURIComponent('Hola Seb, ya usé HomesBrief. Feedback: 1) qué sirvió 2) qué está mal 3) qué me faltó.')}">Feedback</a></nav></div>` : ''}
   <header class="hero">
     <div class="kicker">HomesBrief · listing brief</div>
     <h1 class="es">${esc(listing.titles?.es)}</h1>

@@ -134,7 +134,7 @@ app.get('/ejemplo', (_req, res) => {
     return;
   }
   const listing = JSON.parse(readFileSync(demo, 'utf8'));
-  res.type('html').send(renderHtml(listing, { mediaPrefix: '/demo' }));
+  res.type('html').send(renderHtml(listing, { mediaPrefix: '/demo', home: true }));
 });
 
 app.get('/ficha', requireUser, (req, res) => {
