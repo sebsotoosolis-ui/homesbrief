@@ -31,7 +31,7 @@ export function renderHtml(listing, { mediaPrefix = '/media', chrome = false, ho
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --navy: #0b171f;
@@ -48,7 +48,7 @@ export function renderHtml(listing, { mediaPrefix = '/media', chrome = false, ho
       background: var(--sand);
       color: var(--ink);
     }
-    h1, h2, h3 { font-family: Fraunces, Palatino, Georgia, serif; font-weight: 600; margin: 0; letter-spacing: -0.03em; }
+    h1, h2, h3 { font-family: "Playfair Display", Palatino, Georgia, serif; font-weight: 600; margin: 0; letter-spacing: -0.03em; }
     .hero {
       min-height: 78vh;
       background:
@@ -114,7 +114,7 @@ export function renderHtml(listing, { mediaPrefix = '/media', chrome = false, ho
       background: #c4a265; color: #0b171f !important; border-radius: 999px; padding: 10px 16px;
       box-shadow: 0 12px 26px rgba(196, 162, 101, .32);
     }
-    .chrome .logo { display: inline-flex; align-items: center; gap: 8px; font-family: Fraunces, Palatino, Georgia, serif; font-size: 28px; font-weight: 600; letter-spacing: -0.03em; }
+    .chrome .logo { display: inline-flex; align-items: center; gap: 8px; font-family: "Playfair Display", Palatino, Georgia, serif; font-size: 28px; font-weight: 600; letter-spacing: -0.03em; }
     .chrome .logo img { width: 24px; height: 24px; border-radius: 6px; }
     @media (max-width: 720px) {
       .hero { min-height: 0; padding: 88px 20px 28px; }

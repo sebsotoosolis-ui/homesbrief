@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Outfit:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Outfit:wght@300;400;500;600;700&display=swap");
 
 :root {
   --navy: #0b171f;
@@ -41,7 +41,7 @@ a { color: inherit; }
 .nav-dark .btn-ghost { border-color: rgba(243, 238, 229, 0.28); color: var(--sand); }
 .logo {
   display: inline-flex; align-items: center; gap: 0;
-  font-family: Fraunces, Palatino, Georgia, serif;
+  font-family: "Playfair Display", Palatino, Georgia, serif;
   font-size: 30px; font-weight: 600; text-decoration: none; letter-spacing: -0.03em;
   white-space: nowrap;
 }
@@ -74,7 +74,7 @@ a { color: inherit; }
 }
 .btn:disabled { opacity: .55; cursor: wait; transform: none; box-shadow: none; }
 .kicker { letter-spacing: .2em; text-transform: uppercase; font-size: 11px; color: var(--gold); font-weight: 700; }
-h1, h2, h3 { font-family: Fraunces, Palatino, Georgia, serif; font-weight: 600; margin: 0; letter-spacing: -0.03em; }
+h1, h2, h3 { font-family: "Playfair Display", Palatino, Georgia, serif; font-weight: 600; margin: 0; letter-spacing: -0.03em; }
 .lead { font-size: 17px; color: var(--muted); line-height: 1.65; max-width: 52ch; }
 .sheet {
   width: min(760px, calc(100% - 40px));
