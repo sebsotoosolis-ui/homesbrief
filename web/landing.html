@@ -475,10 +475,21 @@
       box-shadow: 0 30px 70px rgba(11, 23, 31, .08);
       padding: 16px;
     }
-    .specimen-photos { display: grid; grid-template-columns: 1.35fr .8fr; grid-template-rows: 1fr 1fr; gap: 8px; min-height: 440px; }
-    .specimen-photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .specimen-photos {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, .8fr);
+      grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 8px;
+      height: 440px;
+      overflow: hidden;
+    }
+    .specimen-photos img {
+      width: 100%; height: 100%; min-width: 0; min-height: 0;
+      max-height: 100%; object-fit: cover; display: block;
+    }
     .specimen-photos img:first-child { grid-row: 1 / span 2; }
-    .specimen-copy { padding: 22px 18px 16px 10px; display: flex; flex-direction: column; }
+    .hero-text { position: relative; z-index: 2; }
+    .specimen-copy { position: relative; z-index: 1; padding: 22px 18px 16px 10px; display: flex; flex-direction: column; }
     .specimen-copy h3 { font-size: clamp(30px, 2.8vw, 42px); line-height: .96; margin: 12px 0 10px; }
     .specimen-copy .en-line { margin: 0 0 12px; font-family: "Bodoni Moda", Didot, serif; font-style: italic; font-size: 20px; color: var(--gold-deep); line-height: 1.25; }
     .specimen-copy .where { margin: 0 0 14px; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
@@ -558,12 +569,28 @@
       to { transform: scale(1.12) translate3d(-1.4%, -1%, 0); }
     }
     @media (max-width: 860px) {
-      .nav { padding: 12px 5vw; padding-top: max(12px, env(safe-area-inset-top)); }
-      .logo { font-size: 26px; }
-      .nav-toggle { display: inline-flex; }
-      .nav .btn { padding: 11px 12px; }
+      .nav {
+        padding: 10px 12px;
+        padding-top: max(10px, env(safe-area-inset-top));
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 8px;
+        min-height: 60px;
+      }
+      .logo { font-size: 21px; flex: 0 1 auto; min-width: 0; overflow: hidden; }
+      .logo-mark { width: 20px; height: 20px; margin-right: 6px; }
+      .nav-toggle { display: inline-flex; flex: 0 0 auto; width: 40px; height: 40px; margin-left: 0; }
+      .nav .btn { padding: 8px 11px; font-size: 13px; white-space: nowrap; }
+      .nav-links { flex: 0 0 auto; flex-wrap: nowrap; gap: 8px; min-width: 0; margin-left: auto; }
       .nav-links a:not(.btn) { display: none; }
-      .nav-links:not(.off) { display: flex; align-items: center; }
+      .nav-links:not(.off) {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+      }
+      #user-button { flex: 0 0 auto; }
       body.nav-open .nav-links:not(.off) {
         position: absolute;
         top: 100%;
@@ -599,7 +626,7 @@
       #precios .featured { transform: none; }
       footer { gap: 8px; }
       .specimen, .compare, .facts-row { grid-template-columns: 1fr; }
-      .specimen-photos { min-height: 260px; }
+      .specimen-photos { height: 220px; }
       .specimen-copy { padding: 8px 6px 12px; }
       .facts { padding: 36px 5vw; }
       .faq summary { font-size: 24px; }

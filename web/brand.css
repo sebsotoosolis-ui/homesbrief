@@ -108,9 +108,24 @@ textarea { min-height: 96px; resize: vertical; }
   background: rgba(196, 162, 101, .08);
 }
 @media (max-width: 720px) {
-  .nav { padding: 12px 5vw; }
-  .nav-links { gap: 8px 12px; }
-  .logo { font-size: 26px; }
+  .nav {
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 8px;
+    column-gap: 12px;
+  }
+  .logo { font-size: 24px; flex: 1 1 auto; min-width: 0; max-width: 100%; }
+  .nav-links {
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px 14px;
+    min-width: 0;
+  }
+  .nav-links a { white-space: nowrap; }
+  #user-button { flex: 0 0 auto; margin-left: auto; }
   .sheet { padding: 24px 18px; width: min(760px, calc(100% - 24px)); }
   .btn { padding: 12px 18px; }
 }

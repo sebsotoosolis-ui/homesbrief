@@ -63,7 +63,7 @@ export function renderHtml(listing, { mediaPrefix = '/media', chrome = false, ho
     .kicker { letter-spacing: .22em; text-transform: uppercase; font-size: 11px; color: var(--gold); font-weight: 700; }
     .hero h1 { font-size: clamp(36px, 5vw, 68px); max-width: 16ch; line-height: .92; margin: 14px 0 16px; }
     .meta { opacity: .9; margin: 0; }
-    .pills { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: -22px auto 28px; width: min(1120px, calc(100% - 40px)); }
+    .pills { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 18px auto 28px; width: min(1120px, calc(100% - 40px)); position: relative; z-index: 1; }
     .pill { background: white; border-radius: 999px; padding: 10px 16px; box-shadow: 0 10px 26px rgba(11,23,31,.08); font-size: 14px; }
     section {
       background: var(--paper);
@@ -76,8 +76,8 @@ export function renderHtml(listing, { mediaPrefix = '/media', chrome = false, ho
     }
     .row { display: grid; gap: 22px; }
     @media (min-width: 860px) { .row-2 { grid-template-columns: 1.2fr .8fr; } .gallery { grid-template-columns: repeat(4, 1fr); } }
-    .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .gallery img { width: 100%; height: 160px; object-fit: cover; border-radius: 14px; }
+    .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; min-width: 0; }
+    .gallery img { width: 100%; height: 160px; max-width: 100%; object-fit: cover; display: block; border-radius: 14px; }
     .copy { white-space: pre-wrap; line-height: 1.65; }
     .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
     button.copy, .lang {
@@ -117,11 +117,26 @@ export function renderHtml(listing, { mediaPrefix = '/media', chrome = false, ho
     .chrome .logo { display: inline-flex; align-items: center; gap: 8px; font-family: "Bodoni Moda", Didot, serif; font-size: 28px; font-weight: 500; letter-spacing: -0.03em; }
     .chrome .logo img { width: 24px; height: 24px; border-radius: 6px; }
     @media (max-width: 720px) {
-      .hero { min-height: 0; padding: 92px 5vw 36px; }
-      .hero h1 { font-size: 34px; }
-      section { padding: 20px; }
-      .gallery img { height: 120px; }
-      .chrome { align-items: flex-start; }
+      .hero { min-height: 0; padding: 88px 20px 28px; }
+      .hero h1 { font-size: 32px; max-width: none; }
+      section { padding: 20px; overflow: hidden; }
+      .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .gallery img { height: 112px; }
+      .pills { width: calc(100% - 32px); margin: 16px auto 20px; }
+      .chrome {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        column-gap: 10px;
+        row-gap: 10px;
+        padding: 12px 16px;
+      }
+      .chrome nav { display: contents; }
+      .chrome .logo { grid-column: 1; grid-row: 1; font-size: 24px; min-width: 0; }
+      .chrome a.gold, .chrome a.home { grid-column: 2; grid-row: 1; justify-self: end; padding: 9px 12px; white-space: nowrap; }
+      .chrome a:not(.logo):not(.gold):not(.home) { grid-row: 2; white-space: nowrap; }
+      .chrome a[href="/fichas"] { grid-column: 1; justify-self: start; }
+      .chrome a[href^="https://wa.me"] { grid-column: 2; justify-self: end; }
     }
   </style>
 </head>
