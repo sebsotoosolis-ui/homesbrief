@@ -28,99 +28,522 @@
   <meta name="twitter:image" content="https://homesbrief.com/og.png?v=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/brand.css" />
+  <script>document.documentElement.classList.add("js");</script>
   <style>
+    :root {
+      --ivory: #f4efe6;
+      --paper: #fffdf8;
+      --ink: #14242e;
+      --navy: #0b171f;
+      --gold: #c4a265;
+      --gold-deep: #8d6d38;
+      --sand: #f3eee6;
+      --muted: #5e6c74;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+    body {
+      font-family: Outfit, system-ui, sans-serif;
+      background: var(--ivory);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+    h1, h2, h3, .logo { font-family: "Bodoni Moda", Didot, "Times New Roman", serif; font-weight: 500; }
+    ::selection { background: rgba(196, 162, 101, .35); }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 40;
+      padding: 16px 5.5vw;
+      padding-top: max(16px, env(safe-area-inset-top));
+      background: rgba(11, 23, 31, .78);
+      backdrop-filter: blur(18px) saturate(1.2);
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      transition: background .4s var(--ease);
+    }
+    .nav.is-stuck { background: rgba(11, 23, 31, .94); }
+    .logo {
+      font-size: 30px;
+      letter-spacing: -0.03em;
+      color: var(--sand);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .logo span { color: var(--gold); font-style: italic; }
+    .logo-mark { width: 26px; height: 26px; border-radius: 6px; margin-right: 10px; }
+    .nav-links { gap: 22px; font-size: 12px; }
+    .nav-links a:not(.btn) {
+      display: inline;
+      color: rgba(243, 238, 229, .78);
+      font-weight: 500;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-size: 11px;
+      position: relative;
+    }
+    .nav-dark .nav-links a:hover,
+    .nav-links a:not(.btn):hover { color: white; }
+    @media (min-width: 861px) {
+      .nav-links a:not(.btn)::after {
+        content: "";
+        position: absolute;
+        left: 0; bottom: -6px;
+        width: 100%; height: 1px;
+        background: var(--gold);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .4s var(--ease);
+      }
+      .nav-links a:not(.btn):hover::after { transform: scaleX(1); }
+    }
+    #user-button { display: flex; align-items: center; }
+    .nav-toggle {
+      display: none;
+      width: 44px; height: 44px;
+      margin-left: 8px;
+      border: 1px solid rgba(243, 238, 229, .28);
+      background: transparent;
+      padding: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 16px; height: 1px;
+      background: var(--sand);
+      transition: transform .35s var(--ease);
+    }
+    body.nav-open .nav-toggle span:first-child { transform: translateY(3.5px) rotate(40deg); }
+    body.nav-open .nav-toggle span:last-child { transform: translateY(-3.5px) rotate(-40deg); }
+    .btn {
+      border-radius: 2px;
+      padding: 13px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      transition: transform .35s var(--ease), background .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+    }
+    .btn-gold {
+      background: #c4a265;
+      color: var(--navy);
+      box-shadow: 0 10px 28px rgba(196, 162, 101, .18);
+    }
+    .btn-ghost {
+      border: 1px solid rgba(20, 36, 46, .2);
+      color: var(--ink);
+      background: transparent;
+    }
+    @media (hover: hover) {
+      .btn-gold:hover { transform: translateY(-2px); background: #d2b378; box-shadow: 0 14px 32px rgba(196, 162, 101, .28); }
+      .btn-ghost:hover { transform: translateY(-2px); border-color: var(--gold-deep); }
+    }
     .hero {
       position: relative;
-      min-height: 92vh;
+      min-height: 100svh;
       display: flex;
-      align-items: flex-end;
-      padding: 0 7vw 72px;
+      align-items: center;
+      padding: 128px 5.5vw 72px;
       color: var(--sand);
       overflow: hidden;
     }
     .hero-bg {
-      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 42%;
+      transform: scale(1.06);
+      animation: drift 32s ease-in-out infinite alternate;
     }
     .hero-veil {
       position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(11,23,31,.25) 0%, rgba(11,23,31,.55) 45%, rgba(11,23,31,.88) 100%);
+      background:
+        linear-gradient(90deg, rgba(7, 13, 18, .9) 0%, rgba(7, 13, 18, .74) 38%, rgba(7, 13, 18, .42) 70%, rgba(7, 13, 18, .34) 100%),
+        linear-gradient(180deg, rgba(7, 13, 18, .5) 0%, rgba(7, 13, 18, .08) 32%, rgba(7, 13, 18, .4) 100%);
     }
-    .hero-copy { position: relative; max-width: 780px; padding-bottom: 8px; }
-    .hero .kicker { color: var(--gold); }
-    .hero h1 {
-      font-size: clamp(42px, 5.4vw, 76px);
-      line-height: .92;
-      margin: 14px 0 18px;
-      color: white;
+    .hero-copy { position: relative; z-index: 1; width: min(1180px, 100%); margin: 0 auto; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(260px, .88fr);
+      gap: 48px 56px;
+      align-items: center;
     }
-    .hero .lead {
-      color: rgba(243, 238, 229, 0.9);
-      font-size: 18px;
-      max-width: 46ch;
-      line-height: 1.55;
-    }
-    .outs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
-    .outs span {
-      border: 1px solid rgba(243, 238, 229, 0.28);
-      background: rgba(11, 23, 31, 0.35);
-      color: var(--sand);
-      border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 12px;
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      letter-spacing: .28em;
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: .02em;
+      color: var(--gold);
     }
-    .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
-    .hero .btn-ghost { color: var(--sand); border-color: rgba(243,238,229,.35); }
+    .kicker::before {
+      content: "";
+      width: 36px; height: 1px;
+      background: var(--gold);
+      transform-origin: left;
+      animation: grow .9s .05s var(--ease) both;
+    }
+    .hero h1 {
+      font-size: clamp(48px, 5.5vw, 84px);
+      line-height: .9;
+      letter-spacing: -0.03em;
+      margin: 18px 0 20px;
+      color: white;
+      max-width: 10.4em;
+      text-wrap: balance;
+    }
+    .hero h1 em { font-style: italic; font-weight: 500; color: #f6ecd9; }
+    .hero .lead {
+      color: rgba(243, 238, 229, .9);
+      font-size: 17.5px;
+      font-weight: 400;
+      line-height: 1.6;
+      max-width: 44ch;
+    }
+    .outs {
+      display: grid;
+      grid-template-columns: repeat(2, max-content);
+      gap: 10px 32px;
+      margin-top: 26px;
+    }
+    .outs span {
+      border: 0;
+      background: none;
+      border-radius: 0;
+      padding: 0;
+      color: rgba(243, 238, 229, .9);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .outs span::before {
+      content: "";
+      display: inline-block;
+      width: 16px; height: 1px;
+      margin-right: 10px;
+      background: var(--gold);
+      vertical-align: middle;
+    }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .hero .btn-ghost {
+      color: var(--sand);
+      border-color: rgba(243, 238, 229, .4);
+      background: rgba(11, 23, 31, .2);
+    }
     .home-in[hidden] { display: none !important; }
-    .home-in {
-      display: none;
-      width: min(560px, 100%);
-      margin: 0 0 28px;
-      padding: 22px 22px 20px;
-      border-radius: 24px;
-      background: rgba(11, 23, 31, 0.88);
-      border: 1px solid rgba(243, 238, 229, 0.22);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
-    }
+    .home-in { display: none; width: min(560px, 100%); margin: 0 0 28px; padding: 20px 22px 18px; background: rgba(11, 23, 31, .55); border: 1px solid rgba(196, 162, 101, .4); backdrop-filter: blur(16px); }
     body.signed-in .home-in { display: block; }
     .hero .home-in h1 {
       margin: 8px 0 0;
-      font-size: clamp(36px, 4vw, 52px);
+      font-size: clamp(34px, 4vw, 48px);
+      max-width: none;
       color: white;
     }
-    .hero .home-in .lead { margin: 8px 0 0; color: rgba(243, 238, 229, 0.92); font-size: 16px; max-width: none; }
-    section { padding: 88px 7vw; }
-    .section-title { font-size: clamp(34px, 4vw, 48px); margin-bottom: 28px; }
-    .grid-3 { display: grid; gap: 16px; }
+    .hero .home-in .lead { margin: 8px 0 0; color: rgba(243, 238, 229, .92); font-size: 16px; max-width: none; }
+    .dossier { position: relative; justify-self: end; width: min(400px, 100%); }
+    .dossier-main {
+      margin: 0;
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border: 1px solid rgba(243, 238, 229, .22);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .38);
+    }
+    .dossier-main img, .dossier-sub { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .dossier-main figcaption {
+      position: absolute;
+      top: 14px; right: 14px;
+      margin: 0;
+      padding: 10px 12px;
+      background: rgba(11, 23, 31, .72);
+      border: 1px solid rgba(196, 162, 101, .5);
+      backdrop-filter: blur(10px);
+      color: var(--sand);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .dossier-sub {
+      position: absolute;
+      width: 42%;
+      aspect-ratio: 1;
+      height: auto;
+      left: -8%;
+      bottom: 8%;
+      border: 3px solid rgba(11, 23, 31, .9);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .4);
+    }
+    .frame { width: min(1120px, 100%); margin: 0 auto; }
+    section { padding: 108px 5.5vw; }
+    #como, #precios, #fundadores, #contacto { scroll-margin-top: 84px; }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      gap: 24px 48px;
+      align-items: end;
+      margin-bottom: 48px;
+    }
+    .section-head:not(:has(.lead)) { grid-template-columns: 1fr; }
+    .section-head .lead { margin: 0 0 8px; justify-self: end; max-width: 38ch; }
+    .section-title {
+      font-size: clamp(40px, 4.6vw, 64px);
+      line-height: .94;
+      letter-spacing: -0.03em;
+      margin: 0;
+      text-wrap: balance;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .section-title::before {
+      content: "";
+      width: 36px; height: 1px;
+      background: var(--gold);
+    }
+    .lead { font-size: 16.5px; line-height: 1.65; color: var(--muted); }
+    .who, #contacto { background: var(--paper); }
+    .grid-3 { display: grid; gap: 22px 36px; }
     @media (min-width: 800px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
     .card {
-      background: var(--paper); border-radius: 24px; padding: 26px;
-      box-shadow: 0 10px 30px rgba(11,23,31,.04);
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      border-top: 1px solid rgba(20, 36, 46, .14);
+      padding: 26px 18px 6px 0;
+      box-shadow: none;
     }
-    .card b { display: block; margin-bottom: 8px; font-size: 16px; }
-    .card p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .card b {
+      display: block;
+      margin: 0 0 12px;
+      font-family: "Bodoni Moda", Didot, serif;
+      font-weight: 500;
+      font-size: clamp(26px, 2vw, 32px);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: var(--navy);
+    }
+    .card p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 15.5px; }
     .steps { counter-reset: step; }
     .steps article { counter-increment: step; }
     .steps article::before {
-      content: counter(step); display: inline-flex; width: 28px; height: 28px; border-radius: 50%;
-      background: var(--navy); color: white; align-items: center; justify-content: center;
-      font-size: 13px; margin-bottom: 14px; font-weight: 700;
+      content: counter(step, decimal-leading-zero);
+      display: block;
+      width: auto; height: auto;
+      margin-bottom: 18px;
+      background: none;
+      border-radius: 0;
+      color: var(--gold-deep);
+      font-family: "Bodoni Moda", Didot, serif;
+      font-size: 42px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 1;
     }
-    .price { font-size: 40px; font-weight: 700; margin: 10px 0 16px; }
-    .price span { font-size: 14px; font-weight: 500; color: var(--muted); }
-    .featured { outline: 1.5px solid var(--gold); }
-    .card ul { margin: 0 0 18px; padding-left: 18px; color: var(--muted); }
-    .card li { margin: 8px 0; }
-    .band { background: var(--navy); color: var(--sand); text-align: center; }
-    .band h3 { color: white; font-size: clamp(32px, 4vw, 46px); margin-bottom: 10px; }
-    footer { padding: 28px 7vw 48px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    footer a, #contacto a { color: var(--gold); text-decoration: none; font-weight: 600; }
-    @media (max-width: 720px) {
-      .hero { padding: 0 5vw 56px; min-height: 86vh; }
-      section { padding: 52px 5vw; }
+    #precios .grid-3 { align-items: stretch; padding-top: 8px; }
+    #precios .card {
+      display: flex;
+      flex-direction: column;
+      background: rgba(255, 253, 248, .72);
+      border: 1px solid rgba(20, 36, 46, .08);
+      border-radius: 2px;
+      padding: 32px 28px 28px;
+      box-shadow: 0 24px 50px rgba(11, 23, 31, .04);
+    }
+    #precios .card > div:first-child {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold-deep);
+    }
+    #precios .price {
+      font-family: "Bodoni Moda", Didot, serif;
+      font-weight: 500;
+      font-size: clamp(56px, 5vw, 72px);
+      letter-spacing: -0.035em;
+      line-height: .9;
+      margin: 22px 0 8px;
+      color: var(--navy);
+    }
+    #precios .price span {
+      display: block;
+      margin-top: 10px;
+      font-family: Outfit, system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    #precios .card ul { list-style: none; margin: 18px 0 24px; padding: 0; flex: 1; }
+    #precios .card li {
+      margin: 0;
+      padding: 12px 0;
+      border-top: 1px solid rgba(20, 36, 46, .08);
+      color: var(--ink);
+      font-size: 15px;
+    }
+    #precios .card p:last-child { margin-top: auto; }
+    #precios .featured {
+      background: var(--navy);
+      color: var(--sand);
+      border-color: rgba(196, 162, 101, .65);
+      box-shadow: 0 30px 70px rgba(11, 23, 31, .18);
+      outline: none;
+    }
+    #precios .featured > div:first-child { color: var(--gold); }
+    #precios .featured .price { color: white; }
+    #precios .featured .price span,
+    #precios .featured li { color: rgba(243, 238, 229, .78); }
+    #precios .featured li { border-top-color: rgba(243, 238, 229, .12); }
+    @media (min-width: 800px) {
+      #precios .featured { transform: translateY(-16px); }
+    }
+    #fundadores { background: var(--navy); color: var(--sand); }
+    #fundadores .section-title { color: white; }
+    #fundadores .lead { color: rgba(243, 238, 229, .76); }
+    #fundadores .card {
+      background: transparent;
+      border: 0;
+      border-top: 1px solid rgba(196, 162, 101, .45);
+      box-shadow: none;
+      border-radius: 0;
+    }
+    #fundadores .card b { color: white; }
+    #fundadores .card p { color: rgba(243, 238, 229, .74); }
+    #fundadores .card p + p { margin-top: 22px; }
+    #contacto .card b {
+      font-family: Outfit, system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold-deep);
+    }
+    #contacto a {
+      font-family: "Bodoni Moda", Didot, serif;
+      font-size: clamp(26px, 2.2vw, 34px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    #contacto a:hover { color: var(--gold-deep); }
+    .band {
+      position: relative;
+      overflow: hidden;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: var(--navy);
+      padding: 96px 5.5vw;
+    }
+    .band-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 70%; }
+    .band-veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7, 13, 18, .72), rgba(7, 13, 18, .5) 45%, rgba(7, 13, 18, .78)); }
+    .band-copy { position: relative; z-index: 1; }
+    .band h3 {
+      color: white;
+      font-size: clamp(40px, 5vw, 68px);
+      line-height: .94;
+      letter-spacing: -0.03em;
+      max-width: 14ch;
+      margin: 0 auto;
+      text-wrap: balance;
+    }
+    .band p { color: rgba(243, 238, 229, .84); margin: 16px auto 0; max-width: 38ch; font-size: 17px; line-height: 1.55; }
+    .band .btn { margin-top: 8px; }
+    footer {
+      background: #070e13;
+      color: rgba(243, 238, 229, .62);
+      padding: 28px 5.5vw max(36px, env(safe-area-inset-bottom));
+      font-size: 12px;
+      letter-spacing: .03em;
+    }
+    footer a { color: var(--sand); text-decoration: none; font-weight: 500; }
+    footer a:hover { color: var(--gold); }
+    .rise { animation: rise 1s var(--ease) both; }
+    .d1 { animation-delay: .1s; }
+    .d2 { animation-delay: .22s; }
+    .d3 { animation-delay: .34s; }
+    .d4 { animation-delay: .46s; }
+    .js .reveal { opacity: 0; transform: translateY(22px); }
+    .js .reveal.on { opacity: 1; transform: none; transition: opacity .9s var(--ease), transform .9s var(--ease); }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes drift {
+      from { transform: scale(1.06) translate3d(0, 0, 0); }
+      to { transform: scale(1.12) translate3d(-1.4%, -1%, 0); }
+    }
+    @media (max-width: 860px) {
+      .nav { padding: 12px 5vw; padding-top: max(12px, env(safe-area-inset-top)); }
+      .logo { font-size: 26px; }
+      .nav-toggle { display: inline-flex; }
+      .nav .btn { padding: 11px 12px; }
+      .nav-links a:not(.btn) { display: none; }
+      .nav-links:not(.off) { display: flex; align-items: center; }
+      body.nav-open .nav-links:not(.off) {
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        display: flex !important;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 6px 5vw 18px;
+        background: rgba(8, 16, 22, .98);
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+      }
+      body.nav-open .nav-links:not(.off) a:not(.btn) {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+        border-bottom: 1px solid rgba(255, 255, 255, .06);
+      }
+      body.nav-open .nav-links:not(.off) .btn { margin-top: 14px; align-self: flex-start; }
+      .hero { align-items: flex-start; padding: 108px 5vw 56px; }
+      .hero-veil {
+        background: linear-gradient(180deg, rgba(7, 13, 18, .62) 0%, rgba(7, 13, 18, .7) 42%, rgba(7, 13, 18, .86) 100%);
+      }
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+      .hero h1 { font-size: clamp(44px, 12vw, 58px); max-width: 10em; }
+      .outs { grid-template-columns: 1fr; gap: 9px; }
+      .dossier { justify-self: stretch; width: min(100%, 420px); }
+      .dossier-sub { left: 12px; width: 34%; bottom: 12px; }
+      .section-head, .section-head:not(:has(.lead)) { grid-template-columns: 1fr; gap: 14px; margin-bottom: 28px; }
+      .section-head .lead { justify-self: start; }
+      section { padding: 68px 5vw; }
+      .band { min-height: 420px; padding: 72px 5vw; }
+      #precios .featured { transform: none; }
+      footer { gap: 8px; }
+    }
+    @media (hover: hover) {
+      #precios .card { transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+      #precios .card:hover { transform: translateY(-6px); box-shadow: 0 28px 60px rgba(11, 23, 31, .1); }
+      #precios .featured:hover { transform: translateY(-22px); }
+    }
+    @media (max-width: 860px) and (hover: hover) {
+      #precios .featured:hover { transform: translateY(-6px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .rise, .hero-bg, .kicker::before { animation: none !important; }
+      .js .reveal { opacity: 1 !important; transform: none !important; }
+      .btn, #precios .card, .nav { transition: none; }
     }
   </style>
 </head>
@@ -140,10 +563,14 @@
       <a class="btn btn-gold" href="/app">Nueva ficha</a>
       <div id="user-button"></div>
     </div>
+    <button class="nav-toggle" type="button" aria-label="Menú" aria-expanded="false" aria-controls="nav-guest">
+      <span></span>
+      <span></span>
+    </button>
   </nav>
 
   <section class="hero">
-    <img class="hero-bg" src="/demo/01.jpg" alt="" />
+    <img class="hero-bg" src="/demo/01.jpg" alt="" fetchpriority="high" />
     <div class="hero-veil"></div>
     <div class="hero-copy pitch">
       <div class="home-in" hidden>
@@ -155,127 +582,206 @@
           <a class="btn btn-ghost" href="/fichas">Mis propiedades</a>
         </div>
       </div>
-      <div class="kicker">Real estate de lujo</div>
-      <h1>La herramienta para agentes y agencias de lujo.</h1>
-      <p class="lead">Pegas el link de Airbnb o subes las fotos. En un minuto HomesBrief arma la ficha de la propiedad: títulos y copy en español e inglés, textos de WhatsApp, Instagram y Facebook, y un estimado de renta. Tú revisas, copias y publicas.</p>
-      <div class="outs">
-        <span>Español e inglés</span>
-        <span>WhatsApp</span>
-        <span>Instagram</span>
-        <span>Facebook</span>
-        <span>Estimado de renta</span>
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="kicker rise">Real estate de lujo</div>
+          <h1 class="rise d1">La herramienta para agentes y agencias de <em>lujo</em>.</h1>
+          <p class="lead rise d2">Pegas el link de Airbnb o subes las fotos. En un minuto HomesBrief arma la ficha de la propiedad: títulos y copy en español e inglés, textos de WhatsApp, Instagram y Facebook, y un estimado de renta. Tú revisas, copias y publicas.</p>
+          <div class="outs rise d3">
+            <span>Español e inglés</span>
+            <span>WhatsApp</span>
+            <span>Instagram</span>
+            <span>Facebook</span>
+            <span>Estimado de renta</span>
+          </div>
+          <div class="cta rise d4">
+            <a class="btn btn-gold" href="/registro">Probar la herramienta</a>
+            <a class="btn btn-ghost" href="/ejemplo">Ver una ficha</a>
+          </div>
+        </div>
+        <aside class="dossier rise d2" aria-hidden="true">
+          <figure class="dossier-main">
+            <img src="/demo/02.jpg" alt="" />
+            <figcaption>En un minuto</figcaption>
+          </figure>
+          <img class="dossier-sub" src="/demo/04.jpg" alt="" />
+        </aside>
       </div>
-      <div class="cta">
-        <a class="btn btn-gold" href="/registro">Probar la herramienta</a>
-        <a class="btn btn-ghost" href="/ejemplo">Ver una ficha</a>
+    </div>
+  </section>
+
+  <section id="como" class="market reveal">
+    <div class="frame">
+      <div class="section-head">
+        <h3 class="section-title">Qué hace HomesBrief</h3>
+        <p class="lead">Un agente o una agencia mete la propiedad. HomesBrief devuelve lo que hoy se escribe a mano para cada canal.</p>
+      </div>
+      <div class="grid-3 steps">
+        <article class="card"><b>Metes la propiedad</b><p>Link de Airbnb o hasta 20 fotos. Zona, venta o renta, y las notas del agente.</p></article>
+        <article class="card"><b>Sale la ficha</b><p>Títulos y descripción en español e inglés, al nivel de una casa de lujo. No un texto genérico de portal.</p></article>
+        <article class="card"><b>Publicas</b><p>WhatsApp, Instagram, Facebook y Reels listos para copiar, más un estimado de renta. Queda en tu menú.</p></article>
       </div>
     </div>
   </section>
 
-  <section id="como" class="market">
-    <h3 class="section-title">Qué hace HomesBrief</h3>
-    <p class="lead">Un agente o una agencia mete la propiedad. HomesBrief devuelve lo que hoy se escribe a mano para cada canal.</p>
-    <div class="grid-3 steps" style="margin-top:28px">
-      <article class="card"><b>Metes la propiedad</b><p>Link de Airbnb o hasta 20 fotos. Zona, venta o renta, y las notas del agente.</p></article>
-      <article class="card"><b>Sale la ficha</b><p>Títulos y descripción en español e inglés, al nivel de una casa de lujo. No un texto genérico de portal.</p></article>
-      <article class="card"><b>Publicas</b><p>WhatsApp, Instagram, Facebook y Reels listos para copiar, más un estimado de renta. Queda en tu menú.</p></article>
+  <section class="market who reveal">
+    <div class="frame">
+      <div class="section-head">
+        <h3 class="section-title">Para quién es</h3>
+      </div>
+      <div class="grid-3">
+        <article class="card"><b>Agentes de lujo</b><p>Cada casa se anuncia en WhatsApp, Instagram y el portal. La herramienta te ahorra esa hora y mantiene el tono de la propiedad.</p></article>
+        <article class="card"><b>Agencias</b><p>El equipo usa el mismo sistema: mismas fichas, mismo nivel de copy, guardadas por cuenta. Plan Agencia para varios usuarios.</p></article>
+        <article class="card"><b>No es un redactor</b><p>No te escribe una propiedad a mano. Es el sistema: pegas el listing y sale el paquete para publicar.</p></article>
+      </div>
     </div>
   </section>
 
-  <section class="market">
-    <h3 class="section-title">Para quién es</h3>
-    <div class="grid-3">
-      <article class="card"><b>Agentes de lujo</b><p>Cada casa se anuncia en WhatsApp, Instagram y el portal. La herramienta te ahorra esa hora y mantiene el tono de la propiedad.</p></article>
-      <article class="card"><b>Agencias</b><p>El equipo usa el mismo sistema: mismas fichas, mismo nivel de copy, guardadas por cuenta. Plan Agencia para varios usuarios.</p></article>
-      <article class="card"><b>No es un redactor</b><p>No te escribe una propiedad a mano. Es el sistema: pegas el listing y sale el paquete para publicar.</p></article>
+  <section id="precios" class="market reveal">
+    <div class="frame">
+      <div class="section-head">
+        <h3 class="section-title">Precios</h3>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <div>Starter</div>
+          <div class="price">$0 <span>/ 14 días</span></div>
+          <ul>
+            <li>3 fichas</li>
+            <li>Fotos o link de Airbnb</li>
+            <li>Copy ES + EN</li>
+          </ul>
+          <p><a class="btn btn-ghost" href="/registro">Empezar</a></p>
+        </article>
+        <article class="card featured">
+          <div>Agente</div>
+          <div class="price">$49 <span>USD / mes</span></div>
+          <ul>
+            <li>40 fichas al mes</li>
+            <li>Redes + WhatsApp + Reels</li>
+            <li>Estimado de renta</li>
+          </ul>
+          <p><a class="btn btn-gold" href="/checkout/agente">Suscribirme</a></p>
+        </article>
+        <article class="card">
+          <div>Agencia</div>
+          <div class="price">$149 <span>USD / mes</span></div>
+          <ul>
+            <li>Fichas ilimitadas</li>
+            <li>Hasta 8 usuarios</li>
+            <li>Código de beta para las primeras agencias</li>
+          </ul>
+          <p><a class="btn btn-ghost" href="#fundadores">Programa fundador</a></p>
+        </article>
+      </div>
     </div>
   </section>
 
-  <section id="precios" class="market">
-    <h3 class="section-title">Precios</h3>
-    <div class="grid-3">
-      <article class="card">
-        <div>Starter</div>
-        <div class="price">$0 <span>/ 14 días</span></div>
-        <ul>
-          <li>3 fichas</li>
-          <li>Fotos o link de Airbnb</li>
-          <li>Copy ES + EN</li>
-        </ul>
-        <p><a class="btn btn-ghost" href="/registro">Empezar</a></p>
-      </article>
-      <article class="card featured">
-        <div>Agente</div>
-        <div class="price">$49 <span>USD / mes</span></div>
-        <ul>
-          <li>40 fichas al mes</li>
-          <li>Redes + WhatsApp + Reels</li>
-          <li>Estimado de renta</li>
-        </ul>
-        <p><a class="btn btn-gold" href="/checkout/agente">Suscribirme</a></p>
-      </article>
-      <article class="card">
-        <div>Agencia</div>
-        <div class="price">$149 <span>USD / mes</span></div>
-        <ul>
-          <li>Fichas ilimitadas</li>
-          <li>Hasta 8 usuarios</li>
-          <li>Código de beta para las primeras agencias</li>
-        </ul>
-        <p><a class="btn btn-ghost" href="#fundadores">Programa fundador</a></p>
-      </article>
+  <section id="fundadores" class="market reveal">
+    <div class="frame">
+      <div class="section-head">
+        <h3 class="section-title">Programa fundador · 10 agencias</h3>
+        <p class="lead">Plan Agencia sin pagar durante la beta ($149/mes). A cambio, lo usas de verdad y me dices qué falla. Si no sirve, no debes nada.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <b>Tú recibes</b>
+          <p>Código de Agencia ilimitada, soporte directo por WhatsApp y prioridad cuando salga marca de la agencia.</p>
+        </article>
+        <article class="card">
+          <b>Tú das (14 días)</b>
+          <p>5 fichas de propiedades reales + un WhatsApp con 3 cosas: qué sirvió, qué está mal, qué te faltó.</p>
+        </article>
+        <article class="card">
+          <b>Cómo entrar</b>
+          <p>Regístrate, canjea el código que te paso yo, genera la primera ficha hoy. Feedback al +52 442 219 8327.</p>
+          <p><a class="btn btn-gold" href="/registro">Quiero ser fundador</a></p>
+        </article>
+      </div>
     </div>
   </section>
 
-  <section id="fundadores" class="market">
-    <h3 class="section-title">Programa fundador · 10 agencias</h3>
-    <p class="lead">Plan Agencia sin pagar durante la beta ($149/mes). A cambio, lo usas de verdad y me dices qué falla. Si no sirve, no debes nada.</p>
-    <div class="grid-3" style="margin-top:24px">
-      <article class="card">
-        <b>Tú recibes</b>
-        <p>Código de Agencia ilimitada, soporte directo por WhatsApp y prioridad cuando salga marca de la agencia.</p>
-      </article>
-      <article class="card">
-        <b>Tú das (14 días)</b>
-        <p>5 fichas de propiedades reales + un WhatsApp con 3 cosas: qué sirvió, qué está mal, qué te faltó.</p>
-      </article>
-      <article class="card">
-        <b>Cómo entrar</b>
-        <p>Regístrate, canjea el código que te paso yo, genera la primera ficha hoy. Feedback al +52 442 219 8327.</p>
-        <p style="margin-top:16px"><a class="btn btn-gold" href="/registro">Quiero ser fundador</a></p>
-      </article>
-    </div>
-  </section>
-
-  <section id="contacto" class="market">
-    <h3 class="section-title">Contacto</h3>
-    <p class="lead">Beta, demos o una ficha de prueba. Escríbeme o mándame WhatsApp.</p>
-    <div class="grid-3" style="margin-top:24px">
-      <article class="card">
-        <b>WhatsApp / teléfono</b>
-        <p><a href="https://wa.me/524422198327">+52 442 219 8327</a></p>
-      </article>
-      <article class="card">
-        <b>Correo</b>
-        <p><a href="mailto:homesbrief@gmail.com">homesbrief@gmail.com</a></p>
-      </article>
-      <article class="card">
-        <b>Web</b>
-        <p><a href="https://homesbrief.com">homesbrief.com</a></p>
-      </article>
+  <section id="contacto" class="market reveal">
+    <div class="frame">
+      <div class="section-head">
+        <h3 class="section-title">Contacto</h3>
+        <p class="lead">Beta, demos o una ficha de prueba. Escríbeme o mándame WhatsApp.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <b>WhatsApp / teléfono</b>
+          <p><a href="https://wa.me/524422198327">+52 442 219 8327</a></p>
+        </article>
+        <article class="card">
+          <b>Correo</b>
+          <p><a href="mailto:homesbrief@gmail.com">homesbrief@gmail.com</a></p>
+        </article>
+        <article class="card">
+          <b>Web</b>
+          <p><a href="https://homesbrief.com">homesbrief.com</a></p>
+        </article>
+      </div>
     </div>
   </section>
 
   <section class="band market">
-    <h3>Tu próximo listing, en el tiempo de un café.</h3>
-    <p>Guarda cada casa en tu portafolio y ábrela cuando el cliente pregunte.</p>
-    <p><a class="btn btn-gold" href="/registro">Crear cuenta</a></p>
+    <img class="band-bg" src="/demo/11.jpg" alt="" />
+    <div class="band-veil"></div>
+    <div class="frame band-copy">
+      <h3>Tu próximo listing, en el tiempo de un café.</h3>
+      <p>Guarda cada casa en tu portafolio y ábrela cuando el cliente pregunte.</p>
+      <p><a class="btn btn-gold" href="/registro">Crear cuenta</a></p>
+    </div>
   </section>
 
   <footer>
     <span>HomesBrief · <a href="mailto:homesbrief@gmail.com">homesbrief@gmail.com</a> · <a href="https://wa.me/524422198327">+52 442 219 8327</a></span>
     <span>Starter 14 días · luego Agente o Agencia</span>
   </footer>
+  <script>
+    (function () {
+      var nav = document.querySelector(".nav");
+      var toggle = document.querySelector(".nav-toggle");
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      function onScroll() {
+        if (nav) nav.classList.toggle("is-stuck", window.scrollY > 8);
+      }
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      function closeNav() {
+        document.body.classList.remove("nav-open");
+        if (toggle) toggle.setAttribute("aria-expanded", "false");
+      }
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          var open = document.body.classList.toggle("nav-open");
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+          var guest = document.getElementById("nav-guest");
+          var user = document.getElementById("nav-user");
+          var panel = user && !user.classList.contains("off") ? user : guest;
+          if (panel) toggle.setAttribute("aria-controls", panel.id);
+        });
+      }
+      document.querySelectorAll(".nav-links a").forEach(function (link) {
+        link.addEventListener("click", closeNav);
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeNav();
+      });
+      if (!reduce && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("on");
+            io.unobserve(entry.target);
+          });
+        }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
+        document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("on"); });
+      }
+    })();
+  </script>
   <script src="/clerk-client.js"></script>
   <script>
     fetch('/health').catch(() => {});
