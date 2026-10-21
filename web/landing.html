@@ -104,6 +104,7 @@
       width: 44px; height: 44px;
       margin-left: 8px;
       border: 1px solid rgba(243, 238, 229, .28);
+      border-radius: 999px;
       background: transparent;
       padding: 0;
       align-items: center;
@@ -122,26 +123,27 @@
     body.nav-open .nav-toggle span:first-child { transform: translateY(3.5px) rotate(40deg); }
     body.nav-open .nav-toggle span:last-child { transform: translateY(-3.5px) rotate(-40deg); }
     .btn {
-      border-radius: 2px;
-      padding: 13px 18px;
-      font-size: 13px;
+      border-radius: 999px;
+      padding: 13px 22px;
+      font-size: 14px;
       font-weight: 600;
       letter-spacing: .01em;
-      transition: transform .35s var(--ease), background .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+      box-shadow: 0 10px 24px rgba(11, 23, 31, .12);
     }
     .btn-gold {
       background: #c4a265;
       color: var(--navy);
-      box-shadow: 0 10px 28px rgba(196, 162, 101, .18);
+      box-shadow: 0 12px 28px rgba(196, 162, 101, .34);
     }
     .btn-ghost {
-      border: 1px solid rgba(20, 36, 46, .2);
+      border: 1px solid rgba(20, 36, 46, .18);
       color: var(--ink);
-      background: transparent;
+      background: rgba(255, 253, 248, .86);
+      box-shadow: 0 8px 18px rgba(11, 23, 31, .05);
     }
     @media (hover: hover) {
-      .btn-gold:hover { transform: translateY(-2px); background: #d2b378; box-shadow: 0 14px 32px rgba(196, 162, 101, .28); }
-      .btn-ghost:hover { transform: translateY(-2px); border-color: var(--gold-deep); }
+      .btn-gold:hover { transform: translateY(-2px); background: #d2b378; box-shadow: 0 16px 34px rgba(196, 162, 101, .42); }
+      .btn-ghost:hover { transform: translateY(-2px); border-color: var(--gold-deep); background: white; }
     }
     .hero {
       position: relative;
@@ -283,7 +285,7 @@
     }
     .frame { width: min(1120px, 100%); margin: 0 auto; }
     section { padding: 108px 5.5vw; }
-    #como, #precios, #fundadores, #contacto { scroll-margin-top: 84px; }
+    #como, #muestra, #precios, #fundadores, #faq, #contacto { scroll-margin-top: 84px; }
     .section-head {
       display: grid;
       grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
@@ -464,6 +466,72 @@
     }
     .band p { color: rgba(243, 238, 229, .84); margin: 16px auto 0; max-width: 38ch; font-size: 17px; line-height: 1.55; }
     .band .btn { margin-top: 8px; }
+    .specimen {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      gap: 22px;
+      background: var(--paper);
+      border: 1px solid rgba(20, 36, 46, .08);
+      box-shadow: 0 30px 70px rgba(11, 23, 31, .08);
+      padding: 16px;
+    }
+    .specimen-photos { display: grid; grid-template-columns: 1.35fr .8fr; grid-template-rows: 1fr 1fr; gap: 8px; min-height: 440px; }
+    .specimen-photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .specimen-photos img:first-child { grid-row: 1 / span 2; }
+    .specimen-copy { padding: 22px 18px 16px 10px; display: flex; flex-direction: column; }
+    .specimen-copy h3 { font-size: clamp(30px, 2.8vw, 42px); line-height: .96; margin: 12px 0 10px; }
+    .specimen-copy .en-line { margin: 0 0 12px; font-family: "Bodoni Moda", Didot, serif; font-style: italic; font-size: 20px; color: var(--gold-deep); line-height: 1.25; }
+    .specimen-copy .where { margin: 0 0 14px; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .specimen-copy .excerpt { margin: 0; color: var(--muted); line-height: 1.6; font-size: 15.5px; }
+    .specimen-outs { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 18px 0 22px; }
+    .specimen-outs li {
+      border-radius: 999px; padding: 7px 12px;
+      border: 1px solid rgba(20, 36, 46, .12);
+      font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .specimen-copy .btn { margin-top: auto; align-self: flex-start; }
+    .compare { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: 18px; align-items: stretch; }
+    .compare article {
+      background: var(--paper);
+      border: 1px solid rgba(20, 36, 46, .08);
+      padding: 28px 26px 26px;
+      box-shadow: 0 18px 44px rgba(11, 23, 31, .05);
+    }
+    .compare ul { margin: 18px 0 0; padding-left: 18px; line-height: 1.6; }
+    .compare li + li { margin-top: 8px; }
+    .compare-out { background: var(--navy); color: var(--sand); border-color: rgba(196, 162, 101, .35); }
+    .compare-out h3 { color: white; font-size: clamp(28px, 2.5vw, 38px); line-height: .98; margin: 14px 0 12px; }
+    .compare-out p { color: rgba(243, 238, 229, .82); line-height: 1.55; margin: 0; }
+    .compare dl { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; margin: 20px 0 8px; }
+    .compare dt { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+    .compare dd { margin: 6px 0 0; font-family: "Bodoni Moda", Didot, serif; font-size: 30px; color: white; letter-spacing: -0.03em; }
+    .fine { margin-top: 14px !important; font-size: 12.5px; line-height: 1.5; color: rgba(243, 238, 229, .62) !important; }
+    .compare-out .btn { margin-top: 18px; }
+    .facts { background: var(--navy); color: var(--sand); padding: 48px 5.5vw; }
+    .facts-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 22px; }
+    .facts b { display: block; font-family: "Bodoni Moda", Didot, serif; font-weight: 500; font-size: clamp(26px, 2vw, 34px); letter-spacing: -0.03em; color: white; margin-bottom: 8px; line-height: 1; }
+    .facts span { display: block; color: rgba(243, 238, 229, .72); font-size: 14.5px; line-height: 1.45; }
+    .faq details { border-top: 1px solid rgba(20, 36, 46, .12); }
+    .faq details:last-of-type { border-bottom: 1px solid rgba(20, 36, 46, .12); }
+    .faq summary {
+      cursor: pointer; list-style: none;
+      font-family: "Bodoni Moda", Didot, serif;
+      font-size: clamp(24px, 2.2vw, 32px);
+      font-weight: 500; letter-spacing: -0.02em;
+      padding: 18px 40px 18px 0;
+      position: relative;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after {
+      content: "";
+      position: absolute; right: 8px; top: 50%;
+      width: 9px; height: 9px;
+      border-right: 1.5px solid var(--gold-deep);
+      border-bottom: 1.5px solid var(--gold-deep);
+      transform: translateY(-70%) rotate(45deg);
+    }
+    .faq details[open] summary::after { transform: translateY(-30%) rotate(225deg); }
+    .faq details p { margin: 0 0 18px; max-width: 68ch; color: var(--muted); line-height: 1.6; }
     footer {
       background: #070e13;
       color: rgba(243, 238, 229, .62);
@@ -530,6 +598,11 @@
       .band { min-height: 420px; padding: 72px 5vw; }
       #precios .featured { transform: none; }
       footer { gap: 8px; }
+      .specimen, .compare, .facts-row { grid-template-columns: 1fr; }
+      .specimen-photos { min-height: 260px; }
+      .specimen-copy { padding: 8px 6px 12px; }
+      .facts { padding: 36px 5vw; }
+      .faq summary { font-size: 24px; }
     }
     @media (hover: hover) {
       #precios .card { transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
@@ -637,6 +710,75 @@
     </div>
   </section>
 
+  <section id="muestra" class="market reveal">
+    <div class="frame">
+      <div class="section-head">
+        <h3 class="section-title">Así sale la ficha</h3>
+        <p class="lead">Títulos y descripción en español e inglés, al nivel de una casa de lujo. No un texto genérico de portal.</p>
+      </div>
+      <article class="specimen">
+        <div class="specimen-photos">
+          <img src="/demo/01.jpg" alt="" />
+          <img src="/demo/02.jpg" alt="" />
+          <img src="/demo/04.jpg" alt="" />
+        </div>
+        <div class="specimen-copy">
+          <div class="kicker">Ficha de ejemplo</div>
+          <h3>Lujo Frente al Mar en Udara: Residencia de 4 Recámaras en Bucerías, Riviera Nayarit</h3>
+          <p class="en-line">Oceanfront Luxury at Udara: Stunning 4-Bedroom Beachfront Condo in Bucerias</p>
+          <p class="where">Condominio de lujo frente al mar · Bucerías, Riviera Nayarit</p>
+          <p class="excerpt">Viva la máxima expresión del estilo de vida frente al mar en Udara, el desarrollo residencial más codiciado de Bucerías. Esta impecable residencia de 4 recámaras y 4 baños combina a la perfección la arquitectura contemporánea con cálidos acentos en madera natural y vistas panorámicas de la Bahía de Banderas.</p>
+          <ul class="specimen-outs">
+            <li>Español e inglés</li>
+            <li>WhatsApp</li>
+            <li>Instagram</li>
+            <li>Facebook</li>
+            <li>Estimado de renta</li>
+          </ul>
+          <a class="btn btn-gold" href="/ejemplo">Ver una ficha</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="market who reveal">
+    <div class="frame">
+      <div class="section-head">
+        <h3 class="section-title">De la propiedad a la ficha</h3>
+        <p class="lead">Un agente o una agencia mete la propiedad. HomesBrief devuelve lo que hoy se escribe a mano para cada canal.</p>
+      </div>
+      <div class="compare">
+        <article>
+          <div class="kicker">Metes la propiedad</div>
+          <ul>
+            <li>Link de Airbnb o hasta 20 fotos.</li>
+            <li>Zona, venta o renta, y las notas del agente.</li>
+          </ul>
+        </article>
+        <article class="compare-out">
+          <div class="kicker">Sale la ficha</div>
+          <h3>Lujo Frente al Mar en Udara: Residencia de 4 Recámaras en Bucerías, Riviera Nayarit</h3>
+          <p>WhatsApp, Instagram, Facebook y Reels listos para copiar, más un estimado de renta.</p>
+          <dl>
+            <div><dt>Temporada baja</dt><dd>USD 550 / noche</dd></div>
+            <div><dt>Temporada alta</dt><dd>USD 1,100 / noche</dd></div>
+          </dl>
+          <p class="fine">Ficha de ejemplo, Bucerías. Las tarifas y proyecciones financieras son únicamente estimaciones de mercado basadas en propiedades comparables de lujo en Bucerías y no representan una garantía de ingresos.</p>
+          <a class="btn btn-ghost" href="/ejemplo">Ver una ficha</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="facts reveal" aria-label="Qué incluye la ficha">
+    <div class="frame facts-row">
+      <div><b>En un minuto</b><span>La ficha de la propiedad</span></div>
+      <div><b>Español e inglés</b><span>Títulos y copy</span></div>
+      <div><b>Hasta 20 fotos</b><span>O un link de Airbnb</span></div>
+      <div><b>Listo para copiar</b><span>WhatsApp, Instagram, Facebook y Reels</span></div>
+    </div>
+  </section>
+
   <section id="precios" class="market reveal">
     <div class="frame">
       <div class="section-head">
@@ -697,6 +839,40 @@
           <p>Regístrate, canjea el código que te paso yo, genera la primera ficha hoy. Feedback al +52 442 219 8327.</p>
           <p><a class="btn btn-gold" href="/registro">Quiero ser fundador</a></p>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="market who reveal">
+    <div class="frame">
+      <div class="section-head">
+        <h3 class="section-title">Preguntas</h3>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary>¿Qué se mete?</summary>
+          <p>Link de Airbnb o hasta 20 fotos. Zona, venta o renta, y las notas del agente.</p>
+        </details>
+        <details>
+          <summary>¿Qué sale?</summary>
+          <p>Títulos y descripción en español e inglés, al nivel de una casa de lujo. WhatsApp, Instagram, Facebook y Reels listos para copiar, más un estimado de renta. Queda en tu menú.</p>
+        </details>
+        <details>
+          <summary>¿Es un redactor?</summary>
+          <p>No te escribe una propiedad a mano. Es el sistema: pegas el listing y sale el paquete para publicar.</p>
+        </details>
+        <details>
+          <summary>¿Para quién es?</summary>
+          <p>Agentes de lujo y agencias. El equipo usa el mismo sistema: mismas fichas, mismo nivel de copy, guardadas por cuenta. Plan Agencia para varios usuarios.</p>
+        </details>
+        <details>
+          <summary>¿Cuánto cuesta?</summary>
+          <p>Starter: $0 / 14 días, 3 fichas. Agente: $49 USD / mes, 40 fichas al mes. Agencia: $149 USD / mes, fichas ilimitadas, hasta 8 usuarios. 3 fichas de trial. Sin tarjeta.</p>
+        </details>
+        <details>
+          <summary>¿Cómo es el programa fundador?</summary>
+          <p>Plan Agencia sin pagar durante la beta ($149/mes). A cambio, lo usas de verdad y me dices qué falla. Si no sirve, no debes nada. En 14 días: 5 fichas de propiedades reales + un WhatsApp con 3 cosas: qué sirvió, qué está mal, qué te faltó. Feedback al +52 442 219 8327.</p>
+        </details>
       </div>
     </div>
   </section>

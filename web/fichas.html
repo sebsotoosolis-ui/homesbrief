@@ -10,28 +10,36 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/brand.css" />
   <style>
-    .wrap { width: min(1120px, calc(100% - 40px)); margin: 28px auto 96px; }
-    .head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
-    h1 { font-size: clamp(36px, 5vw, 56px); line-height: .95; }
-    .grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 36px auto 96px; }
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 18px; flex-wrap: wrap; margin-bottom: 32px; }
+    h1 { font-size: clamp(40px, 5vw, 64px); line-height: .92; }
+    .grid { display: grid; gap: 18px; grid-template-columns: 1fr; }
     @media (min-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 1040px) { .grid { grid-template-columns: repeat(3, 1fr); } }
     .property {
       display: block; text-decoration: none; color: inherit;
       background: var(--paper); border-radius: 22px; overflow: hidden;
+      border: 1px solid rgba(20, 36, 46, .06);
       box-shadow: 0 16px 40px rgba(11,23,31,.06);
-      transition: transform .2s ease, box-shadow .2s ease;
+      transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s cubic-bezier(.22,1,.36,1);
     }
-    .property:hover { transform: translateY(-3px); box-shadow: 0 22px 50px rgba(11,23,31,.12); }
-    .cover { height: 210px; background: #1a2c36 center/cover no-repeat; }
+    @media (hover: hover) {
+      .property:hover { transform: translateY(-4px); box-shadow: 0 24px 50px rgba(11,23,31,.12); }
+    }
+    .cover { height: 220px; background: #1a2c36 center/cover no-repeat; }
     .copy { padding: 18px 20px 22px; }
-    .copy small { color: var(--gold); letter-spacing: .12em; text-transform: uppercase; font-size: 11px; font-weight: 700; }
-    .copy h2 { font-size: 24px; margin: 6px 0 8px; line-height: 1.1; }
-    .copy p { margin: 0; color: var(--muted); font-size: 14px; }
-    .empty { background: var(--paper); border-radius: 28px; padding: 48px 32px; text-align: center; }
+    .copy small { color: var(--gold-deep); letter-spacing: .14em; text-transform: uppercase; font-size: 11px; font-weight: 700; }
+    .copy h2 { font-size: 26px; margin: 8px 0 8px; line-height: 1.05; }
+    .copy p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .empty {
+      background: var(--paper); border-radius: 28px; padding: 56px 32px; text-align: center;
+      border: 1px solid rgba(20, 36, 46, .06);
+      box-shadow: 0 24px 60px rgba(11, 23, 31, .06);
+    }
+    .empty h2 { font-size: clamp(32px, 4vw, 44px); margin-bottom: 8px; }
   </style>
 </head>
 <body>

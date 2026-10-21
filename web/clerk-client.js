@@ -1,9 +1,19 @@
 const clerkAppearance = {
   variables: {
     colorPrimary: '#c4a265',
-    colorBackground: '#fffcf7',
+    colorBackground: '#fffdf8',
     colorText: '#14242e',
-    borderRadius: '14px',
+    borderRadius: '16px',
+    fontFamily: 'Outfit, sans-serif',
+  },
+  elements: {
+    formButtonPrimary: {
+      borderRadius: '999px',
+      boxShadow: '0 12px 28px rgba(196, 162, 101, .32)',
+    },
+    formButtonReset: {
+      borderRadius: '999px',
+    },
   },
 };
 
