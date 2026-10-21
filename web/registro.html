@@ -10,30 +10,37 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/brand.css" />
   <style>
-    .split { min-height: 100vh; display: grid; }
-    @media (min-width: 900px) { .split { grid-template-columns: 1.05fr .95fr; } }
-    .photo { display: none; position: relative; }
-    @media (min-width: 900px) { .photo { display: block; } }
-    .photo img { width: 100%; height: 100%; object-fit: cover; }
+    .split { min-height: 100vh; display: grid; background: var(--sand); }
+    .photo { position: relative; min-height: 220px; }
+    .photo img { width: 100%; height: 100%; object-fit: cover; min-height: 220px; }
+    .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,13,18,.12), rgba(7,13,18,.55)); }
     .photo span {
-      position: absolute; left: 32px; bottom: 32px; color: white;
-      font-family: "Cormorant Garamond", serif; font-size: 32px; max-width: 16ch; line-height: 1;
-      text-shadow: 0 8px 24px rgba(0,0,0,.35);
+      position: absolute; z-index: 1; left: 28px; right: 28px; bottom: 28px; color: white;
+      font-family: "Bodoni Moda", Didot, serif; font-size: clamp(30px, 4vw, 46px); max-width: 14ch; line-height: .95;
+      letter-spacing: -0.03em; text-shadow: 0 10px 28px rgba(0,0,0,.4);
     }
-    .panel { padding: 20px 7vw 64px; }
+    .panel { padding: 28px 7vw 72px; }
+    .panel h1 { font-size: clamp(42px, 5vw, 58px); line-height: .92; margin: 8px 0 10px; }
     #sign-up { min-height: 360px; margin-top: 8px; }
     .name-hint { margin: 8px 0 0; font-size: 13px; color: #9b2c2c; font-weight: 600; }
     .name-hint[hidden] { display: none; }
-    #given-name.missing { border-color: #9b2c2c; }
+    #given-name.missing { border-color: #9b2c2c; box-shadow: 0 0 0 4px rgba(155, 44, 44, .12); }
     .back-email {
       display: block; width: 100%; margin-top: 14px;
-      border: 1px solid rgba(20, 36, 46, 0.18); background: white; color: var(--ink);
-      border-radius: 999px; padding: 12px 20px; font: inherit; font-weight: 600; cursor: pointer;
+      border: 1px solid rgba(20, 36, 46, 0.16); background: white; color: var(--ink);
+      border-radius: 999px; padding: 13px 22px; font: inherit; font-weight: 600; cursor: pointer;
+      box-shadow: 0 8px 20px rgba(11, 23, 31, .06);
+      transition: transform .35s cubic-bezier(.22,1,.36,1), border-color .35s;
     }
+    .back-email:hover { transform: translateY(-2px); border-color: var(--gold-deep); }
     .back-email[hidden] { display: none; }
+    @media (min-width: 900px) {
+      .split { grid-template-columns: 1.05fr .95fr; }
+      .photo, .photo img { min-height: 100vh; }
+    }
   </style>
 </head>
 <body>
@@ -47,7 +54,8 @@
         <a class="logo" href="/"><img class="logo-mark" src="/logo.svg" alt="" />Homes<span>Brief</span></a>
         <a href="/login">Ya tengo cuenta</a>
       </nav>
-      <h1 style="font-size:42px;margin:12px 0 8px">Crea tu cuenta</h1>
+      <div class="kicker">Sin tarjeta</div>
+      <h1>Crea tu cuenta</h1>
       <p class="lead">3 fichas de trial. Sin tarjeta. La sesión queda iniciada en este navegador.</p>
       <label for="given-name">Tu nombre</label>
       <input id="given-name" autocomplete="given-name" placeholder="ej: Camila" />

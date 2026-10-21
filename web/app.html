@@ -10,27 +10,36 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/brand.css" />
   <style>
-    h1 { font-size: clamp(36px, 5vw, 48px); line-height: .95; margin: 0 0 10px; }
-    .tabs { display: flex; gap: 8px; margin: 22px 0 18px; }
-    .tab { border: 1px solid var(--line); background: white; border-radius: 999px; padding: 10px 16px; cursor: pointer; font: inherit; }
-    .tab.on { background: var(--navy); color: white; border-color: var(--navy); }
+    h1 { font-size: clamp(40px, 5vw, 56px); line-height: .92; margin: 0 0 10px; }
+    .tabs { display: flex; gap: 8px; margin: 22px 0 18px; flex-wrap: wrap; }
+    .tab {
+      border: 1px solid var(--line); background: white; border-radius: 999px;
+      padding: 11px 16px; cursor: pointer; font: inherit; font-weight: 600; font-size: 14px;
+      box-shadow: 0 6px 16px rgba(11, 23, 31, .04);
+      transition: transform .3s cubic-bezier(.22,1,.36,1), background .3s, color .3s, box-shadow .3s;
+    }
+    .tab.on { background: var(--navy); color: white; border-color: var(--navy); box-shadow: 0 10px 22px rgba(11, 23, 31, .16); }
+    @media (hover: hover) { .tab:hover { transform: translateY(-1px); } }
     .row { display: grid; gap: 12px; }
     @media (min-width: 720px) { .row-2 { grid-template-columns: 1fr 1fr; } }
-    .drop { border: 1.5px dashed #cbbba0; border-radius: 18px; padding: 22px; text-align: center; background: #faf7f1; color: var(--muted); }
+    .drop {
+      border: 1.5px dashed rgba(196, 162, 101, .7); border-radius: 22px; padding: 26px;
+      text-align: center; background: #faf7f1; color: var(--muted);
+    }
     button.submit { margin-top: 22px; width: 100%; }
-    .status { display: none; margin-top: 16px; padding: 14px 16px; border-radius: 14px; background: var(--navy); color: var(--sand); }
+    .status { display: none; margin-top: 16px; padding: 16px 18px; border-radius: 18px; background: var(--navy); color: var(--sand); box-shadow: 0 12px 28px rgba(11, 23, 31, .16); }
     .status.on { display: block; }
     .pane { display: none; }
     .pane.on { display: block; }
-    .promo {
-      margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line);
-    }
-    .promo-row { display: flex; gap: 8px; }
+    .promo { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line); }
+    .promo-row { display: flex; gap: 8px; align-items: center; }
     .promo-row input { flex: 1; }
     .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+    .toolbar a { font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(141, 109, 56, .45); }
+    @media (max-width: 640px) { .promo-row { flex-direction: column; align-items: stretch; } }
   </style>
 </head>
 <body>
