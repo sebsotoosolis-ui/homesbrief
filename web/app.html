@@ -142,7 +142,7 @@
     const status = document.getElementById('status');
     const err = document.getElementById('err');
     const submit = form.querySelector('button.submit');
-    const planNames = { trial: 'Trial', agente: 'Agente', agencia: 'Agencia', open: 'Beta', none: 'Sin plan' };
+    const planNames = { trial: 'Trial', agente: 'Agente', agencia: 'Agencia', lifetime: 'De por vida', open: 'Beta', none: 'Sin plan' };
 
     async function waitForJob(jobId) {
       const deadline = Date.now() + 180000;
@@ -193,6 +193,9 @@
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'No se pudo canjear');
+        promoOk.textContent = data.plan === 'lifetime'
+          ? 'Listo. Tu cuenta quedó desbloqueada de por vida.'
+          : 'Listo. Tu cuenta quedó en plan Agencia.';
         promoOk.classList.add('on');
         refreshPlan();
       } catch (error) {
