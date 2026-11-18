@@ -68,6 +68,12 @@ app.get('/favicon.svg', (_req, res) => {
 app.get('/logo.svg', (_req, res) => {
   res.type('image/svg+xml').sendFile(resolve('web', 'logo.svg'));
 });
+app.get('/studio.jpg', (_req, res) => {
+  res.type('image/jpeg').sendFile(resolve('web', 'studio.jpg'));
+});
+app.get('/hero.jpg', (_req, res) => {
+  res.type('image/jpeg').sendFile(resolve('web', 'hero.jpg'));
+});
 app.get('/favicon-32.png', (_req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=86400');
   res.type('image/png');
@@ -127,6 +133,10 @@ app.get('/login', (_req, res) => {
   res.sendFile(resolve('web', 'login.html'));
 });
 
+app.get('/privacidad', (_req, res) => {
+  res.sendFile(resolve('web', 'privacidad.html'));
+});
+
 app.get('/ejemplo', (_req, res) => {
   const demo = resolve('web', 'ficha.json');
   if (!existsSync(demo)) {
@@ -167,6 +177,7 @@ app.get('/sitemap.xml', (_req, res) => {
   <url><loc>https://homesbrief.com/ejemplo</loc></url>
   <url><loc>https://homesbrief.com/registro</loc></url>
   <url><loc>https://homesbrief.com/login</loc></url>
+  <url><loc>https://homesbrief.com/privacidad</loc></url>
 </urlset>
 `);
 });

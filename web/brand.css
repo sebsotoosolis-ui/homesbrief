@@ -67,12 +67,17 @@ a { color: inherit; }
   box-shadow: none;
 }
 @media (hover: hover) {
-  .btn:hover { transform: translateY(-2px); }
+  .btn:hover, button:hover { transform: scale(1.04); }
   .btn-gold:hover { background: #d2b378; box-shadow: 0 16px 34px rgba(196, 162, 101, .4); }
   .btn-navy:hover { box-shadow: 0 16px 32px rgba(11, 23, 31, .28); }
   .btn-ghost:hover { border-color: var(--gold-deep); background: white; }
 }
-.btn:disabled { opacity: .55; cursor: wait; transform: none; box-shadow: none; }
+.btn:active, button:active,
+.btn-gold:active, .btn-navy:active, .btn-ghost:active { transform: scale(1.07); }
+.btn:disabled, .btn:disabled:hover, .btn:disabled:active,
+button:disabled, button:disabled:hover, button:disabled:active {
+  transform: none; opacity: .55; cursor: wait; box-shadow: none;
+}
 .kicker { letter-spacing: .2em; text-transform: uppercase; font-size: 11px; color: var(--gold); font-weight: 700; }
 h1, h2, h3 { font-family: "Playfair Display", Palatino, Georgia, serif; font-weight: 600; margin: 0; letter-spacing: -0.03em; }
 .lead { font-size: 17px; color: var(--muted); line-height: 1.65; max-width: 52ch; }

@@ -28,7 +28,7 @@
   <meta name="twitter:image" content="https://homesbrief.com/og.png?v=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Playfair+Display:ital,wght@0,600;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/brand.css" />
   <script>document.documentElement.classList.add("js");</script>
   <style>
@@ -142,9 +142,10 @@
       box-shadow: 0 8px 18px rgba(11, 23, 31, .05);
     }
     @media (hover: hover) {
-      .btn-gold:hover { transform: translateY(-2px); background: #d2b378; box-shadow: 0 16px 34px rgba(196, 162, 101, .42); }
-      .btn-ghost:hover { transform: translateY(-2px); border-color: var(--gold-deep); background: white; }
+      .btn-gold:hover { transform: scale(1.04); background: #d2b378; box-shadow: 0 16px 34px rgba(196, 162, 101, .42); }
+      .btn-ghost:hover { transform: scale(1.04); border-color: var(--gold-deep); background: white; }
     }
+    .btn:active, .btn-gold:active, .btn-ghost:active { transform: scale(1.07); }
     .hero {
       position: relative;
       min-height: 100svh;
@@ -239,16 +240,43 @@
       border-color: rgba(243, 238, 229, .4);
       background: rgba(11, 23, 31, .2);
     }
-    .home-in[hidden] { display: none !important; }
-    .home-in { display: none; width: min(560px, 100%); margin: 0 0 28px; padding: 20px 22px 18px; background: rgba(11, 23, 31, .55); border: 1px solid rgba(196, 162, 101, .4); backdrop-filter: blur(16px); }
-    body.signed-in .home-in { display: block; }
-    .hero .home-in h1 {
-      margin: 8px 0 0;
-      font-size: clamp(34px, 4vw, 48px);
-      max-width: none;
-      color: white;
+    body.signed-in { background: #0b171f; }
+    body.signed-in .sales { display: none; }
+    .app-home[hidden] { display: none !important; }
+    .app-home {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      color: #f3eee5; overflow: hidden;
     }
-    .hero .home-in .lead { margin: 8px 0 0; color: rgba(243, 238, 229, .92); font-size: 16px; max-width: none; }
+    .app-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
+    .app-veil {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(11,23,31,.28) 0%, rgba(11,23,31,.08) 34%, rgba(11,23,31,.45) 62%, rgba(11,23,31,.9) 100%);
+    }
+    .app-copy, .app-foot { position: relative; z-index: 1; }
+    .app-copy { padding: 0 7vw 8px; }
+    .app-hello, .app-name {
+      font-family: "Cormorant Garamond", Palatino, Georgia, serif; font-weight: 500;
+      font-size: clamp(76px, 10vw, 132px); line-height: .84; margin: 0; color: white;
+    }
+    .app-name { color: var(--gold); font-style: italic; }
+    .app-ask { margin: 20px 0 0; font-size: 18px; color: rgba(243,238,229,.78); }
+    .app-actions { display: flex; flex-wrap: wrap; gap: 22px 36px; margin-top: 28px; }
+    .app-actions a {
+      color: white; text-decoration: none;
+      font-family: "Cormorant Garamond", Palatino, Georgia, serif; font-size: clamp(28px, 3vw, 40px);
+      border-bottom: 1px solid rgba(196,162,101,.85); padding-bottom: 2px;
+      transition: transform .18s ease;
+    }
+    .app-actions a:hover { transform: scale(1.04); }
+    .app-actions a:active { transform: scale(1.07); }
+    .app-foot {
+      display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap;
+      margin-top: 28px; padding: 16px 7vw 26px;
+      border-top: 1px solid rgba(243,238,229,.16);
+      font-size: 13px; color: rgba(243,238,229,.66);
+    }
+    .app-foot a { color: var(--gold); text-decoration: none; }
     .dossier { position: relative; justify-self: end; width: min(400px, 100%); }
     .dossier-main {
       margin: 0;
@@ -669,19 +697,29 @@
     </button>
   </nav>
 
+  <main class="app-home" id="app-home" hidden>
+    <img class="app-photo" src="/studio.jpg?v=4" alt="" />
+    <div class="app-veil"></div>
+    <div class="app-copy">
+      <p class="app-hello">Hola,</p>
+      <p class="app-name" id="hello-name"></p>
+      <p class="app-ask">¿En qué quieres trabajar hoy?</p>
+      <div class="app-actions">
+        <a href="/app">Nueva ficha</a>
+        <a href="/fichas">Mis propiedades</a>
+      </div>
+    </div>
+    <footer class="app-foot">
+      <span><a href="https://wa.me/524422198327">+52 442 219 8327</a> · <a href="mailto:homesbrief@gmail.com">homesbrief@gmail.com</a></span>
+      <a href="/privacidad">Aviso de privacidad</a>
+    </footer>
+  </main>
+
+  <div class="sales">
   <section class="hero">
-    <img class="hero-bg" src="/demo/01.jpg" alt="" fetchpriority="high" />
+    <img class="hero-bg" src="/hero.jpg?v=2" alt="" fetchpriority="high" />
     <div class="hero-veil"></div>
     <div class="hero-copy pitch">
-      <div class="home-in" hidden>
-        <div class="kicker">Tu cuenta</div>
-        <h1 id="hello-name">Hola.</h1>
-        <p class="lead">¿En qué quieres trabajar hoy?</p>
-        <div class="cta">
-          <a class="btn btn-gold" href="/app">Nueva ficha</a>
-          <a class="btn btn-ghost" href="/fichas">Mis propiedades</a>
-        </div>
-      </div>
       <div class="hero-grid">
         <div class="hero-text">
           <div class="kicker rise">Real estate de lujo</div>
@@ -939,8 +977,9 @@
 
   <footer>
     <span>HomesBrief · <a href="mailto:homesbrief@gmail.com">homesbrief@gmail.com</a> · <a href="https://wa.me/524422198327">+52 442 219 8327</a></span>
-    <span>Starter 14 días · luego Agente o Agencia</span>
+    <span><a href="/privacidad">Aviso de privacidad</a> · Starter 14 días · luego Agente o Agencia</span>
   </footer>
+  </div>
   <script>
     (function () {
       var nav = document.querySelector(".nav");
@@ -988,15 +1027,25 @@
   <script src="/clerk-client.js"></script>
   <script>
     fetch('/health').catch(() => {});
+    const previewApp = new URLSearchParams(location.search).get('preview') === 'app';
+    function showApp(name) {
+      document.body.classList.add('signed-in');
+      document.getElementById('nav-guest').classList.add('off');
+      document.getElementById('nav-user').classList.remove('off');
+      document.getElementById('hello-name').textContent = name || '';
+      document.getElementById('app-home').hidden = false;
+    }
     bootClerk().then(async (clerk) => {
       mountSignedInNav(clerk);
-      if (!clerk.isSignedIn) return;
-      document.body.classList.add('signed-in');
+      if (!clerk.isSignedIn) {
+        if (previewApp) showApp('');
+        return;
+      }
       const name = await applySavedName(clerk);
-      const hello = document.getElementById('hello-name');
-      hello.textContent = name ? 'Hola, ' + name + '.' : 'Hola.';
-      hello.closest('.home-in').hidden = false;
-    }).catch(() => {});
+      showApp(name);
+    }).catch(() => {
+      if (previewApp) showApp('');
+    });
   </script>
 </body>
 </html>

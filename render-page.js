@@ -83,9 +83,10 @@ export function renderHtml(listing, { mediaPrefix = '/media', chrome = false, ho
     button.copy, .lang {
       border: 1px solid var(--line); background: white; border-radius: 999px; padding: 10px 16px; cursor: pointer; font: inherit; font-weight: 600;
       box-shadow: 0 8px 18px rgba(11, 23, 31, .06);
-      transition: transform .3s cubic-bezier(.22,1,.36,1), background .3s, color .3s, border-color .3s;
+      transition: transform .18s ease, background .3s, color .3s, border-color .3s;
     }
-    button.copy:hover, .lang:hover { border-color: var(--gold); background: var(--navy); color: white; transform: translateY(-1px); }
+    button.copy:hover, .lang:hover { border-color: var(--gold); background: var(--navy); color: white; transform: scale(1.04); }
+    button.copy:active, .lang:active { transform: scale(1.07); }
     ul { margin: 8px 0 0; padding-left: 18px; }
     li { margin: 8px 0; line-height: 1.5; }
     table { width: 100%; border-collapse: collapse; }

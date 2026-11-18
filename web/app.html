@@ -22,7 +22,8 @@
       transition: transform .3s cubic-bezier(.22,1,.36,1), background .3s, color .3s, box-shadow .3s;
     }
     .tab.on { background: var(--navy); color: white; border-color: var(--navy); box-shadow: 0 10px 22px rgba(11, 23, 31, .16); }
-    @media (hover: hover) { .tab:hover { transform: translateY(-1px); } }
+    @media (hover: hover) { .tab:hover { transform: scale(1.04); } }
+    .tab:active { transform: scale(1.07); }
     .row { display: grid; gap: 12px; }
     @media (min-width: 720px) { .row-2 { grid-template-columns: 1fr 1fr; } }
     .drop {
