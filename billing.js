@@ -78,7 +78,7 @@ export async function createPortalSession(req, userId) {
 }
 
 export function planLimit(plan) {
-  if (plan === 'agencia') return { max: Infinity, period: 'none' };
+  if (plan === 'lifetime' || plan === 'agencia') return { max: Infinity, period: 'none' };
   if (plan === 'agente' || plan === 'paid') return { max: 40, period: 'month' };
   if (plan === 'trial') return { max: 3, period: 'total' };
   if (plan === 'open') return { max: Infinity, period: 'none' };
@@ -89,6 +89,11 @@ export function normalizePromo(code) {
   return String(code || '').trim().toUpperCase().replace(/\s+/g, '');
 }
 
+export function lifetimePromoCodes() {
+  const raw = process.env.LIFETIME_PROMO_CODE || 'SEB-VIDA,HOMESBRIEF-VIDA';
+  return raw.split(',').map(normalizePromo).filter(Boolean);
+}
+
 export function validPromoCodes() {
   const raw = process.env.BETA_PROMO_CODE || 'HOMESBRIEF-BETA';
   return raw.split(',').map(normalizePromo).filter(Boolean);
@@ -96,6 +101,10 @@ export function validPromoCodes() {
 
 export async function redeemPromo(userId, code) {
   const normalized = normalizePromo(code);
+  if (lifetimePromoCodes().includes(normalized)) {
+    await savePlanGrant(userId, 'lifetime', normalized);
+    return { ok: true, plan: 'lifetime' };
+  }
   if (!validPromoCodes().includes(normalized)) {
     throw new Error('Ese código no es válido.');
   }
@@ -130,7 +139,7 @@ async function readPlanGrant(userId) {
   try {
     const user = await clerkClient.users.getUser(userId);
     const plan = user.privateMetadata?.homesbriefPlan;
-    if (plan === 'agencia' || plan === 'agente') return plan;
+    if (plan === 'lifetime' || plan === 'agencia' || plan === 'agente') return plan;
   } catch {
     /* local / sin Clerk */
   }
@@ -138,7 +147,7 @@ async function readPlanGrant(userId) {
     const file = join(resolve(process.env.DATA_DIR || 'data'), String(userId).replace(/[^a-zA-Z0-9_-]/g, ''), 'access.json');
     if (!existsSync(file)) return null;
     const plan = JSON.parse(readFileSync(file, 'utf8')).plan;
-    return plan === 'agencia' || plan === 'agente' ? plan : null;
+    return plan === 'lifetime' || plan === 'agencia' || plan === 'agente' ? plan : null;
   } catch {
     return null;
   }
